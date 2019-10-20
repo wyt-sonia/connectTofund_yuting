@@ -10,3 +10,19 @@ a {
   position: relative;
   width: 100%;
 }
+
+.select1 {
+	background: transparent;
+	font-size: 14px;
+	line-height: 25px;
+	border: 0;
+	border-radius: 4px;
+	height: 46px;
+	border: 1px solid #ececec;
+	color: #495057;
+	padding: 10px 20px;
+	z-index: 1;
+	width: 100%;
+	position: relative;
+	appearance: none;
+}
