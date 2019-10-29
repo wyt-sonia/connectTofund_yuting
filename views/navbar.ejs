@@ -3,6 +3,13 @@
     height: 80%;
     padding-top:15%;
   }
+
+  input.input-material {
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid #eee;
+    padding: 10px 0;
+}
 </style>
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -35,18 +42,18 @@
         <form class="form-inline my-2 my-lg-0">
           <button class="btn btn-primary my-2 my-sm-0" type="button" data-toggle="modal" data-target="#modalSign">Sign up</button>
           &nbsp;&nbsp;
-          <button class="btn btn-success my-2 my-sm-0" type="submit">Log in</button>
+          <button class="btn btn-success my-2 my-sm-0" type="button" data-toggle="modal" data-target="#modalLog">Log in</button>
         </form>
       </div>
   </div>
 </nav>
 
 <!-- Modal -->
-<div class="modal fade" id="modalSign" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="modalSign" tabindex="-1" role="dialog" aria-labelledby="signUpModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Sign up</h5>
+        <h5 class="modal-title" id="signUpModalLabel">Sign up</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -56,9 +63,43 @@
           <input class="input-material" type="text" name="username" placeholder="Username" required
           data-msg="Please enter your username">
         </div>
+        <br>
+        <div form>
+            <input class="input-material" type="text" name="password" placeholder="Password" required
+            data-msg="Please enter your password">
+          </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-primary">Sign up</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="modalLog" tabindex="-1" role="dialog" aria-labelledby="logInModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="loginModalLabel">Log in</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div form>
+          <input class="input-material" type="text" name="username" placeholder="Username" required
+          data-msg="Please enter your username">
+        </div>
+        <br>
+        <div form>
+            <input class="input-material" type="text" name="password" placeholder="Password" required
+            data-msg="Please enter your password">
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary">Log in</button>
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
       </div>
     </div>
