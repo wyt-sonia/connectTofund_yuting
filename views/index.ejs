@@ -28,19 +28,15 @@
               <form>
               	<div class="row">
                     <div class="col-lg-11 col-md-6 col-xs-12">
-                            <select class="select1">
-                              <option>Project Category</option>
-                              <option>Finance</option>
-                              <option>IT & Engineering</option>
-                              <option>Education/Training</option>
-                              <option>Art/Design</option>
-                              <option>Sale/Markting</option>
-                              <option>Healthcare</option>
-                              <option>Science</option>                              
-                              <option>Food Services</option>
-                              <option>Movies</option>
-                              <option>Healthcare</option>
-                            </select>
+                      <select class="select1">
+                        <% if(data != null) {
+                            for(var i=0; i<data.length; i++) { %>
+                              <option><%= data[i].categoryName%></option>
+                        <% } 
+                          } else {%>
+                              <option>--</option>
+                        <%} %>
+                      </select>
 		      		</div>
 		      		<div class="col-lg-1 col-md-6 col-xs-12">
 		      	        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
