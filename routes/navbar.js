@@ -23,4 +23,15 @@ router.post('/', function(req, res, next) {
 		res.redirect('/select')
 	});
 });
+
+router.post('/', function(req, res, next) {
+	var email = req.body.email;
+	var password = req.body.pw;
+	
+	sql_query += 'email = ' + email + ' and password = ' + password;
+	
+	pool.query(insert_query, (err, data) => {
+		res.redirect('/select')
+	});
+});
 module.exports = router;
