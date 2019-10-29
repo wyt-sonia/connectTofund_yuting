@@ -7,9 +7,20 @@ const pool = new Pool({
 	connectionString: process.env.DATABASE_URL
 });
 
+var sql_query = 'SELECT * FROM categories';
+
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
+  pool.query(sql_query, (err, data) => {
+    if(data != null){
+      res.render('index', { title: 'ConnectToFund', data: data.rows });
+      console.log(data.rowCount + " rows");
+    }
+    else{
+      res.render('index', { title: 'ConnectToFund', data});
+      console.log("Database connection failed.");
+    }
+	});
 });
 
 module.exports = router;
