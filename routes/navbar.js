@@ -35,7 +35,8 @@ router.post('/', function(req, res, next) {
       res.redirect('/');
       console.log("Login failed.");
     }
-}
+  });
+});
              
 var getUserSignUp = 'INSERT INTO users VALUES';
 router.post('/', function(req, res, next) {
