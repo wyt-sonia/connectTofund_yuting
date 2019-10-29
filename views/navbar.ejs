@@ -98,16 +98,16 @@
         </button>
       </div>
       <div class="modal-body">
-        <div form>
-          <input class="input-material" type="text" name="username" placeholder="Username" required
-          data-msg="Please enter your username">
+        <form id="login_form" action="login" role="form" method="post">
+          <input class="input-material" type="text" name="usernameEmail" placeholder="Username/Email" required
+          data-msg="Please enter your username or email">
         </div>
         <br>
-        <div form>
-            <input class="input-material" type="text" name="password" placeholder="Password" required
+        <div>
+            <input class="input-material" type="password" name="pw" placeholder="Password" required
             data-msg="Please enter your password">
           </div>
-      </div>
+        </form>
       <div class="modal-footer">
         <button type="button" class="btn btn-primary">Log in</button>
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
