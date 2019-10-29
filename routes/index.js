@@ -14,11 +14,9 @@ router.get('/', function(req, res, next) {
   pool.query(sql_query, (err, data) => {
     if(data != null){
       res.render('index', { title: 'ConnectToFund', data: data.rows });
-      console.log(data.rowCount + " rows");
     }
     else{
       res.render('index', { title: 'ConnectToFund', data});
-      console.log("Database connection failed.");
     }
 	});
 });
