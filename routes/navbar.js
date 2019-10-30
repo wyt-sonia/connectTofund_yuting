@@ -7,16 +7,9 @@ const pool = new Pool({
 	connectionString: process.env.DATABASE_URL
 });
 
-var countries_query = 'SELECT * FROM countries';
 
-router.get('/', function(req, res, next) {
-    res.render('navbar', { title: 'Navbar' });
-/*
-    pool.query(countries_query, (err, data) => {
-		res.render('select', { title: 'Database Connect', data: data.rows });
-	});*/
-});
 
+// Login
 router.post('/', function(req, res, next) {
 	var usernameEmail = req.body.usernameEmail;
   var password = req.body.pw;
@@ -37,7 +30,8 @@ router.post('/', function(req, res, next) {
     }
   });
 });
-             
+
+// Sign up
 var getUserSignUp = 'INSERT INTO users VALUES';
 router.post('/', function(req, res, next) {
 	var email = req.body.email;
