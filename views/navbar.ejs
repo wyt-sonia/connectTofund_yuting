@@ -58,32 +58,34 @@
         </button>
       </div>
       <div class="modal-body">
-        <div form>
-          <input class="input-material" type="text" name="username" placeholder="Username" required
-          data-msg="Please enter your username">
-        </div>
-        <br>
-        <div form>
-            <input class="input-material" type="text" name="password" placeholder="Password" required
-            data-msg="Please enter your password">
-          </div>
-        <br>
-        <div form>
-            <input class="input-material" type="text" name="email" placeholder="Email" required
-            data-msg="Please enter your email">
-          </div>
-        <br>
-        <div form>
-            <input class="input-material" type="text" name="phoneNumber" placeholder="Phone number" required
-            data-msg="Please enter your phone number">
+        <form id="signUp_form" action="navbar" role="form" method="post" onsubmit="return validdation()">
+            <div>
+                <input class="input-material" type="email" name="email" id="email_signUp" placeholder="Email" required
+                data-msg="Please enter your email">
+                <input hidden name = "act" value="signup"/>
+              </div>
+            <br>
+          <div>
+            <input class="input-material" type="text" name="username" id="username_signUp" placeholder="Username" required
+            data-msg="Please enter your username">
           </div>
           <br>
-          <div form>              
-                  <select class="select1">
-                  <option>Select Location</option>
+          <div>
+              <input class="input-material" type="password" name="pw" id="pw_signUp" placeholder="Password" required
+              data-msg="Please enter your password">
+            </div>
+          <br>
+          <div>
+              <input class="input-material" pattern="[0-9]{8,15}" name="phoneNumber" id="phoneNumber_signUp" placeholder="Phone number" required
+              data-msg="Please enter your phone number" data-error-msg="Please enter valid phone number.">
+          </div> 
+          <br>
+          <div>              
+                  <select class="select1" name="location" id="location_signUp">
+                  <option value="0">Select Location</option>
                     <% if(countries != null) {
                         for(var i=0; i < countries.length; i++) { %>
-                          <option><%= countries[i].countryname%></option>
+                          <option value='<%= countries[i].countrycode%>'><%= countries[i].countryname%></option>
                     <% } 
                       } else {%>
                           <option>--</option>
@@ -92,9 +94,10 @@
           </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary">Sign up</button>
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary" >Sign up</button>
+        <button type="button" class="btn btn-secondary" onclick="clearData(false)">Reset</button>
       </div>
+    </form>
     </div>
   </div>
 </div>
@@ -112,20 +115,71 @@
       <div class="modal-body">
         <form id="login_form" action="navbar" role="form" method="post">
           <div>
-            <input class="input-material" type="text" name="usernameEmail" placeholder="Username/Email" required
+            <input class="input-material" type="text" name="usernameEmail" id="usernameEmail_login" 
+            placeholder="Username/Email" required
             data-msg="Please enter your username or email">
+            <input hidden name = "act" value="login"/>
           </div>
         <br> 
           <div>
-            <input class="input-material" type="password" name="pw" placeholder="Password" required
+            <input class="input-material" type="password" name="pw" id="pw_login" placeholder="Password" required
             data-msg="Please enter your password">
           </div>
       <div class="modal-footer">
         <button type="submit" class="btn btn-primary">Log in</button>
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-secondary" onclick="clearData(true)" >Reset</button>
       </div>
     </form>
     </div>
   </div>
 </div>
 </div>
+
+<script>
+    //initiat all controller
+        var usernameEmail_login = document.getElementById("usernameEmail_login");
+        var pw_login = document.getElementById("pw_login");
+    
+        var username_signUp = document.getElementById("username_signUp");
+        var pw_signUp = document.getElementById("pw_signUp");
+        var email_signUp = document.getElementById("email_signUp");
+        var phoneNumber_signUp = document.getElementById("phoneNumber_signUp");
+        var location_signUp = document.getElementById("location_signUp");
+
+        function clearData(isLogin) {
+          if(isLogin){
+              usernameEmail_login.value = "";
+              pw_login.value = "";
+          } else {
+              username_signUp.value = "";
+              pw_signUp.value = "";
+              phoneNumber_signUp.value = "";
+              email_signUp.value = "";
+              location_signUp.selectedIndex = 0;
+          }
+        }
+
+        function validdation(){
+
+          if(email_signUp.value.length > 100){
+            alert("The valid length of email is at most 100.");
+            return false;
+          }
+
+          if(username_signUp.value.length < 6 || username_signUp.value.length > 50){
+            alert("The valid length of username is 6 to 50.");
+            return false;
+          }
+
+          if(pw_signUp.value.length < 6 || pw_signUp.value.length > 20){
+            alert("The valid length of password is 6 to 20.");
+            return false;
+          }
+
+          if(location_signUp.selectedIndex == 0) {
+            //location_signUp.setAttribute("data-error-msg", "Please select your location.");
+            alert("Please select your location.");
+            return false;
+          }
+        }
+    </script>
