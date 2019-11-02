@@ -10,12 +10,12 @@ const pool = new Pool({
 
 var cateTemp = null;
 var countryTemp = null;
-var sql_query = 'SELECT * FROM categories';
+var categories_query = 'SELECT * FROM categories';
 var countries_query = 'SELECT * FROM countries';
 
 router.get('/', function(req, res, next) {
 
-  pool.query(sql_query, (err, data) => {
+  pool.query(categories_query, (err, data) => {
     if(data != null){
       cateTemp = data.rows;
       getCountries();
