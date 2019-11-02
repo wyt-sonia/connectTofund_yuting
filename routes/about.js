@@ -9,7 +9,7 @@ const pool = new Pool({
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
-  res.render('users', { title: 'users' });
+    res.render('about', { title: 'Express' });
 });
 
 module.exports = router;

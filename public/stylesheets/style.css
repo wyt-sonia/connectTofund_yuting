@@ -3,13 +3,22 @@ a {
 }
 
 .masthead {
-  background: url(/images/bg-masthead.jpg);
+  background: url(/images/background2.jpg);
   background-size: cover;
   overflow: hidden;
   color: #fff;
   position: relative;
   width: 100%;
 }
+
+.masthead2 {
+	background: url(/images/bg-masthead.jpg);
+	background-size: cover;
+	overflow: hidden;
+	color: #fff;
+	position: relative;
+	width: 100%;
+  }
 
 .select1 {
 	background: transparent;
@@ -25,4 +34,9 @@ a {
 	width: 100%;
 	position: relative;
 	appearance: none;
+}
+
+.head-title {
+	color: rgb(14, 3, 3);
+	position: relative;
 }
