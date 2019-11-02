@@ -22,7 +22,7 @@ router.post('/', function(req, res, next) {
     
     pool.query(login_query, (err, data) => {
       if(data != null && data.rows[0].result == 1) {
-        res.redirect('/');
+        res.redirect('/home');
         console.log("Login succeed.");
       } else {
         res.redirect('/');
