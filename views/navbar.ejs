@@ -1,8 +1,5 @@
 <style>
-  .modal {
-    height: 80%;
-    padding-top:5%;
-  }
+
   input.input-material {
     width: 100%;
     border: none;
@@ -20,23 +17,7 @@
 
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
-          <li class="nav-item active">
-            <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Link</a>
-          </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Dropdown
-            </a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <a class="dropdown-item" href="#">Action</a>
-              <a class="dropdown-item" href="#">Another action</a>
-              <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="#">Something else here</a>
-            </div>
-          </li>
+
         </ul>
         <form class="form-inline my-2 my-lg-0">
           <button class="btn btn-primary my-2 my-sm-0" type="button" data-toggle="modal" data-target="#modalSign">Sign up</button>
@@ -92,12 +73,23 @@
                     <%} %>
                   </select>
           </div>
-      </div>
+          <br>
+          <div>
+            <input class="input-material" type="text" name="bankAccountNo" id="bankAccountNo" placeholder="Bank Account Number" required
+            data-msg="Please enter your bank account number">
+          </div>
+          <br>
+          <div>
+              <input class="input-material" type="text" name="bankAccountName" id="bankAccountName" placeholder="Bank Account Name" required
+              data-msg="Please enter the name shown on the bank card">
+            </div>
+      
       <div class="modal-footer">
         <button type="submit" class="btn btn-primary" >Sign up</button>
         <button type="button" class="btn btn-secondary" onclick="clearData(false)">Reset</button>
       </div>
     </form>
+  </div>
     </div>
   </div>
 </div>

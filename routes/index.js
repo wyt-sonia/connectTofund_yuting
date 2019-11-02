@@ -18,12 +18,12 @@ router.get('/', function(req, res, next) {
   pool.query(sql_query, (err, data) => {
     if(data != null){
       cateTemp = data.rows;
-      getCategories();
+      getCountries();
     } else 
       console.log("no category");
   });
 
-  function getCategories() {
+  function getCountries() {
     pool.query(countries_query, (err, data) => {
       if(data != null && cateTemp != null) 
         countryTemp = data.rows;
