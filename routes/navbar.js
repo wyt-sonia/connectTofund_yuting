@@ -35,15 +35,39 @@ router.post('/', function(req, res, next) {
     var phoneNumber = req.body.phoneNumber;
     var password = req.body.pw;
     var location = req.body.location;
+
+    var bankAccountNo = req.body.bankAccountNo;
+    var bankAccountName = req.body.bankAccountName;
+    var insertTemp;
+    var accTemp = null;
     console.log(req.body);
   
     var insert_query = "INSERT INTO users VALUES ('" + username + "','" + email + "','" + password +"','"
                         + location + "','" + phoneNumber+"')";
+
+    var insert_acc_query = "INSERT INTO binds VALUES ('" + bankAccountNo + "','" + bankAccountName + "', '" + email + "')";
   
     pool.query(insert_query, (err, data) => {
-      console.log(insert_query);
-      res.redirect('/')
+      if (data != null){
+        insertTemp = data.rows;
+        console.log(insert_query);
+        insertAcc();
+      } else
+        console.log('error happens when insert value into users table');
+      // res.redirect('/')
     });
+
+    function insertAcc() {
+      pool.query(insert_acc_query, (err, data) => {
+        if(data != null && insertTemp != null) 
+          accTemp = data.rows;
+        else 
+          console.log('no country');
+        
+        res.redirect('/')
+      });
+    }
+    
   }
 });
 

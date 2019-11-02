@@ -11,6 +11,8 @@ var usersRouter = require('./routes/users');
 var navbarRouter = require('./routes/navbar');
 var aboutRouter = require('./routes/about');
 var homeRouter = require('./routes/home');
+var viewprojectsRouter = require('./routes/view-projects');
+var createProjectRouter = require('./routes/createProject');
 
 var app = express();
 
@@ -29,6 +31,8 @@ app.use('/users', usersRouter);
 app.use('/navbar', navbarRouter);
 app.use('/about', aboutRouter);
 app.use('/home', homeRouter);
+app.use('/view-projects', viewprojectsRouter);
+app.use('/createProject', createProjectRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
