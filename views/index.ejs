@@ -4,6 +4,7 @@
 		<!-- Page Title -->
     <title>ConnectToFund</title>
     <link rel='stylesheet' href='stylesheets/style.css' />
+    <link rel='stylesheet' href='stylesheets/main.css' />
 		
 		<!-- CSS for Styling -->
 		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
@@ -23,33 +24,100 @@
             <div class="contents">
               <br>
               <br>
+              <br>
+              <br>
+              <br>
+              <br>
+              <br>
+              <br>
+              <br>
               <h2 class="head-title">Find the project that fits your support</h2>
-              <p>ConnectToFund is for you to find lively, imaginative tech before it hits the mainstream.</p>
-              <form>
-              	<div class="row">
-                    <div class="col-lg-11 col-md-6 col-xs-12">
-                      <select class="select1">
-                        <% if(categories != null) {
-                            for(var i=0; i < categories.length; i++) { %>
-                              <option><%= categories[i].categoryName%></option>
-                        <% } 
-                          } else {%>
-                              <option>--</option>
-                        <%} %>
-                      </select>
-		      		</div>
-		      		<div class="col-lg-1 col-md-6 col-xs-12">
-		      	        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-		      	    </div>
-		        </div>
-		      </form>
-		      <br>
+              <br>
+              <br>
+              <h4 class="head-title">ConnectToFund is for you to find lively,</h4>
+              <h4 class="head-title">imaginative tech before it hits the mainstream.</h4>
+
+		          <br>
+              <br>
+              <br>
               <br>
           </div>
         </div> 
       </div>
     </div>
   </header>
+
+  <!-- Category Section Start -->
+    <section class="category section bg-gray">
+        <div class="container">
+          <div class="section-header">  
+            <h2 class="section-title">Project Categories</h2>
+            <p>Most popular categories of portal, sorted by popularity</p>
+          </div>
+          <div class="row">   
+            <div class="col-lg-3 col-md-6 col-xs-12 f-category">
+                <div class="icon bg-color-1">
+                  <i class="lni-home"></i>
+                </div>
+                <h3>Finance</h3>
+            </div>
+            <div class="col-lg-3 col-md-6 col-xs-12 f-category">
+                <div class="icon bg-color-2">
+                 <i class="lni-world"></i>
+                </div>
+                <h3>Sale/Markting</h3>
+            </div>
+            <div class="col-lg-3 col-md-6 col-xs-12 f-category">
+                <div class="icon bg-color-3">
+                 <i class="lni-book"></i>
+                </div>
+                <h3>Education/Training</h3>
+            </div>
+            <div class="col-lg-3 col-md-6 col-xs-12 f-category border-right-0">
+                <div class="icon bg-color-4">
+                 <i class="lni-display"></i>
+                </div>
+                <h3>Technologies</h3>
+            </div>
+            <div class="col-lg-3 col-md-6 col-xs-12 f-category border-bottom-0">
+                <div class="icon bg-color-5">
+                  <i class="lni-brush"></i>
+                </div>
+                <h3>Art/Design</h3>
+            </div>            
+            <div class="col-lg-3 col-md-6 col-xs-12 f-category border-bottom-0">
+                <div class="icon bg-color-6">
+                <i class="lni-heart"></i>
+                </div>
+                <h3>Healthcare</h3>
+            </div>
+            <div class="col-lg-3 col-md-6 col-xs-12 f-category border-bottom-0">
+                <div class="icon bg-color-7">
+                 <i class="lni-funnel"></i>
+                </div> 
+                <h3>Science</h3>
+            </div>            
+            <div class="col-lg-3 col-md-6 col-xs-12 f-category border-right-0 border-bottom-0">
+                <div class="icon bg-color-8">
+                 <i class="lni-cup"></i>
+                </div>
+                <h3>Food Services</h3>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- Category Section End -->
+
+      <section class="category section bg-gray">
+        <div class="container">
+          <div class="section-header">  
+            <h2 class="section-title">Sign up for more information</h2>
+          </div>
+          <div class="col-md-12 text-center">
+            <button class="btn btn-outline-success" type="button" data-toggle="modal" data-target="#modalSign">Sign up</button>
+          </div>
+        </div>
+      </section> 
   </body>
 </html>
 

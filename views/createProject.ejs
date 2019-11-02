@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <head>
+		<!-- Page Title -->
+    <title>ConnectToFund</title>
+    <link rel='stylesheet' href='stylesheets/style.css' />
+    <link rel='stylesheet' href='stylesheets/main.css' />
+		
+		<!-- CSS for Styling -->
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+		
+		<!-- JavaScript for Interactivity -->
+		<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+
+  </head>
+  <body> 
+  	<%- include navbar-after-login %>
+      <section class="category section bg-gray">
+            <div class="container">
+                <div class="section-header">  
+                    <h3 class="section-title">Create new project</h3>
+                </div>
+            <form id="signUp_form" action="navbar" role="form" method="post" onsubmit="return validdation()">
+                <div class="form-group">
+                    <label>Project Name:</label>
+                    <input class="input-material" type="text" name="projectName" id="projectName" placeholder="Project Name" required
+                        data-msg="Please enter your project name">
+                </div>
+                <div class="form-group">
+                    <label>Project Description:</label>
+                    <input class="input-material" type="text" name="projectDescription" id="projectDescription" placeholder="Project Description" required
+                            data-msg="Please enter your project description">
+                </div>
+                <div class="form-group">
+                    <label>Total fund needed for this project (in US Dollars):</label>
+                    <input class="input-material" pattern="[0-9]" name="projectTotalFundNeeded" id="projectTotalFundNeeded" placeholder="eg. 10000" required
+                            data-msg="Please enter your total fund needed" data-error-msg="Please enter valid amount of fund."> 
+                </div>
+            </form>
+            </div>
+      </section>
+  </body>
+
+</html>
+
+
+
+<!-- test comment -->

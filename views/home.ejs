@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+  <head>
+		<!-- Page Title -->
+    <title>ConnectToFund</title>
+    <link rel='stylesheet' href='stylesheets/style.css' />
+		
+		<!-- CSS for Styling -->
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+		
+		<!-- JavaScript for Interactivity -->
+		<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+
+  </head>
+  <body> 
+  	<%- include navbar-after-login %>
+	<header class="masthead2 text-white text-center">
+    <div class="container">      
+        <div class="row justify-content-center">
+          <div class="col-lg-10 col-md-12 col-xs-12">
+            <div class="contents">
+              <br>
+              <br>
+              <br>
+              <br>
+              <h2 class="head-title">As a funder,</h2>
+              <h2 class="head-title">Find the interesting project to support</h2>
+              <br>
+              <br>
+              <p>Select category below to browse projects based on their categories</p>
+              <form>
+              	<div class="row">
+                    <div class="col-lg-11 col-md-6 col-xs-12">
+                      <select class="select1">
+                        <% if(categories != null) {
+                            for(var i=0; i < categories.length; i++) { %>
+                              <option><%= categories[i].categoryName%></option>
+                        <% } 
+                          } else {%>
+                              <option>--</option>
+                        <%} %>
+                      </select>
+		      		</div>
+		      		<div class="col-lg-1 col-md-6 col-xs-12">
+		      	        <button class="btn btn-success my-2 my-sm-0" type="submit">Search</button>
+		      	    </div>
+		        </div>
+          </form>
+          <br>
+          <br>
+              <p>Click find more below to browse more projects</p>
+              <div class="col-md-12 text-center">
+                  <button class="btn btn-info" type="button" onclick="location.href='/view-projects'">Find More</button>
+              </div>
+              <br>
+              <br>
+              <br>
+              <br>
+
+              <h2 class="head-title">As a creater,</h2>
+              <h2 class="head-title">Create your project to get the fund</h2>
+              <br>
+              <br>
+              <p>Select create below to create your own project</p>
+              <div class="col-md-12 text-center">
+                  <button class="btn btn-info" type="button" onclick="location.href='/createProject'">Create</button>
+              </div>
+              <br>
+              <br>
+              <br>
+              <br>
+          </div>
+        </div> 
+      </div>
+    </div>
+  </header>
+  </body>
+
+  <!-- Social Footer, Single Coloured -->
+  <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+  <!-- // -->
+  <div class="container">
+      <hr />
+          <div class="text-center center-block">
+              <p class="txt-railway">- Follow ConnectToFund on social media -</p>
+                <a href="https://www.facebook.com/bootsnipp"><i class="fa fa-facebook-square fa-3x social"></i></a>
+                <a href="https://twitter.com/bootsnipp"><i class="fa fa-twitter-square fa-3x social"></i></a>
+                <a href="https://plus.google.com/+Bootsnipp-page"><i class="fa fa-google-plus-square fa-3x social"></i></a>
+                <a href="mailto:bootsnipp@gmail.com"><i class="fa fa-envelope-square fa-3x social"></i></a>
+          </div>
+      <hr />
+  </div>
+
+</html>
+
+
+
+<!-- test comment -->
