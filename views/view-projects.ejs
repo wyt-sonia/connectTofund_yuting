@@ -13,6 +13,11 @@
 		<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
 		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+  <style>
+    .money::before {
+      content:"$";
+    }
+  </style>
   </head>
   <body> 
   	<%- include navbar-after-login %>
@@ -55,13 +60,27 @@
         <div class="container">
           <div class="row">
           <%if(projects != null) {
-            for(var i = 0; i < projects.length; i++) {%>
+            for(var i = 0; i < projects.length; i++) {
+              var donateamount = parseFloat(projects[i].donateamount);
+              var projectTotalFundNeeded = parseFloat(projects[i].projectTotalFundNeeded);
+              var percentage = ((100 * (donateamount / projectTotalFundNeeded)) | 0) + "%" ;
+              var amountInCurrencyFormat = Number(donateamount).toLocaleString('en');
+            %>
             <div class='col-md-4 projects <%= projects[i].categoryName%>' id='<%= projects[i].projectName%>'>
               <div class="card mb-4 box-shadow">
                 <img class="card-img-top" src='/images/<%= projects[i].pictureAddress%>' alt='<%= projects[i].projectName %> display picture' style="height: 225px; width: 100%; display: block;">
                 <div class="card-body">
                   <h5 class="card-title" style="display: block; white-space: nowrap; overflow:hidden; text-overflow: ellipsis; height: 2em;"><%= projects[i].projectName%></h5>
                   <p class="card-text" style="display: block; max-lines: 3; overflow:hidden; text-overflow: ellipsis; height: 6em;"><%= projects[i].projectDescription%></p>
+                  <small class="test-left font-weight-bold text-success money"><%= amountInCurrencyFormat%>&nbsp;SGD raised</small>
+                  <div class="d-flex justify-content-between align-items-center" style="margin-bottom: 1.5em">
+                      <div class="progress" style="height: 5px; width: 85%;">
+                          <div class="progress-bar bg-success" style="width: <%= percentage%>;" role="progressbar" aria-valuenow="<%= donateamount%>" aria-valuemin="0" aria-valuemax="<%= projectTotalFundNeeded%>"></div>
+                        </div>
+                        <div style="margin-left: 1em; ">
+                          <small class="text-muted"><%= percentage%></small>
+                       </div>
+                  </div>
                   <div class="d-flex justify-content-between align-items-center">
                     <div class="btn-group">
                       <form action="" id='<%= projects[i].projectName%>_follow' role="form" method="post">
