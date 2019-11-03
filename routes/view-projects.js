@@ -18,8 +18,9 @@ var myLike_query = null;
 var myFollow_query = null;
 var categories_query = 'SELECT * FROM categories';
 var project_query = 'SELECT DISTINCT ON ("projectStartDate","projectName") p.*, '
-                  +'(SELECT count(*) FROM likes l where l."projectName" = p."projectName") as likeCount,'
-                  +'(SELECT count(*) FROM follows f where f."projectName" = p."projectName") as followCount, a."pictureAddress" FROM projects p '
+                  +'(SELECT COUNT(*) FROM likes l WHERE l."projectName" = p."projectName") AS likeCount, '
+                  +'(SELECT COALESCE(SUM(amount), 0) FROM funds fu WHERE fu."projectName" = p."projectName") AS donateAmount, '
+                  +'(SELECT COUNT(*) FROM follows f WHERE f."projectName" = p."projectName") AS followCount, a."pictureAddress" FROM projects p '
                   +'NATURAL JOIN attaches a '
                   +'WHERE "projectStartDate" <= cast(now() as date) '
                   +'AND "projectDeadline" > cast(now() as date) '
