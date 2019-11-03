@@ -40,3 +40,8 @@ a {
 	color: rgb(14, 3, 3);
 	position: relative;
 }
+
+.input-material2 {
+	width: 100%;
+	border: 1px solid #ececec;
+}
