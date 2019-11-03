@@ -9,26 +9,53 @@ const pool = new Pool({
 
 
 var cateTemp = null;
-var sql_query = 'SELECT * FROM categories';
+var projTemp = null;
+var categories_query = 'SELECT * FROM categories';
+var project_query = 'SELECT DISTINCT ON ("projectStartDate","projectName") * FROM projects '
+                  +'NATURAL JOIN attaches a '
+                  +'WHERE "projectStartDate" <= cast(now() as date) '
+                  +'AND "projectDeadline" > cast(now() as date) '
+                  +'ORDER BY "projectStartDate", "projectName", "pictureAddress" DESC';
 
 router.get('/', function(req, res, next) {
 
-  pool.query(sql_query, (err, data) => {
+  pool.query(categories_query, (err, data) => {
     if(data != null){
       cateTemp = data.rows;
       console.log(cateTemp);
+      getAllProjects();
     } else 
       console.log("no category");
-    renderPage();
   });
+
+  function getPicture() {
+    pool.query(categories_query, (err, data) => {
+      if(data != null){
+        cateTemp = data.rows;
+        console.log(cateTemp);
+        getAllProjects();
+      } else 
+        console.log("no picture");
+    });
+  }
+
+  function getAllProjects() {
+    console.log(project_query);
+    pool.query(project_query, (err, data) => {
+      if(data != null){
+        projTemp = data.rows;
+        console.log(projTemp);
+      }
+      renderPage();
+    });
+  }
   
   function renderPage() {
     if(cateTemp != null)
-      res.render('view-projects', { title: '', categories :  cateTemp});
+      res.render('view-projects', { title: '', categories :  cateTemp, projects : projTemp});
     else 
-      res.render('view-projects', { title: '', categories: null })
+      res.render('view-projects', { title: '', categories : null, projects : null})
   }
-  
 });
 
 
