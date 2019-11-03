@@ -22,7 +22,7 @@
                 <div class="section-header">  
                     <h3 class="section-title">Create new project</h3>
                 </div>
-            <form id="signUp_form" action="navbar" role="form" method="post" onsubmit="return validdation()">
+            <form id="create_form" action="createProject" role="form" method="post" onsubmit="return validdation()">
                 <div class="form-group">
                     <label>Project Name:</label>
                     <input class="input-material" type="text" name="projectName" id="projectName" placeholder="Project Name" required
@@ -30,13 +30,53 @@
                 </div>
                 <div class="form-group">
                     <label>Project Description:</label>
-                    <input class="input-material" type="text" name="projectDescription" id="projectDescription" placeholder="Project Description" required
-                            data-msg="Please enter your project description">
+                    <textarea class="input-material2" rows = "5" type="text" name="projectDescription" id="projectDescription" placeholder="Project Description" required
+                            data-msg="Please enter your project description"></textarea>
                 </div>
                 <div class="form-group">
                     <label>Total fund needed for this project (in US Dollars):</label>
-                    <input class="input-material" pattern="[0-9]" name="projectTotalFundNeeded" id="projectTotalFundNeeded" placeholder="eg. 10000" required
+                    <input class="input-material" pattern="[0-9]{1,10000000000000}" name="projectTotalFundNeeded" id="projectTotalFundNeeded" placeholder="eg. 10000" required
                             data-msg="Please enter your total fund needed" data-error-msg="Please enter valid amount of fund."> 
+                </div>
+                <div class="form-group">
+                    <label>Project start date:</label>
+                    <input class="input-material" type="date" name="projectStartDate" id="projectStartDate" required
+                            data-msg="Please enter your project start date"> 
+                </div>
+                <div class="form-group">
+                    <label>Project end date:</label>
+                    <input class="input-material" type="date" name="projectDeadline" id="projectDeadline" required
+                            data-msg="Please enter your project end date"> 
+                </div>
+                <div class="form-group">
+                        <label>Category of this project:</label>
+                        <select class="select1" name="category" id="category">
+                          <% if(categories != null) {
+                              for(var i=0; i < categories.length; i++) { %>
+                                <option><%= categories[i].categoryName%></option>
+                          <% } 
+                            } else {%>
+                                <option>--</option>
+                          <%} %>
+                        </select>
+                </div>
+                <div class="form-group">  
+                        <label>Location of this project:</label>            
+                        <select class="select1" name="countryCode" id="countryCode">
+                          <% if(countries != null) {
+                              for(var i=0; i < countries.length; i++) { %>
+                                <option value='<%= countries[i].countrycode%>'><%= countries[i].countryname%></option>
+                          <% } 
+                            } else {%>
+                                <option>--</option>
+                          <%} %>
+                        </select>
+                </div>
+                <input hidden class="input-material" name="status" id="status" value = false required/>
+                <input hidden class="input-material" type="text" name="email" id="email" value = "" required/>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary" onclick="setInput()">Create</button>
+                    <button type="button" class="btn btn-secondary" onclick="location.href='/createProject'" >Reset</button>
                 </div>
             </form>
             </div>
@@ -44,6 +84,32 @@
   </body>
 
 </html>
+
+<script>
+    var projectName = document.getElementById("projectName");
+    var projectDescription = document.getElementById("projectDescription");
+    var projectTotalFundNeeded = document.getElementById("projectTotalFundNeeded");
+    var projectStartDate = document.getElementById("projectStartDate");
+    var projectDeadline = document.getElementById("projectDeadline");
+    var category = document.getElementById("category");
+    var countryCode = document.getElementById("countryCode");
+    var status = document.getElementById("status");
+    var email = document.getElementById("email");
+
+    //document.getElementById("result").innerHTML = sessionStorage.getItem("emailLogin");
+
+    function setInput() {
+        email.value = sessionStorage.getItem("emailLogin");
+    }
+
+    function validdation(){
+        if(projectName.value.length > 50){
+        alert("The valid length of project name is at most 50.");
+        return false;
+        }
+    }
+
+</script>
 
 
 

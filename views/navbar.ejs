@@ -108,8 +108,8 @@
         <form id="login_form" action="navbar" role="form" method="post">
           <div>
             <input class="input-material" type="text" name="usernameEmail" id="usernameEmail_login" 
-            placeholder="Username/Email" required
-            data-msg="Please enter your username or email">
+            placeholder="Email" required
+            data-msg="Please enter your email">
             <input hidden name = "act" value="login"/>
           </div>
         <br> 
@@ -118,7 +118,7 @@
             data-msg="Please enter your password">
           </div>
       <div class="modal-footer">
-        <button type="submit" class="btn btn-primary">Log in</button>
+        <button type="submit" class="btn btn-primary" onclick="save()">Log in</button>
         <button type="button" class="btn btn-secondary" onclick="clearData(true)" >Reset</button>
       </div>
     </form>
@@ -131,7 +131,6 @@
     //initiat all controller
         var usernameEmail_login = document.getElementById("usernameEmail_login");
         var pw_login = document.getElementById("pw_login");
-    
         var username_signUp = document.getElementById("username_signUp");
         var pw_signUp = document.getElementById("pw_signUp");
         var email_signUp = document.getElementById("email_signUp");
@@ -173,5 +172,9 @@
             alert("Please select your location.");
             return false;
           }
+        }
+        //store the login email in the session
+        function save(){
+          sessionStorage.setItem("emailLogin",usernameEmail_login.value);
         }
     </script>
