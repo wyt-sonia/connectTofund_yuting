@@ -18,27 +18,17 @@ router.get('/', function(req, res, next) {
   pool.query(sql_query, (err, data) => {
     if(data != null){
       cateTemp = data.rows;
-      getCategories();
+      console.log("home page: "+cateTemp);
     } else 
       console.log("no category");
+    renderPage();
   });
-
-  function getCategories() {
-    pool.query(countries_query, (err, data) => {
-      if(data != null && cateTemp != null) 
-        countryTemp = data.rows;
-      else 
-        console.log('no country');
-      
-      renderPage();
-    });
-  }
   
   function renderPage() {
-    if(cateTemp != null && countryTemp != null)
-      res.render('home', { title: '', countries: countryTemp, categories :  cateTemp});
+    if(cateTemp != null)
+      res.render('home', { title: '', categories :  cateTemp});
     else 
-      res.render('home', { title: '', countries: null, categories: null })
+      res.render('home', { title: '', categories: null })
   }
   
 });
