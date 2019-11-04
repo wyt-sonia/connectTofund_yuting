@@ -39,7 +39,7 @@
         </button>
       </div>
       <div class="modal-body">
-        <form id="signUp_form" action="navbar" role="form" method="post" onsubmit="return validdation()">
+        <form id="signUp_form" action="" role="form" method="post" onsubmit="return validdation()">
             <div>
                 <input class="input-material" type="email" name="email" id="email_signUp" placeholder="Email" required
                 data-msg="Please enter your email">
@@ -105,11 +105,11 @@
         </button>
       </div>
       <div class="modal-body">
-        <form id="login_form" action="navbar" role="form" method="post">
+        <form id="login_form" action="" role="form" method="post">
           <div>
-            <input class="input-material" type="text" name="usernameEmail" id="usernameEmail_login" 
-            placeholder="Username/Email" required
-            data-msg="Please enter your username or email">
+            <input class="input-material" type="text" name="userEmail" id="email_login" 
+            placeholder="Email" required
+            data-msg="Please enter your email">
             <input hidden name = "act" value="login"/>
           </div>
         <br> 
@@ -118,7 +118,7 @@
             data-msg="Please enter your password">
           </div>
       <div class="modal-footer">
-        <button type="submit" class="btn btn-primary">Log in</button>
+        <button type="submit" class="btn btn-primary" onclick="save()">Log in</button>
         <button type="button" class="btn btn-secondary" onclick="clearData(true)" >Reset</button>
       </div>
     </form>
@@ -129,9 +129,8 @@
 
 <script>
     //initiat all controller
-        var usernameEmail_login = document.getElementById("usernameEmail_login");
+        var email_login = document.getElementById("email_login");
         var pw_login = document.getElementById("pw_login");
-    
         var username_signUp = document.getElementById("username_signUp");
         var pw_signUp = document.getElementById("pw_signUp");
         var email_signUp = document.getElementById("email_signUp");
@@ -140,7 +139,7 @@
 
         function clearData(isLogin) {
           if(isLogin){
-              usernameEmail_login.value = "";
+              email_login.value = "";
               pw_login.value = "";
           } else {
               username_signUp.value = "";
@@ -173,5 +172,9 @@
             alert("Please select your location.");
             return false;
           }
+        }
+        //store the login email in the session
+        function save(){
+          sessionStorage.setItem("emailLogin", email_login.value);
         }
     </script>

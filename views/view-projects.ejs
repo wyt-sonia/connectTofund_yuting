@@ -13,7 +13,11 @@
 		<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
 		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
-
+  <style>
+    .money::before {
+      content:"$";
+    }
+  </style>
   </head>
   <body> 
   	<%- include navbar-after-login %>
@@ -25,55 +29,138 @@
               <div style="height: 4em;"></div>
               <h2 class="head-title">Find the interesting project to support</h2>
               <h5>Select category below to browse projects based on their categories</h5>
-              <form>
-              	<div class="row">
-                    <div class="col-lg-11 col-md-6 col-xs-12">
-                      <select class="select1">
-                        <% if(categories != null) {
-                            for(var i=0; i < categories.length; i++) { %>
-                              <option><%= categories[i].categoryName%></option>
-                        <% } 
-                          } else {%>
-                              <option>--</option>
-                        <%} %>
-                      </select>
-		      		</div>
-		      		<div class="col-lg-1 col-md-6 col-xs-12">
-		      	        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-		      	    </div>
-		        </div>
-		      </form>
-		      <br>
+              <div style="height: 0.5em;"></div>
+              <form class="row">
+                <input class="form-control col-lg-11 col-md-6 col-xs-12" type="search" id="searchName" placeholder="Search" aria-label="Search">
+                <div class="col-lg-1 col-md-6 col-xs-12">
+                  <button class="btn btn-outline-success" type="button" onclick="filterByName()" >Search</button>
+                </div>
+               </form>
+		      <div style="height: 2em;"></div>
           </div>
         </div> 
       </div>
     </div>
   </header>
 
-  <section class="job-detail section">
+
+  <div style="height: 1em;"></div>
+  <ul class="nav nav-tabs nav-justified" style="padding: 0em, 2em;">
+    <li class="nav-item" ><a class="nav-link text-secondary" href="#" onclick="filterByCate('all')">ALL</a></li>
+     <% if (categories != null) {
+       for(var i = 0; i < categories.length; i++) {
+         %>
+            <li class="nav-item"> <a class="nav-link text-uppercase text-secondary" href="#" onclick="filterByCate('<%= categories[i].categoryName %>')"> <%= categories[i].categoryName%></a></li>
+         <%
+       }
+     }%>
+    </ul>
+
+    <div class="album py-5 bg-light">
         <div class="container">
-          <div class="row justify-content-between">
-            <div class="col-lg-12 col-md-12 col-xs-12">
-                
-                <div class="content-area">  
-                    <h4>Job Description</h4>
-                    <p>{{jobToView.jobDescription}}</p>
-                    
-                    <h5>What You Need for this Position</h5>
-                    <p>{{jobToView.skillSet}}</p>
-                    
-                    <h5>How To Apply</h5>
-                    <p>Proin gravida nibh vel velit auctor aliquet. Aenean sollicitudin, lorem quis bibendum auctor, nisi elit consequat ipsum, nec sagittis sem nibh id elit. Duis sed odio sit amet nibh vulputate cursus a sit amet mauris.</p>
-                    <a href="#" class="btn btn-common">Apply job</a> 
+          <div class="row">
+          <%if(projects != null) {
+            for(var i = 0; i < projects.length; i++) {
+              var donateamount = parseFloat(projects[i].donateamount);
+              var projectTotalFundNeeded = parseFloat(projects[i].projectTotalFundNeeded);
+              var percentage = ((100 * (donateamount / projectTotalFundNeeded)) | 0) + "%" ;
+              var amountInCurrencyFormat = Number(donateamount).toLocaleString('en');
+            %>
+            <div class='col-md-4 projects <%= projects[i].categoryName%>' id='<%= projects[i].projectName%>'>
+              <div class="card mb-4 box-shadow">
+                <img class="card-img-top" src='/images/<%= projects[i].pictureAddress%>' alt='<%= projects[i].projectName %> display picture' style="height: 225px; width: 100%; display: block;">
+                <div class="card-body">
+                  <h5 class="card-title" style="display: block; white-space: nowrap; overflow:hidden; text-overflow: ellipsis; height: 2em;"><%= projects[i].projectName%></h5>
+                  <p class="card-text" style="display: block; max-lines: 3; overflow:hidden; text-overflow: ellipsis; height: 6em;"><%= projects[i].projectDescription%></p>
+                  <small class="test-left font-weight-bold text-success money"><%= amountInCurrencyFormat%>&nbsp;SGD raised</small>
+                  <div class="d-flex justify-content-between align-items-center" style="margin-bottom: 1.5em">
+                      <div class="progress" style="height: 5px; width: 85%;">
+                          <div class="progress-bar bg-success" style="width: <%= percentage%>;" role="progressbar" aria-valuenow="<%= donateamount%>" aria-valuemin="0" aria-valuemax="<%= projectTotalFundNeeded%>"></div>
+                        </div>
+                        <div style="margin-left: 1em; ">
+                          <small class="text-muted"><%= percentage%></small>
+                       </div>
+                  </div>
+                  <div class="d-flex justify-content-between align-items-center">
+                    <div class="btn-group">
+                      <form action="" id='<%= projects[i].projectName%>_follow' role="form" method="post">
+                        <% if(myFollows != null && myFollows.includes(projects[i].projectName)) {%>
+                          <input hidden name="projName" value="<%= projects[i].projectName%>"/>
+                          <input hidden name="act" value="deFollow"/>
+                          <button type="submit" class="btn btn-sm btn-outline-secondary active">Followed</button>
+                        <%} else {%>
+                          <input hidden name="projName" value="<%= projects[i].projectName%>"/>
+                          <input hidden name="act" value="follow"/>
+                          <button type="submit" class="btn btn-sm btn-outline-secondary" >Follow</button>
+                        <%}%>
+                      </form>
+                      <form style="margin-left:0.5em ;" action="" id='<%= projects[i].projectName%>_like' role="form" method="post">
+                            <% if(myLikes != null && myLikes.includes(projects[i].projectName)) {%>
+                              <input hidden name="projName" value="<%= projects[i].projectName%>"/>
+                              <input hidden name="act" value="deLike"/>
+                              <button type="submit" class="btn btn-sm btn-outline-secondary active">Liked</button>
+                            <%} else {%>
+                              <input hidden name="projName" value="<%= projects[i].projectName%>"/>
+                              <input hidden name="act" value="like"/>
+                              <button type="submit" class="btn btn-sm btn-outline-secondary">Like</button>
+                            <%}%>
+                        </form>
+                      </div>
+                    <small class="text-muted"><%= projects[i].likecount%> likes | <%= projects[i].followcount%> follows</small>
+                  </div>
                 </div>
+              </div>
             </div>
-            
+            <%}
+          }
+        %>
           </div>
         </div>
-      </section>
+      </div>
+    </div>
 
   </body>
 </html>
+
+<script>
+  function filterByCate(cate) {
+    var proj = document.getElementsByClassName('projects');
+    var cate_proj = document.getElementsByClassName(cate);
+    if(cate != "all") {
+      for(var i = 0; i < proj.length ; i++) {
+        proj[i].style.display = "none";
+      }
+      for(var i = 0; i < cate_proj.length; i++) {
+        cate_proj[i].style.display = "block";
+      }
+    } else {
+      for(var i = 0; i < proj.length ; i++) {
+        proj[i].style.display = "block";
+      }    
+    }
+  }
+
+  function filterByName() {
+    var name = document.getElementById("searchName").value;
+    var proj = document.getElementsByClassName('projects');
+    if(name.length === 0 || !name.trim()) {
+      for(var i = 0; i < proj.length ; i++) {
+        proj[i].style.display = "block";
+      }
+      document.getElementById("searchName").value="";
+    } else {
+      name = name.toLowerCase();
+      for(var i = 0; i < proj.length ; i++) {
+        var proj_id = proj[i].id.toLowerCase();
+        if (!proj_id.includes(name)) {
+          proj[i].style.display = "none";
+        } else {
+          proj[i].style.display = "block";
+        }
+      }
+    }
+  }
+</script>
 
 
 
