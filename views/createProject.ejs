@@ -15,7 +15,7 @@
 		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
 
   </head>
-  <body> 
+  <body onload="checkIn()"> 
   	<%- include navbar-after-login %>
       <section class="category section bg-gray">
             <div class="container">
@@ -72,6 +72,11 @@
                           <%} %>
                         </select>
                 </div>
+                <div class="form-group" action="/upload" method="post" enctype="multipart/form-data">
+                <label>Upload your project profile picture:</label> 
+                    <input class="form-control-file" name="pictureAddress" type="file" accept="image/*" >
+                    <!-- <input type="submit" onclick="setInput()" value="upload"> -->
+                </div>
                 <input hidden class="input-material" name="status" id="status" value = false required/>
                 <input hidden class="input-material" type="text" name="email" id="email" value = "" required/>
                 <div class="modal-footer">
@@ -95,6 +100,7 @@
     var countryCode = document.getElementById("countryCode");
     var status = document.getElementById("status");
     var email = document.getElementById("email");
+    //var pictureAddress = document.getElementById("pictureAddress");
 
     //document.getElementById("result").innerHTML = sessionStorage.getItem("emailLogin");
 
@@ -107,6 +113,12 @@
         alert("The valid length of project name is at most 50.");
         return false;
         }
+    }
+
+    function checkIn(){
+      if(window.location.href=="http://localhost:3000/createProject?error=createProjectError") {
+        alert("This project name has been taken, please use another name for your project!");
+      }
     }
 
 </script>

@@ -19,8 +19,9 @@ router.get('/', function(req, res, next) {
     if(data != null){
       cateTemp = data.rows;
       getCountries();
-    } else 
+    } else {
       console.log("no category");
+    }
   });
 
   function getCountries() {
@@ -62,7 +63,7 @@ router.post('/', function(req, res, next) {
         res.redirect('/home');
         console.log("Login succeed.");
       } else {
-        res.redirect('/');
+        res.redirect('/?error=loginError');
         console.log("Login failed.");
       }
     });
@@ -91,7 +92,7 @@ router.post('/', function(req, res, next) {
         insertAcc();
       } else
         console.log('error happens when insert value into users table');
-      // res.redirect('/')
+        res.redirect('/?error=signupError');
     });
 
     function insertAcc() {

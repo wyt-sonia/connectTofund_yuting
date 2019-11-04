@@ -27,7 +27,7 @@ var project_query = 'SELECT DISTINCT ON ("projectStartDate","projectName") p.*, 
                   +'(SELECT COUNT(*) FROM follows f WHERE f."projectName" = p."projectName") AS followCount, a."pictureAddress" FROM projects p '
                   +'NATURAL JOIN attaches a '
                   +'WHERE "projectStartDate" <= cast(now() as date) '
-                  +'AND "projectDeadline" > cast(now() as date) '
+                  +'AND "projectDeadline" >= cast(now() as date) '
                   +'ORDER BY "projectStartDate", "projectName", "pictureAddress" DESC';
 
 router.get('/', function(req, res, next) {
@@ -50,6 +50,7 @@ router.get('/', function(req, res, next) {
 
   function getAllProjects() {
     pool.query(project_query, (err, data) => {
+      console.log(err);
       if(data != null){
         projTemp = data.rows;
         //console.log(projTemp);
@@ -94,7 +95,9 @@ router.get('/', function(req, res, next) {
             return proj.categoryName === cateTerm;
           });          
         }
+
       }
+      console.log(projTemp);
       getMyLike();
     });
   }
