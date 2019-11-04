@@ -1,5 +1,8 @@
 var express = require('express');
+var multer  = require('multer')
+var path = require('path');
 var router = express.Router();
+
 
 const { Pool } = require('pg')
 
@@ -14,6 +17,14 @@ var sql_query = 'SELECT * FROM categories';
 var countries_query = 'SELECT * FROM countries';
 
 var projectTemp = null;
+
+// Set The Storage Engine
+const storage = multer.diskStorage({
+    destination: './public/images/',
+    filename: function(req, file, cb){
+      cb(null,file.originalname + '_' + Date.now() + path.extname(file.originalname));
+    }
+  });
 
 router.get('/', function(req, res, next) {
 
@@ -50,6 +61,7 @@ router.get('/', function(req, res, next) {
 
 router.post('/', function(req, res, next) {
     var projectName = req.body.projectName;
+    console.log("test: "+req.body.projectName);
     var projectDescription = req.body.projectDescription;
     var projectTotalFundNeeded = req.body.projectTotalFundNeeded;
     var projectStartDate = req.body.projectStartDate;
@@ -90,21 +102,24 @@ router.post('/', function(req, res, next) {
             //res.redirect('/createProject');
         }
         else  {
-            console.log('create project failed');
+            console.log(err);
             res.redirect('/createProject?error=createProjectError');
         }
         });
 
     function insertAcc() {
         pool.query(attaches_query, (err, data) => {
-            if(data != null && projectTemp != null) 
-                attachTemp = data.rows;
+            if(data != null && projectTemp != null) {
+                  attachTemp = data.rows;
+            }
             else 
                 console.log('Insert account error');
               
             res.redirect('/createProject');
         });
     }
+
+    
 });
 
 module.exports = router;
