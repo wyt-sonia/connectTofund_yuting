@@ -15,7 +15,7 @@
 		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
 
   </head>
-  <body> 
+  <body onload="checkIn()"> 
   	<%- include navbar %>
 	<header class="masthead text-white text-center">
     <div class="container">      
@@ -89,6 +89,17 @@
   </body>
 </html>
 
+<script>
+    function checkIn(){
+      if(window.location.href=="http://localhost:3000/?error=loginError") {
+        alert("Invalid login email or password!");
+      }
+      else if(window.location.href=="http://localhost:3000/?error=signupError") {
+        alert("This email has been registered! Please sign up with another email.");
+      }
+    }
+
+</script>
 
 
 <!-- test comment -->
