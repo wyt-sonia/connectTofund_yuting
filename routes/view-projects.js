@@ -17,7 +17,9 @@ var myFollowTemp = null;
 var myLike_query = null;
 var myFollow_query = null;
 var categories_query = 'SELECT * FROM categories';
-var sort_query = '';
+var sortTerm = null;
+var cateTerm = null;
+
 var project_query = 'SELECT DISTINCT ON ("projectStartDate","projectName") p.*, '
                   +'(SELECT "countryName" FROM countries c WHERE c."countryCode" = p."countryCode") AS location, '
                   +'(SELECT COUNT(*) FROM likes l WHERE l."projectName" = p."projectName") AS likeCount, '
@@ -34,6 +36,9 @@ router.get('/', function(req, res, next) {
   myLike_query =  "SELECT \"projectName\" FROM likes WHERE email = '" + email + "'";
   myFollow_query =  "SELECT \"projectName\" FROM follows WHERE email = '" + email + "'";
 
+  cateTerm = req.query.cate;
+  sortTerm = req.query.sortTerm;
+
   pool.query(categories_query, (err, data) => {
     if(data != null){
       cateTemp = data.rows;
@@ -44,45 +49,50 @@ router.get('/', function(req, res, next) {
   });
 
   function getAllProjects() {
-    //console.log(project_query);
     pool.query(project_query, (err, data) => {
       if(data != null){
         projTemp = data.rows;
-        console.log(projTemp);
-        if(req.query.sortTerm != null) {
-          sort_query = req.query.sortTerm;
+        //console.log(projTemp);
+
+        if(sortTerm != null) {
+          switch(sortTerm) {
+            case 'start':
+                projTemp.sort((a,b) => 
+                  (a.projectStartDate > b.projectStartDate) ? 1 : ((b.projectStartDate > a.projectStartDate) ? -1 : 0));
+              break;
+            case 'deadline':
+                projTemp.sort((a,b) => 
+                (a.projectDeadline > b.projectDeadline) ? 1 : ((b.projectDeadline > a.projectDeadline) ? -1 : 0));
+              break
+            case 'follower':
+                projTemp.sort((a,b) => 
+                (parseInt(a.followcount) < parseInt(b.followcount)) ? 1 
+                : ((parseInt(b.followcount) < parseInt(a.followcount)) ? -1 : 0));
+              break;
+            case 'likes':
+                projTemp.sort((a,b) => 
+                (parseInt(a.likecount) < parseInt(b.likecount)) ? 1 
+                : ((parseInt(b.likecount) < parseInt(a.likecount)) ? -1 : 0));
+              break;
+            case 'amount':
+                projTemp.sort((a,b) => 
+                (parseFloat(a.donateamount) < parseFloat(b.donateamount)) ? 1 
+                : ((parseFloat(b.donateamount) < parseFloat(a.donateamount)) ? -1 : 0));
+              break; 
+            case 'percentage':
+                projTemp.sort((a,b) => 
+                (parseFloat(a.donateamount) / parseFloat(a.projectTotalFundNeeded) < parseFloat(b.donateamount) / parseFloat(b.projectTotalFundNeeded)) ? 1
+                : ((parseFloat(b.donateamount) / parseFloat(b.projectTotalFundNeeded) < parseFloat(a.donateamount)) / parseFloat(a.projectTotalFundNeeded) ? -1 : 0));
+              break; 
+            default:
+              break;
+          }
         }
-        switch(sort_query) {
-          case 'start':
-              projTemp.sort((a,b) => 
-                (a.projectStartDate > b.projectStartDate) ? 1 : ((b.projectStartDate > a.projectStartDate) ? -1 : 0));
-            break;
-          case 'deadline':
-              projTemp.sort((a,b) => 
-              (a.projectDeadline > b.projectDeadline) ? 1 : ((b.projectDeadline > a.projectDeadline) ? -1 : 0));
-            break
-          case 'follower':
-              projTemp.sort((a,b) => 
-              (parseInt(a.followcount) < parseInt(b.followcount)) ? 1 
-              : ((parseInt(b.followcount) < parseInt(a.followcount)) ? -1 : 0));
-            break;
-          case 'likes':
-              projTemp.sort((a,b) => 
-              (parseInt(a.likecount) < parseInt(b.likecount)) ? 1 
-              : ((parseInt(b.likecount) < parseInt(a.likecount)) ? -1 : 0));
-            break;
-          case 'amount':
-              projTemp.sort((a,b) => 
-              (parseFloat(a.donateamount) < parseFloat(b.donateamount)) ? 1 
-              : ((parseFloat(b.donateamount) < parseFloat(a.donateamount)) ? -1 : 0));
-            break; 
-          case 'percentage':
-              projTemp.sort((a,b) => 
-              (parseFloat(a.donateamount) / parseFloat(a.projectTotalFundNeeded) < parseFloat(b.donateamount) / parseFloat(b.projectTotalFundNeeded)) ? 1
-               : ((parseFloat(b.donateamount) / parseFloat(b.projectTotalFundNeeded) < parseFloat(a.donateamount)) / parseFloat(a.projectTotalFundNeeded) ? -1 : 0));
-            break; 
-          default:
-            break;
+
+        if(cateTerm != null && cateTerm != 'all') {
+          projTemp = projTemp.filter(function(proj) {
+            return proj.categoryName === cateTerm;
+          });          
         }
       }
       getMyLike();
@@ -116,11 +126,12 @@ router.get('/', function(req, res, next) {
   }
   
   function renderPage() {
-    console.log("check " + req.query.sortTerm);
     if(cateTemp != null)
-      res.render('view-projects', { title: '', categories :  cateTemp, projects : projTemp, myLikes : myLikeTemp, myFollows : myFollowTemp, countries: req.cookies['countries'] , sortTerm: sort_query});
+      res.render('view-projects', { title: '', categories :  cateTemp, projects : projTemp, myLikes : myLikeTemp, myFollows : myFollowTemp, countries: req.cookies['countries'] , 
+      sortTerm: sortTerm, cateTerm: cateTerm});
     else 
-      res.render('view-projects', { title: '', categories : null, projects : null, myLikes: null, myFollows: null, countries: null, sortTerm: null})
+      res.render('view-projects', { title: '', categories : null, projects : null, myLikes: null, myFollows: null, countries: null,
+      sortTerm: null, cateTerm: null})
   }
 });
 
@@ -189,9 +200,15 @@ router.post('/', function(req, res, next) {
   }
 
   function renderPage() {
-    res.redirect('/view-projects');
+    var path = '/view-projects';
+    if(cateTerm != null)
+        path += '?cate=' + cateTerm;
+    if(sortTerm != null) {
+      path = cateTerm != null ? path+='&sortTerm='+sortTerm : path+='?sortTerm='+sortTerm;
+      console.log("path: "+path);
+    } 
+    res.redirect(path);
   }
-
 });
 
 module.exports = router;

@@ -20,7 +20,7 @@
     }
   </style>
   </head>
-  <body onload="checkSort('<%= sortTerm%>')"> 
+  <body onload="checkSort('<%= sortTerm%>', '<%= cateTerm%>')"> 
   	<%- include navbar-after-login %>
 	<header class="masthead2 text-white text-center">
     <div class="container">      
@@ -28,7 +28,7 @@
           <div class="col-lg-10 col-md-12 col-xs-12">
             <div class="contents">
               <div style="height: 4em;"></div>
-              <h2 class="head-title"><%= sortTerm %> Find the interesting project to support</h2>
+              <h2 class="head-title">Find the interesting project to support</h2>
               <h5>Select category below to browse projects based on their categories</h5>
               <div style="height: 0.5em;"></div>
               <form class="row">
@@ -47,11 +47,12 @@
 
   <div style="height: 1em;"></div>
   <ul class="nav nav-tabs nav-justified" style="padding: 0em, 2em;">
-    <li class="nav-item" ><a class="nav-link text-secondary" href="#" onclick="filterByCate('all')">ALL</a></li>
+    <li class="nav-item" ><a class="nav-link text-secondary" id="all_cate" onclick="filterByCate('all', '<%= sortTerm%>')">ALL</a></li>
      <% if (categories != null) {
        for(var i = 0; i < categories.length; i++) {
+         var id = categories[i].categoryName + '_cate';
          %>
-            <li class="nav-item"> <a class="nav-link text-uppercase text-secondary" href="#" onclick="filterByCate('<%= categories[i].categoryName %>')"> <%= categories[i].categoryName%></a></li>
+            <li class="nav-item"> <a class="nav-link text-uppercase text-secondary" id="<%=id%>" onclick="filterByCate('<%= categories[i].categoryName %>', '<%= sortTerm%>')"> <%= categories[i].categoryName%></a></li>
          <%
        }
      }%>
@@ -92,7 +93,7 @@
                       <ul class="nav flex-column" style="margin-left: 1.5em; font-size: 14px;margin-top: 0.5em;">
                           <li class="nav-item" style="margin-bottom:.5em;">
                               <div class="form-check">
-                                  <input class="form-check-input sort" onchange="sortBy('start')" type="radio" name="exampleRadios" id="start_sort" value="start">
+                                  <input class="form-check-input sort" onchange="sortBy('start', '<%= cateTerm%>')" type="radio" name="exampleRadios" id="start_sort" value="start">
                                   <label class="form-check-label text-muted">
                                       Start date
                                   </label>
@@ -100,7 +101,7 @@
                           </li>
                         <li class="nav-item" style="margin-bottom:.5em;">
                             <div class="form-check">
-                                <input class="form-check-input sort" onchange="sortBy('deadline')" type="radio" name="exampleRadios" id="deadline_sort" value="deadline">
+                                <input class="form-check-input sort" onchange="sortBy('deadline', '<%= cateTerm%>')" type="radio" name="exampleRadios" id="deadline_sort" value="deadline">
                                 <label class="form-check-label text-muted">
                                     Deadline
                                 </label>
@@ -108,7 +109,7 @@
                         </li>
                       <li class="nav-item" style="margin-bottom:.5em;">
                           <div class="form-check">
-                              <input class="form-check-input sort" onchange="sortBy('follower')" type="radio" name="exampleRadios" id="follower_sort" value="followers">
+                              <input class="form-check-input sort" onchange="sortBy('follower', '<%= cateTerm%>')" type="radio" name="exampleRadios" id="follower_sort" value="followers">
                               <label class="form-check-label text-muted">
                                    Number of followers
                               </label>
@@ -116,7 +117,7 @@
                         </li>
                         <li class="nav-item" style="margin-bottom:.5em;">
                             <div class="form-check">
-                                <input class="form-check-input sort" onchange="sortBy('likes')" type="radio" name="exampleRadios" id="likes_sort" value="likes">
+                                <input class="form-check-input sort" onchange="sortBy('likes', '<%= cateTerm%>')" type="radio" name="exampleRadios" id="likes_sort" value="likes">
                                 <label class="form-check-label text-muted">
                                     Number of likes
                                 </label>
@@ -124,7 +125,7 @@
                         </li>
                         <li class="nav-item" style="margin-bottom:.5em;">
                             <div class="form-check">
-                                <input class="form-check-input sort" onchange="sortBy('amount')" type="radio" name="exampleRadios" id="amount_sort" value="amount">
+                                <input class="form-check-input sort" onchange="sortBy('amount', '<%= cateTerm%>')" type="radio" name="exampleRadios" id="amount_sort" value="amount">
                                 <label class="form-check-label text-muted">
                                     Amount raised
                                 </label>
@@ -132,7 +133,7 @@
                         </li>
                         <li class="nav-item" style="margin-bottom:.5em;">
                             <div class="form-check">
-                                <input class="form-check-input sort" onchange="sortBy('percentage')" type="radio" name="exampleRadios" id="percentage_sort" value="percentage">
+                                <input class="form-check-input sort" onchange="sortBy('percentage', '<%= cateTerm%>')" type="radio" name="exampleRadios" id="percentage_sort" value="percentage">
                                 <label class="form-check-label text-muted">
                                     Percentage raised 
                                 </label>
@@ -231,30 +232,44 @@
 </html>
 
 <script>
-  function checkSort(sortTerm) {
-    if(sortTerm != null) {
-      var sortBtn = sortTerm + '_sort';
-      document.getElementById(sortBtn).checked = true;
+  function checkSort(sortTerm, cate) {
+    if(sortTerm != null && sortTerm != "") {
+      var sortBtn_id = sortTerm + '_sort';
+      document.getElementById(sortBtn_id).checked = true;
     } else {
       document.getElementById('start_sort').checked = true;
   }
+  if(cate != null && cate != "") {
+    var cate_id = cate + '_cate';
+    document.getElementById(cate_id).classList.add('active');
+  } else {
+    document.getElementById('all_cate').classList.add('active');
+  }
 }
 
-  function filterByCate(cate) {
-    var proj = document.getElementsByClassName('projects');
-    var cate_proj = document.getElementsByClassName(cate);
-    if(cate != "all") {
-      for(var i = 0; i < proj.length ; i++) {
-        proj[i].style.display = "none";
+  function filterByCate(cate, sortTerm) {
+    var path = '/view-projects';
+    if(cate != 'all'){
+       path += '?cate='+ cate;
+       if(sortTerm != null && sortTerm != "") {
+        path += '&sortTerm='+sortTerm;
+      } 
+    }else {
+      if(sortTerm != null && sortTerm != "") {
+        path += '?sortTerm='+sortTerm;
       }
-      for(var i = 0; i < cate_proj.length; i++) {
-        cate_proj[i].style.display = "block";
-      }
-    } else {
-      for(var i = 0; i < proj.length ; i++) {
-        proj[i].style.display = "block";
-      }    
     }
+    window.location = path;
+  }
+
+  function sortBy(sortTerm, cate){
+    var path = '/view-projects';
+    if(cate != null && cate != "") {
+      path += '?cate='+cate+'&sortTerm=' + sortTerm;
+    } else if(sortTerm != 'start'){
+      path += '?sortTerm=' + sortTerm;
+    }
+    window.location = path;
   }
 
   function filterByName() {
@@ -276,10 +291,6 @@
         }
       }
     }
-  }
-
-  function sortBy(term){
-    window.location = '/view-projects?sortTerm=' + term;
   }
 
   function filterByCountry(){
