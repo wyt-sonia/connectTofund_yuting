@@ -1,5 +1,4 @@
 var express = require('express');
-var multer  = require('multer')
 var path = require('path');
 var router = express.Router();
 
@@ -17,14 +16,6 @@ var sql_query = 'SELECT * FROM categories';
 var countries_query = 'SELECT * FROM countries';
 
 var projectTemp = null;
-
-// Set The Storage Engine
-const storage = multer.diskStorage({
-    destination: './public/images/',
-    filename: function(req, file, cb){
-      cb(null,file.originalname + '_' + Date.now() + path.extname(file.originalname));
-    }
-  });
 
 router.get('/', function(req, res, next) {
 
