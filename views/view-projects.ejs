@@ -8,7 +8,8 @@
 		
 		<!-- CSS for Styling -->
 		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
-		
+    <link rel="stylesheet" href="/stylesheets/font-awesome-4.7.0/css/font-awesome.min.css">
+    
 		<!-- JavaScript for Interactivity -->
 		<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
@@ -19,7 +20,7 @@
     }
   </style>
   </head>
-  <body> 
+  <body onload="checkSort('<%= sortTerm%>')"> 
   	<%- include navbar-after-login %>
 	<header class="masthead2 text-white text-center">
     <div class="container">      
@@ -27,7 +28,7 @@
           <div class="col-lg-10 col-md-12 col-xs-12">
             <div class="contents">
               <div style="height: 4em;"></div>
-              <h2 class="head-title">Find the interesting project to support</h2>
+              <h2 class="head-title"><%= sortTerm %> Find the interesting project to support</h2>
               <h5>Select category below to browse projects based on their categories</h5>
               <div style="height: 0.5em;"></div>
               <form class="row">
@@ -54,75 +55,191 @@
          <%
        }
      }%>
-    </ul>
+  </ul>
 
-    <div class="album py-5 bg-light">
-        <div class="container">
-          <div class="row">
-          <%if(projects != null) {
-            for(var i = 0; i < projects.length; i++) {
-              var donateamount = parseFloat(projects[i].donateamount);
-              var projectTotalFundNeeded = parseFloat(projects[i].projectTotalFundNeeded);
-              var percentage = ((100 * (donateamount / projectTotalFundNeeded)) | 0) + "%" ;
-              var amountInCurrencyFormat = Number(donateamount).toLocaleString('en');
-            %>
-            <div class='col-md-4 projects <%= projects[i].categoryName%>' id='<%= projects[i].projectName%>'>
-              <div class="card mb-4 box-shadow">
-                <img class="card-img-top" src='/images/<%= projects[i].pictureAddress%>' alt='<%= projects[i].projectName %> display picture' style="height: 225px; width: 100%; display: block;">
-                <div class="card-body">
-                  <h5 class="card-title" style="display: block; white-space: nowrap; overflow:hidden; text-overflow: ellipsis; height: 2em;"><%= projects[i].projectName%></h5>
-                  <p class="card-text" style="display: block; max-lines: 3; overflow:hidden; text-overflow: ellipsis; height: 6em;"><%= projects[i].projectDescription%></p>
-                  <small class="test-left font-weight-bold text-success money"><%= amountInCurrencyFormat%>&nbsp;SGD raised</small>
-                  <div class="d-flex justify-content-between align-items-center" style="margin-bottom: 1.5em">
-                      <div class="progress" style="height: 5px; width: 85%;">
-                          <div class="progress-bar bg-success" style="width: <%= percentage%>;" role="progressbar" aria-valuenow="<%= donateamount%>" aria-valuemin="0" aria-valuemax="<%= projectTotalFundNeeded%>"></div>
-                        </div>
-                        <div style="margin-left: 1em; ">
-                          <small class="text-muted"><%= percentage%></small>
-                       </div>
+  <div class="row">
+      <div class="sidebar-sticky" style="padding-left: 2em;margin-top: 1em; width: 13.5em;">
+          <ul>
+              <li>
+                  <a class="text-secondary" style="margin-left:1em;" data-toggle="collapse" href="#countries" role="button" aria-expanded="false" aria-controls="countries">
+                      <i class="fa fa-angle-down" aria-hidden="true"></i>  Locations
+                </a>
+                  <div class="collapse" style="margin-top: 0.5em;margin-left: 1em;" id="countries">
+                      <ul class="nav flex-column" style="margin-left: 0.5em;">
+                    <% if (countries != null) {
+                      for (var i = 0; i < countries.length; i++) {
+                      %>
+                      <li class="nav-item" style="margin-bottom:.5em;">
+                          <div class="form-check">
+                              <input class="form-check-input countryCheckBox " type="checkbox" onchange="filterByCountry()" value=" <%= countries[i].countryName%>">
+                              <label class="form-check-label text-muted" style="font-size: 14px;">
+                                  <%= countries[i].countryName%>
+                              </label>
+                            </div>
+                        </li>
+                      <%
+                      }
+                    }%>
+                      </ul>
+                      <br/>
                   </div>
-                  <div class="d-flex justify-content-between align-items-center">
-                    <div class="btn-group">
-                      <form action="" id='<%= projects[i].projectName%>_follow' role="form" method="post">
-                        <% if(myFollows != null && myFollows.includes(projects[i].projectName)) {%>
-                          <input hidden name="projName" value="<%= projects[i].projectName%>"/>
-                          <input hidden name="act" value="deFollow"/>
-                          <button type="submit" class="btn btn-sm btn-outline-secondary active">Followed</button>
-                        <%} else {%>
-                          <input hidden name="projName" value="<%= projects[i].projectName%>"/>
-                          <input hidden name="act" value="follow"/>
-                          <button type="submit" class="btn btn-sm btn-outline-secondary" >Follow</button>
-                        <%}%>
-                      </form>
-                      <form style="margin-left:0.5em ;" action="" id='<%= projects[i].projectName%>_like' role="form" method="post">
-                            <% if(myLikes != null && myLikes.includes(projects[i].projectName)) {%>
+              </li>
+              <li style="margin-top: 1em;">
+                  <a class="text-secondary" style="margin-left:1em ;" data-toggle="collapse" href="#sortBy" role="button" aria-expanded="false" aria-controls="sortBy">
+                      <i class="fa fa-angle-down" aria-hidden="true"></i>  Sort by
+                </a>
+                  <div class="collapse" id="sortBy">
+                      <ul class="nav flex-column" style="margin-left: 1.5em; font-size: 14px;margin-top: 0.5em;">
+                          <li class="nav-item" style="margin-bottom:.5em;">
+                              <div class="form-check">
+                                  <input class="form-check-input sort" onchange="sortBy('start')" type="radio" name="exampleRadios" id="start_sort" value="start">
+                                  <label class="form-check-label text-muted">
+                                      Start date
+                                  </label>
+                                </div>
+                          </li>
+                        <li class="nav-item" style="margin-bottom:.5em;">
+                            <div class="form-check">
+                                <input class="form-check-input sort" onchange="sortBy('deadline')" type="radio" name="exampleRadios" id="deadline_sort" value="deadline">
+                                <label class="form-check-label text-muted">
+                                    Deadline
+                                </label>
+                              </div>
+                        </li>
+                      <li class="nav-item" style="margin-bottom:.5em;">
+                          <div class="form-check">
+                              <input class="form-check-input sort" onchange="sortBy('follower')" type="radio" name="exampleRadios" id="follower_sort" value="followers">
+                              <label class="form-check-label text-muted">
+                                   Number of followers
+                              </label>
+                            </div>
+                        </li>
+                        <li class="nav-item" style="margin-bottom:.5em;">
+                            <div class="form-check">
+                                <input class="form-check-input sort" onchange="sortBy('likes')" type="radio" name="exampleRadios" id="likes_sort" value="likes">
+                                <label class="form-check-label text-muted">
+                                    Number of likes
+                                </label>
+                              </div>
+                        </li>
+                        <li class="nav-item" style="margin-bottom:.5em;">
+                            <div class="form-check">
+                                <input class="form-check-input sort" onchange="sortBy('amount')" type="radio" name="exampleRadios" id="amount_sort" value="amount">
+                                <label class="form-check-label text-muted">
+                                    Amount raised
+                                </label>
+                              </div>
+                        </li>
+                        <li class="nav-item" style="margin-bottom:.5em;">
+                            <div class="form-check">
+                                <input class="form-check-input sort" onchange="sortBy('percentage')" type="radio" name="exampleRadios" id="percentage_sort" value="percentage">
+                                <label class="form-check-label text-muted">
+                                    Percentage raised 
+                                </label>
+                              </div>
+                        </li>
+                      </ul>
+                  </div>
+              </li>
+            </ul>
+          
+           
+        </div>
+    <div class="album py-5 bg-light">
+            <div class="container">
+              <div class="row">
+              <%if(projects != null) {
+                for(var i = 0; i < projects.length; i++) {
+                  var donateamount = parseFloat(projects[i].donateamount);
+                  var projectTotalFundNeeded = parseFloat(projects[i].projectTotalFundNeeded);
+                  var percentage = ((100 * (donateamount / projectTotalFundNeeded)) | 0) + "%" ;
+                  var amountInCurrencyFormat = Number(donateamount).toLocaleString('en');
+                  var start = projects[i].projectStartDate;
+                  start = start.getFullYear() + "/" + start.getMonth() + "/" + start.getDate();
+                  var deadline = projects[i].projectDeadline;
+                  deadline = deadline.getFullYear() + "/" + deadline.getMonth() + "/" + deadline.getDate();
+                %>
+                <div class='col-md-4 projects <%= projects[i].categoryName%> <%= projects[i].location%>' id='<%= projects[i].projectName%>'>
+                  <div class="card mb-4 box-shadow">
+                    <img class="card-img-top" src='/images/<%= projects[i].pictureAddress%>' alt='<%= projects[i].projectName %> display picture' style="height: 225px; width: 100%; display: block;">
+                    <div class="card-body">
+                      <div>
+                          <h5 class="card-title" style="display: block; white-space: nowrap; overflow:hidden; text-overflow: ellipsis; height: 2em;"><%= projects[i].projectName%></h5>
+                          <div class="row" style="position: relative; top:-1em; left: 1em;">
+                            <small style="position: relative;top:-0.1em;" ><i class="fa fa-globe" aria-hidden="true"></i>&nbsp;&nbsp;<%= projects[i].location%></small>
+                          </div>
+                          <div class="d-flex justify-content-between align-items-cente" style="position: relative; top:-0.7em;">
+                            <div style="margin-left: 0.1em;">
+                                <i class="fa fa-hourglass-end" style="font-size:12px;" aria-hidden="true"></i><span class="text-muted" style="font-size:14px;position: relative;top:0.1em;" class="deadline"> &nbsp;<%=deadline%></span>
+                              </div>
+                            <div style="margin-right: 1em;">
+                                <i class="fa fa-calendar-o" style="font-size:12px;" aria-hidden="true"></i> <span class="text-muted" style="font-size:14px;position: relative;top:0.1em;" class="start">&nbsp;<%=start%></span>
+                            </div>
+                          </div>
+                        </div>
+                      <p class="card-text" style="display: block; max-lines: 3; overflow:hidden; text-overflow: ellipsis; height: 6em;"><%= projects[i].projectDescription%></p>
+                      <small class="test-left font-weight-bold text-success money"><%= amountInCurrencyFormat%>&nbsp;SGD raised</small>
+                      <div class="d-flex justify-content-between align-items-center" style="margin-bottom: 1.5em">
+                          <div class="progress" style="height: 5px; width: 85%;">
+                              <div class="progress-bar bg-success" style="width: <%= percentage%>;" role="progressbar" aria-valuenow="<%= donateamount%>" aria-valuemin="0" aria-valuemax="<%= projectTotalFundNeeded%>"></div>
+                            </div>
+                            <div style="margin-left: 1em; ">
+                              <small class="text-muted"><%= percentage%></small>
+                           </div>
+                      </div>
+                      <div class="d-flex justify-content-between align-items-center">
+                        <div class="btn-group">
+                          <form action="" id='<%= projects[i].projectName%>_follow' role="form" method="post">
+                            <% if(myFollows != null && myFollows.includes(projects[i].projectName)) {%>
                               <input hidden name="projName" value="<%= projects[i].projectName%>"/>
-                              <input hidden name="act" value="deLike"/>
-                              <button type="submit" class="btn btn-sm btn-outline-secondary active">Liked</button>
+                              <input hidden name="act" value="deFollow"/>
+                              <button type="submit" class="btn btn-sm btn-outline-secondary active">Followed</button>
                             <%} else {%>
                               <input hidden name="projName" value="<%= projects[i].projectName%>"/>
-                              <input hidden name="act" value="like"/>
-                              <button type="submit" class="btn btn-sm btn-outline-secondary">Like</button>
+                              <input hidden name="act" value="follow"/>
+                              <button type="submit" class="btn btn-sm btn-outline-secondary" >Follow</button>
                             <%}%>
-                        </form>
+                          </form>
+                          <form style="margin-left:0.5em ;" action="" id='<%= projects[i].projectName%>_like' role="form" method="post">
+                                <% if(myLikes != null && myLikes.includes(projects[i].projectName)) {%>
+                                  <input hidden name="projName" value="<%= projects[i].projectName%>"/>
+                                  <input hidden name="act" value="deLike"/>
+                                  <button type="submit" class="btn btn-sm btn-outline-secondary active">Liked</button>
+                                <%} else {%>
+                                  <input hidden name="projName" value="<%= projects[i].projectName%>"/>
+                                  <input hidden name="act" value="like"/>
+                                  <button type="submit" class="btn btn-sm btn-outline-secondary">Like</button>
+                                <%}%>
+                            </form>
+                          </div>
+                        <small class="text-muted"><%= projects[i].likecount%> likes | <%= projects[i].followcount%> follows</small>
                       </div>
-                    <small class="text-muted"><%= projects[i].likecount%> likes | <%= projects[i].followcount%> follows</small>
+                    </div>
                   </div>
                 </div>
+                <%}
+              }
+            %>
               </div>
             </div>
-            <%}
-          }
-        %>
-          </div>
-        </div>
-      </div>
     </div>
+  </div>
+
+   
 
   </body>
 </html>
 
 <script>
+  function checkSort(sortTerm) {
+    if(sortTerm != null) {
+      var sortBtn = sortTerm + '_sort';
+      document.getElementById(sortBtn).checked = true;
+    } else {
+      document.getElementById('start_sort').checked = true;
+  }
+}
+
   function filterByCate(cate) {
     var proj = document.getElementsByClassName('projects');
     var cate_proj = document.getElementsByClassName(cate);
@@ -158,6 +275,36 @@
           proj[i].style.display = "block";
         }
       }
+    }
+  }
+
+  function sortBy(term){
+    window.location = '/view-projects?sortTerm=' + term;
+  }
+
+  function filterByCountry(){
+    var proj = document.getElementsByClassName('projects');
+    var countries = document.getElementsByClassName('countryCheckBox');
+    var counter = 0;
+
+    for(var i = 0; i < countries.length; i++) {
+      if(countries[i].checked) {
+        counter++;
+        var selected = document.getElementsByClassName(countries[i].value);
+        for(var j = 0; j < selected.length; j++) {
+          selected[j].style.display = "block";
+        }
+      } else {
+        var not_selected = document.getElementsByClassName(countries[i].value);
+        for(var j = 0; j < not_selected.length; j++) {
+          not_selected[j].style.display = "none";
+        }
+      }
+    }
+    if(counter == 0) {
+        for(var j = 0; j < proj.length; j++) {
+          proj[j].style.display = "block";
+        }
     }
   }
 </script>

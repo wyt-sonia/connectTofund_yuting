@@ -25,8 +25,10 @@ router.get('/', function(req, res, next) {
 
   function getCountries() {
     pool.query(countries_query, (err, data) => {
-      if(data != null && cateTemp != null) 
+      if(data != null && cateTemp != null) {
         countryTemp = data.rows;
+        res.cookie("countries", countryTemp);
+      }
       else 
         console.log('no country');
       
