@@ -33,4 +33,24 @@ router.get('/', function(req, res, next) {
     }
 });
 
+router.post('/', function(req, res, next) {
+      email = req.cookies['email'];
+      var bankAccountNumber = req.body.bankAccountNumber;
+      var bankAccountName = req.body.bankAccountName;
+      var insertTemp = null;
+  
+      var insert_acc_query = "INSERT INTO binds VALUES ('" + bankAccountNumber + "','" + bankAccountName + "', '" + email + "')";
+    
+      pool.query(insert_acc_query, (err, data) => {
+        if (data != null){
+          insertTemp = data.rows;
+          console.log(insert_acc_query);
+          res.redirect('/bankAccount');
+        } else{
+          res.redirect('/bankAccount?error=addBankAccountError');
+        }
+      }); 
+      
+  });
+
 module.exports = router;
