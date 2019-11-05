@@ -12,6 +12,7 @@ var navbarRouter = require('./routes/navbar');
 var aboutRouter = require('./routes/about');
 var homeRouter = require('./routes/home');
 var viewprojectsRouter = require('./routes/view-projects');
+var projectDetailRouter = require('./routes/projectDetail');
 var createProjectRouter = require('./routes/createProject');
 var viewCreatedProjectsRouter = require('./routes/viewCreatedProjects');
 
@@ -33,6 +34,7 @@ app.use('/navbar', navbarRouter);
 app.use('/about', aboutRouter);
 app.use('/home', homeRouter);
 app.use('/view-projects', viewprojectsRouter);
+app.use('/projectDetail', projectDetailRouter);
 app.use('/createProject', createProjectRouter);
 app.use('/viewCreatedProjects', viewCreatedProjectsRouter);
 
