@@ -26,6 +26,8 @@ router.get('/', function(req, res, next) {
     var myDonate = null;
     var update_query = "";
     var comment_query = "";
+    var bankAccTemp = null;
+    var bankAcc_query = "SELECT * FROM binds WHERE email = \'" + email +"\'";
     if(projectName != null) {
         proj_query = 'WITH likeTemp AS ( SELECT * FROM likes WHERE \"projectName\" = \''+ projectName +'\'), '
         +'followTemp AS ( SELECT * FROM follows WHERE "projectName" =  \''+ projectName +'\') '
@@ -73,6 +75,16 @@ router.get('/', function(req, res, next) {
             if(data != null){
                 commentsTemp = data.rows;
                 console.log(commentsTemp);
+                getBankAcc();
+            } else 
+            console.log(err);
+        });
+    }
+    function getBankAcc() {
+        pool.query(bankAcc_query, (err, data) => {
+            if(data != null){
+                bankAccTemp = data.rows;
+                console.log(bankAccTemp);
                 renderPage();
             } else 
             console.log(err);
@@ -82,11 +94,11 @@ router.get('/', function(req, res, next) {
         if (projTemp != null && attachesTemp != null){
             console.log(myFollow + " : "+ typeof(myFollow));
             res.render('projectDetail', { title: 'projectDetail', project: projTemp, commentsTemp: commentsTemp, attaches: attachesTemp, email: email, 
-            myLike: myLike, myFollow: myFollow, likeCount: likeCount, followCount: followCount, myDonate: myDonate});
+            myLike: myLike, myFollow: myFollow, likeCount: likeCount, followCount: followCount, myDonate: myDonate, bankAccTemp: bankAccTemp});
         }
         else
         res.render('projectDetail', { title: 'projectDetail', project: null, commentsTemp: null,attaches: null, email: null, 
-        myFollow: null, myLike: null, likeCount: null, followCount: null, myDonate: myDonate});
+        myFollow: null, myLike: null, likeCount: null, followCount: null, myDonate: null, bankAccTemp: null});
     }
 });
 
@@ -95,6 +107,7 @@ router.post('/', function(req, res, next){
     var projName = req.body.projName;
     var email = req.cookies['email'];
     var act_query = null;
+    var newDonateAmount = req.body.donateAmount;
     var _date = new Date();
     var newCommentContent = req.body.newCommentContent;
     var dateStr = _date.getFullYear() + "-" + (_date.getMonth()+1) + "-" + _date.getDate() + " " + _date.getHours() + ":" + _date.getMinutes() + ":" +_date.getSeconds();
@@ -116,6 +129,9 @@ router.post('/', function(req, res, next){
         break;
         case "newComment":
         act_query = "INSERT INTO comments VALUES ('" + email + "','" + projName +"', '" + dateStr + "','" +newCommentContent+ "')";
+        break;
+        case "newDonate":
+        act_query = "INSERT INTO funds VALUES ('" + email + "'," + newDonateAmount +", '" + projName +"', '" + dateStr + "')";
         break;
     }
     
