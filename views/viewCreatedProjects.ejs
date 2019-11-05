@@ -37,8 +37,8 @@
         <div class="col-lg-10 col-md-12 col-xs-12">
           <div class="contents">
             <div style="height: 4em;"></div>
-            <h2 class="head-title">Find the interesting project to support</h2>
-            <h5>Select category below to browse projects based on their categories</h5>
+            <h2 class="head-title">The collection of your own projects</h2>
+            <h5>Welcome to ConnectToFund, have a nice day!</h5>
             <div style="height: 0.5em;"></div>
             <form class="row">
               <input class="form-control col-lg-11 col-md-6 col-xs-12" type="search" id="searchName" placeholder="Search" aria-label="Search">
@@ -165,9 +165,9 @@
               var percentage = ((100 * (donateamount / projectTotalFundNeeded)) | 0) + "%" ;
               var amountInCurrencyFormat = Number(donateamount).toLocaleString('en');
               var start = projects[i].projectStartDate;
-              start = start.getFullYear() + "/" + start.getMonth() + "/" + start.getDate();
+              start = start.getDate()  + "/" + start.getMonth() + "/" + start.getFullYear();
               var deadline = projects[i].projectDeadline;
-              deadline = deadline.getFullYear() + "/" + deadline.getMonth() + "/" + deadline.getDate();
+              deadline = deadline.getDate() + "/" + deadline.getMonth() + "/" + deadline.getFullYear();
               %>
               <div class='cardContainer col-md-4 projects <%= projects[i].categoryName%> <%= projects[i].location%>' id='<%= projects[i].projectName%>'>
                 <div class="card mb-4 box-shadow">
@@ -200,7 +200,7 @@
                     <div class="d-flex justify-content-between align-items-center">
                       <div class="btn-group">
                         <form action="" id='<%= projects[i].projectName%>_follow' role="form" method="post">
-                          <button type="button" onclick="toProject('<%= projects[i].projectName%>')" class="btn btn-sm btn-outline-secondary" style="width: 12em;">Update</button>
+                          <button type="button" onclick="toProject('<%= projects[i].projectName%>')" class="btn btn-sm btn-outline-secondary" style="width: 12em;">View</button>
                         </form>
                       </div>
                       <small class="text-muted"><%= projects[i].likecount%> likes | <%= projects[i].followcount%> follows</small>
@@ -242,7 +242,7 @@
     }
     
     function filterByCate(cate, sortTerm) {
-      var path = '/view-projects';
+      var path = '/viewCreatedProjects';
       if(cate != 'all'){
         path += '?cate='+ cate;
         if(sortTerm != null && sortTerm != "") {
@@ -257,7 +257,7 @@
     }
     
     function sortBy(sortTerm, cate){
-      var path = '/view-projects';
+      var path = '/viewCreatedProjects';
       if(cate != null && cate != "") {
         path += '?cate='+cate+'&sortTerm=' + sortTerm;
       } else if(sortTerm != 'start'){
