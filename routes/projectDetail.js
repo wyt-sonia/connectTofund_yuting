@@ -24,9 +24,21 @@ router.get('/', function(req, res, next) {
     projectName = req.query.proj;
     var proj_query = "";
     var attaches_query = "";
+    var myLike = null;
+    var myFollow = null;
+    var followCount = null;
+    var likeCount = null;
+    var update_query = "";
+    var comeent_query = "";
     if(projectName != null) {
-        proj_query = "SELECT p.*, u.*, c.*, "
+        proj_query = 'WITH likeTemp AS ( SELECT * FROM likes WHERE \"projectName\" = \''+ projectName +'\'), '
+        +'followTemp AS ( SELECT * FROM follows WHERE "projectName" =  \''+ projectName +'\') '
+        +' SELECT p.*, u.*, c.*, '
         +'(SELECT COALESCE(SUM(amount), 0) FROM funds fu WHERE fu."projectName" = p."projectName") AS donateAmount, '
+        +'(SELECT COUNT(*) FROM likeTemp) AS likeCount, '
+        +'(SELECT COUNT(*) FROM followTemp) AS followCount,'
+        +'(SELECT COUNT(*) FROM followTemp myf WHERE myf.\"email\" =\'' + email + '\') AS myFollow, '
+        +'(SELECT COUNT(*) FROM likeTemp myl WHERE myl.\"email\" =\'' + email + '\') AS myLike, '
         +'(SELECT p.\"projectTotalFundNeeded\" - COALESCE(SUM(amount), 0) FROM funds fu WHERE fu."projectName" = p."projectName") AS togo '
         +"FROM projects p "
         +"NATURAL JOIN countries c "
@@ -35,6 +47,10 @@ router.get('/', function(req, res, next) {
         pool.query(proj_query, (err, data) => {
             if(data != null){
                 projTemp = data.rows[0];
+                myFollow = projTemp.myfollow;
+                myLike = projTemp.mylike;
+                followCount = projTemp.followcount;
+                likeCount = projTemp.likecount;
                 console.log(projTemp);
                 getAllAttches();
             } else 
@@ -46,14 +62,55 @@ router.get('/', function(req, res, next) {
             if(data != null){
                 attachesTemp = data.rows;
                 console.log(attachesTemp);
+                renderPage();
             } else 
             console.log(err);
         });
     }
-    if(projTemp != null && attachesTemp != null)
-    res.render('projectDetail', { title: 'projectDetail', project: projTemp, attaches: attachesTemp});
-    else
-    res.render('projectDetail', { title: 'projectDetail', project: null, attaches: null});
+    function renderPage() {
+        if (projTemp != null && attachesTemp != null){
+            console.log(myFollow + " : "+ typeof(myFollow));
+            res.render('projectDetail', { title: 'projectDetail', project: projTemp, attaches: attachesTemp, email: email, 
+            myLike: myLike, myFollow: myFollow, likeCount: likeCount, followCount: followCount});
+        }
+        else
+            res.render('projectDetail', { title: 'projectDetail', project: null, attaches: null, email: null, 
+            myFollow: null, myLike: null, likeCount: null, followCount: null});
+    }
+});
+
+router.post('/', function(req, res, next){
+    var action = req.body.act;
+    var projName = req.body.projName;
+    var email = req.cookies['email'];
+    var act_query = null;
+    var _date = new Date();
+    var dateStr = _date.getFullYear() + "-" + _date.getMonth() + "-" + _date.getDate() + " " + _date.getHours() + ":" + _date.getMinutes() + ":" +_date.getSeconds();
+    
+    //console.log(dateStr);
+    
+    switch(action) {
+      case "like":
+      act_query = "INSERT INTO likes VALUES ('" + dateStr + "','" + email + "','" + projName +"')";
+      break;
+      case "follow":
+      act_query = "INSERT INTO follows VALUES ('" + email + "','" + projName +"')";
+      break;
+      case "deLike":
+      act_query = "DELETE FROM likes WHERE \"email\" = '" + email + "' and \"projectName\" = '" + projName + "'";
+      break;
+      case "deFollow":
+      act_query = "DELETE FROM follows WHERE \"email\" = '" + email + "' and \"projectName\" = '" + projName + "'";
+      break;
+    }
+
+    pool.query(act_query, (err, data) => {
+        if (err) 
+            console.log('SQL Error: ' + err);
+        else{
+          res.redirect("projectDetail?proj=" + projName);
+        }
+      });
 });
 
 
