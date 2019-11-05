@@ -1,1 +1,121 @@
-<p>bank account works!</p>
+<!DOCTYPE html>
+<html>
+  <head>
+		<!-- Page Title -->
+    <title>ConnectToFund</title>
+    <link rel='stylesheet' href='stylesheets/style.css' />
+    <link rel='stylesheet' href='stylesheets/main.css' />
+		
+		<!-- CSS for Styling -->
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+		
+		<!-- JavaScript for Interactivity -->
+		<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+
+  </head>
+  <body> 
+    <%- include navbar-after-login %>
+
+  <header>
+
+        <section class="category section bg-gray">
+                <div class="container">
+                    <div class="section-header">  
+                        <h3 class="section-title">Bank Account Information</h3>
+                    </div>
+                <form>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="card bg-light">
+                                    <div class="card-body">
+                                        <% if( bankAccounts[0] != null) {
+                                            for(var i = 0; i < bankAccounts.length; i++) {
+                                                var bankAccountNumber = bankAccounts[i].bankAccountNo;
+                                                var bankAccountName = bankAccounts[i].bankAccountName;
+                                            %>
+                                        <table class="table" style="width:100%; padding: 3x;">
+                                            <thead>
+                                                <tr>
+                                                    <td width="20%" style="font-weight: bold;">Bank Account Number</td>
+                                                    <td><%= bankAccountNumber%></td>
+                                                </tr>
+                                                <tr>
+                                                    <td width="20%" style="font-weight: bold;">Bank Account Holder</td>
+                                                    <td><%= bankAccountName%></td>
+                                                </tr>
+                                                
+                                            </thead>
+                                        </table>
+                                        <% }
+                                        }%>
+                                        <button class="btn btn-dark" style="float:right;" type="button" 
+                                                data-toggle="modal" data-target="#modalDelete">Remove</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                  </form>
+                  <button class="btn btn-success" style="float:right;" type="button" 
+                          data-toggle="modal" data-target="#modalAdd">Add</button>
+        
+            </div>
+            </section>
+    </header>
+    
+  </body>
+
+  <!-- Social Footer, Single Coloured -->
+  <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+  <!-- // -->
+  <div class="container">
+      <hr />
+          <div class="text-center center-block">
+              <p class="txt-railway">- Follow ConnectToFund on social media -</p>
+                <a href="https://www.facebook.com/bootsnipp"><i class="fa fa-facebook-square fa-3x social"></i></a>
+                <a href="https://twitter.com/bootsnipp"><i class="fa fa-twitter-square fa-3x social"></i></a>
+                <a href="https://plus.google.com/+Bootsnipp-page"><i class="fa fa-google-plus-square fa-3x social"></i></a>
+                <a href="mailto:bootsnipp@gmail.com"><i class="fa fa-envelope-square fa-3x social"></i></a>
+          </div>
+      <hr />
+  </div>
+
+  <!-- Modal -->
+<div class="modal fade" id="modalAdd" tabindex="-1" role="dialog" aria-labelledby="addBankModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="addBankModalLabel">Add new bank account</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <form id="addBank_form" action="" role="form" method="post">
+                <div>
+                  <input class="input-material" type="text" name="userEmail" id="email_login" 
+                  placeholder="Email" required
+                  data-msg="Please enter your email">
+                  <input hidden name = "act" value="login"/>
+                </div>
+              <br> 
+                <div>
+                  <input class="input-material" type="password" name="pw" id="pw_login" placeholder="Password" required
+                  data-msg="Please enter your password">
+                </div>
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-primary" onclick="save()">Log in</button>
+              <button type="button" class="btn btn-secondary" onclick="clearData(true)" >Reset</button>
+            </div>
+          </form>
+          </div>
+        </div>
+      </div>
+</div>
+
+
+
+<!-- test comment -->
