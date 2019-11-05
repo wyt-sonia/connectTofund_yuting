@@ -174,7 +174,9 @@
                   <img class="image card-img-top" src='/images/<%= projects[i].pictureAddress%>' onclick="toProject('<%= projects[i].projectName%>')" alt='<%= projects[i].projectName %> display picture' style="height: 225px; width: 100%; display: block;">
                   <div class="card-body">
                     <div>
-                      <h5 class="card-title" style="display: block; white-space: nowrap; overflow:hidden; text-overflow: ellipsis; height: 2em;"><%= projects[i].projectName%></h5>
+                      <h5 class="card-title" style="display: block; white-space: nowrap; overflow:hidden; text-overflow: ellipsis; height: 2em;">
+                        <%= projects[i].projectName%>
+                      </h5>
                       <div class="row" style="position: relative; top:-1em; left: 1em;">
                         <small style="position: relative;top:-0.1em;" ><i class="fa fa-globe" aria-hidden="true"></i>&nbsp;&nbsp;<%= projects[i].location%></small>
                       </div>

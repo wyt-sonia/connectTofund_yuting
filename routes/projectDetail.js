@@ -23,6 +23,7 @@ router.get('/', function(req, res, next) {
     var myFollow = null;
     var followCount = null;
     var likeCount = null;
+    var myDonate = null;
     var update_query = "";
     var comment_query = "";
     if(projectName != null) {
@@ -30,7 +31,8 @@ router.get('/', function(req, res, next) {
         +'followTemp AS ( SELECT * FROM follows WHERE "projectName" =  \''+ projectName +'\') '
         +' SELECT p.*, u.*, c.*, '
         +'(SELECT COALESCE(SUM(amount), 0) FROM funds fu WHERE fu."projectName" = p."projectName") AS donateAmount, '
-        +'(SELECT COUNT(*) FROM likeTemp) AS likeCount, '
+        +'(SELECT COUNT(*) FROM likeTemp) AS likeCount,'
+        +'(SELECT SUM(mfu.amount) FROM funds mfu NATURAL JOIN users myu WHERE myu.email = \''+ email+'\' AND \"projectName\"=\''+ projectName +'\') AS myDonate, '
         +'(SELECT COUNT(*) FROM followTemp) AS followCount,'
         +'(SELECT COUNT(*) FROM followTemp myf WHERE myf.\"email\" =\'' + email + '\') AS myFollow, '
         +'(SELECT COUNT(*) FROM likeTemp myl WHERE myl.\"email\" =\'' + email + '\') AS myLike, '
@@ -40,8 +42,8 @@ router.get('/', function(req, res, next) {
         +"NATURAL JOIN users u WHERE p.\"projectName\" = \'" + projectName + "\'";
         attaches_query = "SELECT * FROM attaches WHERE \"projectName\" = \'" + projectName + "\'";
         comment_query = "SELECT * FROM comments NATURAL JOIN users "
-                       +"WHERE \"projectName\" = \'" + projectName + "\' "
-                       +"ORDER BY \"commentDateTime\" DESC";
+        +"WHERE \"projectName\" = \'" + projectName + "\' "
+        +"ORDER BY \"commentDateTime\" DESC";
         pool.query(proj_query, (err, data) => {
             if(data != null){
                 projTemp = data.rows[0];
@@ -49,6 +51,7 @@ router.get('/', function(req, res, next) {
                 myLike = projTemp.mylike;
                 followCount = projTemp.followcount;
                 likeCount = projTemp.likecount;
+                myDonate = projTemp.mydonate;
                 console.log(projTemp);
                 getAllAttches();
             } else 
@@ -79,11 +82,11 @@ router.get('/', function(req, res, next) {
         if (projTemp != null && attachesTemp != null){
             console.log(myFollow + " : "+ typeof(myFollow));
             res.render('projectDetail', { title: 'projectDetail', project: projTemp, commentsTemp: commentsTemp, attaches: attachesTemp, email: email, 
-            myLike: myLike, myFollow: myFollow, likeCount: likeCount, followCount: followCount});
+            myLike: myLike, myFollow: myFollow, likeCount: likeCount, followCount: followCount, myDonate: myDonate});
         }
         else
-            res.render('projectDetail', { title: 'projectDetail', project: null, commentsTemp: null,attaches: null, email: null, 
-            myFollow: null, myLike: null, likeCount: null, followCount: null});
+        res.render('projectDetail', { title: 'projectDetail', project: null, commentsTemp: null,attaches: null, email: null, 
+        myFollow: null, myLike: null, likeCount: null, followCount: null, myDonate: myDonate});
     }
 });
 
@@ -93,32 +96,37 @@ router.post('/', function(req, res, next){
     var email = req.cookies['email'];
     var act_query = null;
     var _date = new Date();
-    var dateStr = _date.getFullYear() + "-" + _date.getMonth() + "-" + _date.getDate() + " " + _date.getHours() + ":" + _date.getMinutes() + ":" +_date.getSeconds();
+    var newCommentContent = req.body.newCommentContent;
+    var dateStr = _date.getFullYear() + "-" + (_date.getMonth()+1) + "-" + _date.getDate() + " " + _date.getHours() + ":" + _date.getMinutes() + ":" +_date.getSeconds();
     
     //console.log(dateStr);
     
     switch(action) {
-      case "like":
-      act_query = "INSERT INTO likes VALUES ('" + dateStr + "','" + email + "','" + projName +"')";
-      break;
-      case "follow":
-      act_query = "INSERT INTO follows VALUES ('" + email + "','" + projName +"')";
-      break;
-      case "deLike":
-      act_query = "DELETE FROM likes WHERE \"email\" = '" + email + "' and \"projectName\" = '" + projName + "'";
-      break;
-      case "deFollow":
-      act_query = "DELETE FROM follows WHERE \"email\" = '" + email + "' and \"projectName\" = '" + projName + "'";
-      break;
+        case "like":
+        act_query = "INSERT INTO likes VALUES ('" + dateStr + "','" + email + "','" + projName +"')";
+        break;
+        case "follow":
+        act_query = "INSERT INTO follows VALUES ('" + email + "','" + projName +"')";
+        break;
+        case "deLike":
+        act_query = "DELETE FROM likes WHERE \"email\" = '" + email + "' and \"projectName\" = '" + projName + "'";
+        break;
+        case "deFollow":
+        act_query = "DELETE FROM follows WHERE \"email\" = '" + email + "' and \"projectName\" = '" + projName + "'";
+        break;
+        case "newComment":
+        act_query = "INSERT INTO comments VALUES ('" + email + "','" + projName +"', '" + dateStr + "','" +newCommentContent+ "')";
+        break;
     }
-
+    
     pool.query(act_query, (err, data) => {
+        console.log(act_query);
         if (err) 
-            console.log('SQL Error: ' + err);
+        console.log('SQL Error: ' + err);
         else{
-          res.redirect("projectDetail?proj=" + projName);
+            res.redirect("projectDetail?proj=" + projName);
         }
-      });
+    });
 });
 
 

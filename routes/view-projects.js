@@ -145,7 +145,7 @@ router.post('/', function(req, res, next) {
   var email = req.cookies['email'];
   var act_query = null;
   var _date = new Date();
-  var dateStr = _date.getFullYear() + "-" + _date.getMonth() + "-" + _date.getDate() + " " + _date.getHours() + ":" + _date.getMinutes() + ":" +_date.getSeconds();
+  var dateStr = _date.getFullYear() + "-" + (_date.getMonth()+1) + "-" + _date.getDate() + " " + _date.getHours() + ":" + _date.getMinutes() + ":" +_date.getSeconds();
   
   //console.log(dateStr);
   
