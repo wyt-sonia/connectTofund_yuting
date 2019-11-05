@@ -96,19 +96,17 @@
             <div class="modal-body">
               <form id="addBank_form" action="" role="form" method="post">
                 <div>
-                  <input class="input-material" type="text" name="userEmail" id="email_login" 
-                  placeholder="Email" required
-                  data-msg="Please enter your email">
-                  <input hidden name = "act" value="login"/>
+                  <input class="input-material" type="text" name="bankAccountNumber" id="bankAccountNumber" 
+                  placeholder="Bank Account Number" required
+                  data-msg="Please enter your bank account number">
                 </div>
               <br> 
                 <div>
-                  <input class="input-material" type="password" name="pw" id="pw_login" placeholder="Password" required
+                  <input class="input-material" type="text" name="bankAccountName" id="bankAccountName" placeholder="Bank Account Holder" required
                   data-msg="Please enter your password">
                 </div>
             <div class="modal-footer">
-              <button type="submit" class="btn btn-primary" onclick="save()">Log in</button>
-              <button type="button" class="btn btn-secondary" onclick="clearData(true)" >Reset</button>
+              <button type="submit" class="btn btn-primary">Add</button>
             </div>
           </form>
           </div>
