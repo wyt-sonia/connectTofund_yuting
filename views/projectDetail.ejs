@@ -150,15 +150,15 @@
                                                         <button type="button" style="padding: 0 1em; margin-left:0.5em ; " data-toggle="modal" data-target="#newDonate" class="btn btn-sm btn-outline-success">Donate&nbsp;&nbsp;<i class="fa fa-credit-card" aria-hidden="true"></i></button>
                                                         <%}
                                                     } else { %>
-                                                        <button type="button" style="padding: 0 1em; margin-left:0.5em ;" class="btn btn-sm btn-outline-success">Update&nbsp;&nbsp;<i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
+                                                        <button type="button" style="padding: 0 1em; margin-left:0.5em ;" data-toggle="modal" data-target="#updateProj"  class="btn btn-sm btn-outline-success">Update&nbsp;&nbsp;<i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
                                                         <% } %>
                                                         <button type="button" style="padding: 0 1em; margin-left:0.5em ; "  data-toggle="modal" data-target="#newComment" class="btn btn-sm btn-outline-success">New Comment&nbsp;&nbsp;<i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
                                                     </div>
                                                 </div>
                                             </section>
                                             
-                                            <div class="modal fade" id="newComment" tabindex="-1" role="dialog" aria-labelledby="newComment" aria-hidden="true">
-                                                <div class="modal-dialog" role="document">
+                                            <div class="modal fade  bd-example-modal-lg" id="newComment" tabindex="-1" role="dialog" aria-labelledby="newComment" aria-hidden="true">
+                                                <div class="modal-dialog modal-lg" role="document">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
                                                             <h5 class="modal-title">New Comment</h5>
@@ -184,8 +184,35 @@
                                                 </div>
                                             </div>
                                             
-                                            <div class="modal fade" id="newDonate" tabindex="-1" role="dialog" aria-labelledby="newDonate" aria-hidden="true">
-                                                <div class="modal-dialog" role="document">
+                                            <div class="modal fade bd-example-modal-lg" id="updateProj" tabindex="-1" role="dialog" aria-labelledby="updateProj" aria-hidden="true">
+                                                <div class="modal-dialog modal-lg" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title">Update Project</h5>
+                                                            <button type="button" onclick="clearData('update')" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <form action="" method="POST">
+                                                            <div class="modal-body">
+                                                                <div class="form-group">
+                                                                    <label for="message-text" class="col-form-label">Progress Description:</label>
+                                                                    <textarea class="form-control" name="progressContent" rows="10" id="progressContent" required data-msg="Please enter progress description."></textarea>
+                                                                </div>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <input hidden name="act" value="updateProj">
+                                                                <input hidden name="projName" value="<%= projectName%>">
+                                                                <button type="button" class="btn btn-sm btn-outline-secondary" onclick="clearData('update')">Reset</button>
+                                                                <button type="submit" class="btn btn-sm btn-outline-success">Update <i class="fa fa-star-half-o" aria-hidden="true"></i></button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="modal fade bd-example-modal-lg" id="newDonate" tabindex="-1" role="dialog" aria-labelledby="newDonate" aria-hidden="true">
+                                                <div class="modal-dialog modal-lg" role="document">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
                                                             <h5 class="modal-title">New Donation</h5>
@@ -196,7 +223,7 @@
                                                         <form action="" method="POST" style="margin-top: 2em;">
                                                             <div class="d-flex justify-content-start" style="padding: 1em 1em;">
                                                                 <label class="text-secondary" style="position: relative;top:0.8em;">Donation amount (in SGD):</label>
-                                                                <div class="input-group" style="width: 40%; position: relative;left: 1em;">
+                                                                <div class="input-group" style="width: 60%; position: relative;left: 1em;">
                                                                     <div class="input-group-prepend">
                                                                         <span class="input-group-text">$</span>
                                                                     </div>
@@ -241,9 +268,22 @@
                                                                     <a class="nav-link text-secondary" id="comments-tab" data-toggle="tab" href="#comments" role="tab" aria-controls="comments" aria-selected="false">Comments</a>
                                                                 </li>
                                                             </ul>
-                                                            <div class="tab-content" id="myTabContent">
-                                                                <div class="tab-pane fade active show" id="update" role="tabpanel" aria-labelledby="update-tab">
-                                                                    
+                                                            <div class="tab-content"  id="myTabContent">
+                                                                <div class="tab-pane fade active show" style="padding:1em;" id="update" role="tabpanel" aria-labelledby="update-tab">
+                                                                        <%if( updateTemp != null) {
+                                                                            for(var i = 0; i < updateTemp.length; i++) {
+                                                                                var content = updateTemp[i].progressContent;
+                                                                                var date = updateTemp[i].progressDateTime;
+                                                                                var dateStr = date.getDate() + "/" + (date.getMonth()+1) + "/" + date.getFullYear();
+                                                                                %>
+                                                                                <div class="card" style="width: 100%; margin-bottom: 1em;">
+                                                                                    <div class="card-body">
+                                                                                        <h5 class="card-title">Update on <%= dateStr%></h5>
+                                                                                        <p class="card-text"><%= content%></p>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <% }
+                                                                            }%>
                                                                 </div>
                                                                 <!-- comment part -->
                                                                 <div class="tab-pane fade" style="padding:1em;" id="comments" role="tabpanel" aria-labelledby="comments-tab">
@@ -251,7 +291,7 @@
                                                                         for(var i = 0; i < commentsTemp.length; i++) {
                                                                             var content = commentsTemp[i].content;
                                                                             var date = commentsTemp[i].commentDateTime;
-                                                                            var dateStr = date.getFullYear() + "/" + (date.getMonth()+1) + "/" + date.getDate();
+                                                                            var dateStr = date.getDate() + "/" + (date.getMonth()+1) + "/" + date.getFullYear();
                                                                             var username = commentsTemp[i].username;
                                                                             %>
                                                                             <div class="card" style="width: 100%; margin-bottom: 1em;">

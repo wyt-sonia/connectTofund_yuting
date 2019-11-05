@@ -67,7 +67,7 @@ router.post('/', function(req, res, next) {
     var y = date_now.getFullYear();
     var m = date_now.getMonth() + 1;
     var d = date_now.getDate();
-    var date = y + "-" + m + "-" + d;
+    var date = d + "-" + m + "-" + y;
     var projectStartDate_ = new Date(projectStartDate);
     var projectDeadline_ = new Date(projectDeadline);
     console.log("today: "+date_now);
