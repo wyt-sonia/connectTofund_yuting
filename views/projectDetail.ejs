@@ -145,9 +145,9 @@
                                             <% if(creator_email != email) {
                                                 if(myDonate > 0){
                                                     %>
-                                                    <button type="button" style="padding: 0 1em; margin-left:0.5em ; " class="btn btn-sm btn-outline-success">Donate Again&nbsp;&nbsp;<i class="fa fa-credit-card" aria-hidden="true"></i></button>
+                                                    <button type="button" style="padding: 0 1em; margin-left:0.5em ; " data-toggle="modal" data-target="#newDonate" class="btn btn-sm btn-outline-success">Donate Again&nbsp;&nbsp;<i class="fa fa-credit-card" aria-hidden="true"></i></button>
                                                     <% } else {%>
-                                                        <button type="button" style="padding: 0 1em; margin-left:0.5em ; " class="btn btn-sm btn-outline-success">Donate&nbsp;&nbsp;<i class="fa fa-credit-card" aria-hidden="true"></i></button>
+                                                        <button type="button" style="padding: 0 1em; margin-left:0.5em ; " data-toggle="modal" data-target="#newDonate" class="btn btn-sm btn-outline-success">Donate&nbsp;&nbsp;<i class="fa fa-credit-card" aria-hidden="true"></i></button>
                                                         <%}
                                                     } else { %>
                                                         <button type="button" style="padding: 0 1em; margin-left:0.5em ;" class="btn btn-sm btn-outline-success">Update&nbsp;&nbsp;<i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
@@ -161,8 +161,8 @@
                                                 <div class="modal-dialog" role="document">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
-                                                            <h5 class="modal-title" id="exampleModalLabel">New Comment</h5>
-                                                            <button type="button" onclick="clearData()" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <h5 class="modal-title">New Comment</h5>
+                                                            <button type="button" onclick="clearData('comment')" class="close" data-dismiss="modal" aria-label="Close">
                                                                 <span aria-hidden="true">&times;</span>
                                                             </button>
                                                         </div>
@@ -176,56 +176,108 @@
                                                             <div class="modal-footer">
                                                                 <input hidden name="act" value="newComment">
                                                                 <input hidden name="projName" value="<%= projectName%>">
-                                                                <button type="button" class="btn btn-secondary" onclick="clearData()" data-dismiss="modal">Reset</button>
-                                                                <button type="submit" class="btn btn-primary">Post</button>
+                                                                <button type="button" class="btn btn-sm btn-outline-secondary" onclick="clearData('comment')">Reset</button>
+                                                                <button type="submit" class="btn btn-sm btn-outline-success">Post <i class="fa fa-comments-o" aria-hidden="true"></i></button>
                                                             </div>
                                                         </form>
                                                     </div>
                                                 </div>
                                             </div>
                                             
-                                            <section style="width: 91%; margin: 0 auto;z-index: 2;">
-                                                <ul class="nav nav-tabs" id="myTab" role="tablist">
-                                                    <li class="nav-item">
-                                                        <a class="nav-link active text-secondary" id="update-tab" data-toggle="tab" href="#update" role="tab" aria-controls="update" aria-selected="true">Update</a>
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a class="nav-link text-secondary" id="comments-tab" data-toggle="tab" href="#comments" role="tab" aria-controls="comments" aria-selected="false">Comments</a>
-                                                    </li>
-                                                </ul>
-                                                <div class="tab-content" id="myTabContent">
-                                                    <div class="tab-pane fade active show" id="update" role="tabpanel" aria-labelledby="update-tab">
-                                                        
-                                                    </div>
-                                                    <!-- comment part -->
-                                                    <div class="tab-pane fade" style="padding:1em;" id="comments" role="tabpanel" aria-labelledby="comments-tab">
-                                                        <%if( commentsTemp != null) {
-                                                            for(var i = 0; i < commentsTemp.length; i++) {
-                                                                var content = commentsTemp[i].content;
-                                                                var date = commentsTemp[i].commentDateTime;
-                                                                var dateStr = date.getFullYear() + "/" + (date.getMonth()+1) + "/" + date.getDate();
-                                                                var username = commentsTemp[i].username;
-                                                                %>
-                                                                <div class="card" style="width: 100%; margin-bottom: 1em;">
-                                                                    <div class="card-body">
-                                                                        <h5 class="card-title"><%= username%></h5>
-                                                                        <h6 class="card-subtitle mb-2 text-muted">Commented on <%= dateStr%></h6>
-                                                                        <p class="card-text"><%= content%></p>
+                                            <div class="modal fade" id="newDonate" tabindex="-1" role="dialog" aria-labelledby="newDonate" aria-hidden="true">
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title">New Donation</h5>
+                                                            <button type="button" onclick="clearData('donate')" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <form action="" method="POST" style="margin-top: 2em;">
+                                                            <div class="d-flex justify-content-start" style="padding: 1em 1em;">
+                                                                <label class="text-secondary" style="position: relative;top:0.8em;">Donation amount (in SGD):</label>
+                                                                <div class="input-group" style="width: 40%; position: relative;left: 1em;">
+                                                                    <div class="input-group-prepend">
+                                                                        <span class="input-group-text">$</span>
+                                                                    </div>
+                                                                    <input type="text"  pattern="[0-9]{1,10000000000000}" class="form-control" name="donateAmount" id="donateAmount" required
+                                                                    data-msg="Please enter valid amount" data-error-msg="Please enter valid amount of donation.">
+                                                                    <div class="input-group-append">
+                                                                        <span class="input-group-text">.00</span>
                                                                     </div>
                                                                 </div>
-                                                                <% }
-                                                            }%>
+                                                            </div>
+                                                            <div class="d-flex justify-content-start input-group" style="padding: 1em 1em;">  
+                                                                <div class="input-group-prepend">
+                                                                    <label class="input-group-text">Select Payment:</label>
+                                                                </div>         
+                                                                <select class="custom-select" name="bankAcc" id="bankAcc">
+                                                                    <% if(bankAccTemp != null) {
+                                                                        for(var i=0; i < bankAccTemp.length; i++) { %>
+                                                                            <option><%= bankAccTemp[i].bankAccountName%> | <%= bankAccTemp[i].bankAccountNo%></option>
+                                                                            <% } } else {%>
+                                                                                <option>--</option>
+                                                                                <%} %>
+                                                                            </select>
+                                                                        </div>                                                                    
+                                                                        
+                                                                        <div class="modal-footer" style="margin-top: 3em;">
+                                                                            <input hidden name="act" value="newDonate">
+                                                                            <input hidden name="projName" value="<%= projectName%>">
+                                                                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="clearData('donate')">Reset</button>
+                                                                            <button type="submit" class="btn btn-sm btn-outline-success" style="padding-left:1em; padding-right: 1em;">Donate <i class="fa fa-rocket" aria-hidden="true"></i></button>
+                                                                        </div>
+                                                                    </form>
+                                                                </div>
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                </section>
-                                                <%} else {%>
-                                                    <div>NO DATA HERE</div>
-                                                    <%}%>
-                                                </body>
-                                                <script>
-                                                    function clearData() {
-                                                        document.getElementById("newCommentContent").value = "";
-                                                    }
-                                                
-                                                </script>
-                                                </html>
+                                                        
+                                                        <section style="width: 91%; margin: 0 auto;z-index: 2;">
+                                                            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                                                <li class="nav-item">
+                                                                    <a class="nav-link active text-secondary" id="update-tab" data-toggle="tab" href="#update" role="tab" aria-controls="update" aria-selected="true">Update</a>
+                                                                </li>
+                                                                <li class="nav-item">
+                                                                    <a class="nav-link text-secondary" id="comments-tab" data-toggle="tab" href="#comments" role="tab" aria-controls="comments" aria-selected="false">Comments</a>
+                                                                </li>
+                                                            </ul>
+                                                            <div class="tab-content" id="myTabContent">
+                                                                <div class="tab-pane fade active show" id="update" role="tabpanel" aria-labelledby="update-tab">
+                                                                    
+                                                                </div>
+                                                                <!-- comment part -->
+                                                                <div class="tab-pane fade" style="padding:1em;" id="comments" role="tabpanel" aria-labelledby="comments-tab">
+                                                                    <%if( commentsTemp != null) {
+                                                                        for(var i = 0; i < commentsTemp.length; i++) {
+                                                                            var content = commentsTemp[i].content;
+                                                                            var date = commentsTemp[i].commentDateTime;
+                                                                            var dateStr = date.getFullYear() + "/" + (date.getMonth()+1) + "/" + date.getDate();
+                                                                            var username = commentsTemp[i].username;
+                                                                            %>
+                                                                            <div class="card" style="width: 100%; margin-bottom: 1em;">
+                                                                                <div class="card-body">
+                                                                                    <h5 class="card-title"><%= username%></h5>
+                                                                                    <h6 class="card-subtitle mb-2 text-muted">Commented on <%= dateStr%></h6>
+                                                                                    <p class="card-text"><%= content%></p>
+                                                                                </div>
+                                                                            </div>
+                                                                            <% }
+                                                                        }%>
+                                                                    </div>
+                                                                </div>
+                                                            </section>
+                                                            <%} else {%>
+                                                                <div>NO DATA HERE</div>
+                                                                <%}%>
+                                                            </body>
+                                                            <script>
+                                                                function clearData(option) {
+                                                                    if(option == 'comment')
+                                                                    document.getElementById("newCommentContent").value = "";
+                                                                    else{
+                                                                        document.getElementById('bankAcc').selectedIndex = 0;
+                                                                        document.getElementById('donateAmount').value = "";
+                                                                    }
+                                                                }
+                                                            </script>
+                                                            </html>
