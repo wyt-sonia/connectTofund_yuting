@@ -26,8 +26,10 @@ router.get('/', function(req, res, next) {
     var myDonate = null;
     var update_query = "";
     var comment_query = "";
+    var updateTemp = null;
     var bankAccTemp = null;
     var bankAcc_query = "SELECT * FROM binds WHERE email = \'" + email +"\'";
+    var update_query = "SELECT * FROM updates WHERE \"projectName\"='" + projectName + "'";
     if(projectName != null) {
         proj_query = 'WITH likeTemp AS ( SELECT * FROM likes WHERE \"projectName\" = \''+ projectName +'\'), '
         +'followTemp AS ( SELECT * FROM follows WHERE "projectName" =  \''+ projectName +'\') '
@@ -85,6 +87,16 @@ router.get('/', function(req, res, next) {
             if(data != null){
                 bankAccTemp = data.rows;
                 console.log(bankAccTemp);
+                getAllUpdates();
+            } else 
+            console.log(err);
+        });
+    }
+    function getAllUpdates() {
+        pool.query(update_query, (err, data) => {
+            if(data != null){
+                updateTemp = data.rows;
+                console.log(updateTemp);
                 renderPage();
             } else 
             console.log(err);
@@ -94,11 +106,11 @@ router.get('/', function(req, res, next) {
         if (projTemp != null && attachesTemp != null){
             console.log(myFollow + " : "+ typeof(myFollow));
             res.render('projectDetail', { title: 'projectDetail', project: projTemp, commentsTemp: commentsTemp, attaches: attachesTemp, email: email, 
-            myLike: myLike, myFollow: myFollow, likeCount: likeCount, followCount: followCount, myDonate: myDonate, bankAccTemp: bankAccTemp});
+            myLike: myLike, myFollow: myFollow, likeCount: likeCount, followCount: followCount, myDonate: myDonate, bankAccTemp: bankAccTemp, updateTemp: updateTemp});
         }
         else
         res.render('projectDetail', { title: 'projectDetail', project: null, commentsTemp: null,attaches: null, email: null, 
-        myFollow: null, myLike: null, likeCount: null, followCount: null, myDonate: null, bankAccTemp: null});
+        myFollow: null, myLike: null, likeCount: null, followCount: null, myDonate: null, bankAccTemp: null, updateTemp: null});
     }
 });
 
@@ -107,6 +119,7 @@ router.post('/', function(req, res, next){
     var projName = req.body.projName;
     var email = req.cookies['email'];
     var act_query = null;
+    var progressContent = req.body.progressContent;
     var newDonateAmount = req.body.donateAmount;
     var _date = new Date();
     var newCommentContent = req.body.newCommentContent;
@@ -132,6 +145,9 @@ router.post('/', function(req, res, next){
         break;
         case "newDonate":
         act_query = "INSERT INTO funds VALUES ('" + email + "'," + newDonateAmount +", '" + projName +"', '" + dateStr + "')";
+        break;
+        case "updateProj":
+        act_query = "INSERT INTO updates VALUES ('" + dateStr + "','" + progressContent + "', '" + projName  + "')";
         break;
     }
     
