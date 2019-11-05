@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- Page Title -->
+    <title>ConnectToFund</title>
+    <link rel='stylesheet' href='stylesheets/style.css' />
+    <link rel='stylesheet' href='stylesheets/main.css' />
+    
+    <!-- CSS for Styling -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <link rel="stylesheet" href="/stylesheets/font-awesome-4.7.0/css/font-awesome.min.css">
+    
+    <!-- JavaScript for Interactivity -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+    <style>
+        .money::before {
+            content:"$";
+        }
+    </style>
+</head>
+
+<%- include navbar-after-login %>
+
+<body>
+    <section class="row justify-content-start">
+        <div class="col-ls-5 col-md-5 col-sm-10" style="margin-left: 4em; height: 450px;">
+            <div id="projectPics" style="height: 450px;"  class="carousel slide" data-ride="carousel">
+                <ol class="carousel-indicators">
+                    <li data-target="#projectPics" data-slide-to="0" class="active"></li>
+                    <%
+                    if(attaches != null) { 
+                        for(var i = 1; i < attaches.length; i++) { %>
+                            <li data-target="#projectPics" data-slide-to="<%= i%>"></li>
+                            <%
+                        }
+                    }%>
+                </ol>
+                <div style="height:450px;width:100%;background-color: SlateGray; opacity: 0.1;z-index: 2;position: absolute;"></div>
+                <div class="carousel-inner">
+                    <%
+                    if(attaches != null) {%>
+                        <div class="carousel-item active" style="height: 450px;">
+                            <img src="/images/<%= attaches[0].pictureAddress%>" height="450px" class="d-block w-100">
+                        </div>
+                        <%
+                        for(var i = 1; i < attaches.length; i++) {
+                            var src = attaches[i].pictureAddress;
+                            %>
+                            <div class="carousel-item" style="height: 450px;">
+                                <img src="/images/<%= src%>" height="450px" class="d-block w-100">
+                            </div>
+                            <%
+                        }
+                    }
+                    %>
+                </div>
+                <div style="position:relative; top:-13em;z-index: 3;" class="d-flex justify-content-between">
+                    <a class="carousel-control-prev" style="padding: 0;" href="#projectPics" role="button" data-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                    <a class="carousel-control-next"  style="padding: 0;" href="#projectPics" role="button" data-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <% if(project != null) {
+            var projectTotalFundNeeded = project.projectTotalFundNeeded;
+            var projectStatus = project.projectStatus;
+            var projectName = project.projectName;
+            var countryName = project.countryName;
+            var projectDescription = project.projectDescription;
+            var projectDeadline = project.projectDeadline;
+            var categoryName = project.categoryName;
+            var projectStartDate = project.projectStartDate;
+            var email = project.email;
+            var username = project.username;
+            var donateamount = parseFloat(project.donateamount);
+            var amountInCurrencyFormat = Number(donateamount).toLocaleString('en');
+            var togo = parseFloat(project.togo);
+            var projectTotalFundNeeded = parseFloat(project.projectTotalFundNeeded);
+            var togoInCurrencyFormat = Number(togo).toLocaleString('en');
+            var totalFundNeededInCurrencyFormat = Number(projectTotalFundNeeded).toLocaleString('en');
+            var percentage = ((100 * (donateamount / projectTotalFundNeeded)) | 0) + "%" ;
+        }%>
+        <div class="col-ls-5 col-md-5 col-sm-10" style="margin-right: 4em;margin-top: 2em; height: 450px;">
+            <p style="margin-bottom: 0.5em;">
+                <span><i class="fa fa-globe" aria-hidden="true"></i>&nbsp;&nbsp;<%= countryName%></span>
+            </p>    
+            <h3 class="text-left"><%= projectName%></h3>
+            <p style="position:relative; top:0em;">
+                <span class="font-weight-bold text-uppercase" style="margin-right: 1em;">Created By: <%= username%></span> <%= email%>
+            </p>
+            <p class="text-secondary" style="margin-top: 1em;min-height: 25%;"><%= projectDescription%></p>
+            <div class="d-flex justify-content-between" >
+                <small class="test-left font-weight-bold text-success money" style="font-size: 16px;"><%= amountInCurrencyFormat%>&nbsp; SGD raised</small>
+                <small class = "money text-right font-weight-bold text-info" style="font-size: 16px;margin-right: 8%;"><%= totalFundNeededInCurrencyFormat%> </small>
+            </div>
+            <div class="d-flex justify-content-between align-items-center">
+                <div class="progress" style="height: 15px; width: 95%;">
+                    <div class="progress-bar bg-success" style="width: <%= percentage%>;" role="progressbar" aria-valuenow="<%= donateamount%>" aria-valuemin="0" aria-valuemax="<%= projectTotalFundNeeded%>"></div>
+                </div>
+                <div style="margin-left: 1em; ">
+                    <span class="text-muted" style="font-size: 14px;"><%= percentage%></span>
+                </div>
+            </div>
+            <div class="row justify-content-end">
+                <small class = "text-right font-weight-bold text-info money" style="margin-right: 10%;font-weight: bold;font-size: 16px;"><%= togoInCurrencyFormat%>&nbsp; to go</small>
+            </div>
+            <button type="button" style="width: 35%;margin-top: 2em;" class="btn btn-outline-success">Donate&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-credit-card" aria-hidden="true"></i></button>
+        </div>
+    </section>
+    
+    <section style="width: 91%; margin: 0 auto;z-index: 2;">
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active text-secondary" id="update-tab" data-toggle="tab" href="#update" role="tab" aria-controls="update" aria-selected="true">Update</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-secondary" id="comments-tab" data-toggle="tab" href="#comments" role="tab" aria-controls="comments" aria-selected="false">Comments</a>
+            </li>
+        </ul>
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade active show" id="update" role="tabpanel" aria-labelledby="update-tab">
+                
+            </div>
+            <div class="tab-pane fade" id="comments" role="tabpanel" aria-labelledby="comments-tab">
+                
+            </div>
+        </div>
+    </section>
+</body>
+</html>
