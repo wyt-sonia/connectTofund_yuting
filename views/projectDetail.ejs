@@ -87,101 +87,145 @@
             var projectTotalFundNeeded = parseFloat(project.projectTotalFundNeeded);
             var togoInCurrencyFormat = Number(togo).toLocaleString('en');
             var totalFundNeededInCurrencyFormat = Number(projectTotalFundNeeded).toLocaleString('en');
-            var percentage = ((100 * (donateamount / projectTotalFundNeeded)) | 0) + "%" ;%>
+            var percentage = ((100 * (donateamount / projectTotalFundNeeded)) | 0) + "%";
+            var myDonate = parseInt(myDonate);
+            %>
             <div class="col-ls-5 col-md-5 col-sm-10" style="margin-right: 4em;margin-top: 2em; height: 450px;">
                 <p style="margin-bottom: 0.5em;">
                     <span><i class="fa fa-globe" aria-hidden="true"></i>&nbsp;&nbsp;<%= countryName%></span>
-                </p>    
-                <h3 class="text-left"><%= projectName%></h3>
-                <p class="d-flex justify-content-between" style="position:relative; top:0em;">
-                    <span class="font-weight-bold text-uppercase text-secondary" style="margin-right: 1em;" data-toggle="tooltip" data-placement="right" title="<%= creator_email%>">Created By: <%= username%></span> 
-                    <span class="text-secondary" style="font-size: 14px;margin-right: 5%;"><i class="fa fa-users" aria-hidden="true"></i> <%= likeCount%> likes | <%= followCount%> follows</spa>
-                    </p>
-                    <p class="text-secondary" style="margin-top: 1em;min-height: 25%;"><%= projectDescription%></p>
-                    <div class="d-flex justify-content-between" >
-                        <small class="test-left font-weight-bold text-success money" style="font-size: 16px;"><%= amountInCurrencyFormat%>&nbsp; SGD raised</small>
-                        <small class = "money text-right font-weight-bold text-info" style="font-size: 16px;margin-right: 8%;"><%= totalFundNeededInCurrencyFormat%> </small>
-                    </div>
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div class="progress" style="height: 15px; width: 95%;">
-                            <div class="progress-bar bg-success" style="width: <%= percentage%>;" role="progressbar" aria-valuenow="<%= donateamount%>" aria-valuemin="0" aria-valuemax="<%= projectTotalFundNeeded%>"></div>
+                    <% if(myDonate > 0){%>
+                        <span class="badge badge-pill badge-success" style="position: absolute;top:1em;right:10%; font-weight: bold;">Donated</span>
+                        <%}%>
+                    </p>    
+                    <h3 class="text-left"><%= projectName%></h3>
+                    <p class="d-flex justify-content-between" style="position:relative; top:0em;">
+                        <span class="font-weight-bold text-uppercase text-secondary" style="margin-right: 1em;" data-toggle="tooltip" data-placement="right" title="<%= creator_email%>">Created By: <%= username%></span> 
+                        <span class="text-secondary" style="font-size: 14px;margin-right: 5%;"><i class="fa fa-users" aria-hidden="true"></i> <%= likeCount%> likes | <%= followCount%> follows</spa>
+                        </p>
+                        <p class="text-secondary" style="margin-top: 1em;min-height: 25%;"><%= projectDescription%></p>
+                        <div class="d-flex justify-content-between" >
+                            <small class="test-left font-weight-bold text-success money" style="font-size: 16px;"><%= amountInCurrencyFormat%>&nbsp; SGD raised</small>
+                            <small class = "money text-right font-weight-bold text-info" style="font-size: 16px;margin-right: 8%;"><%= totalFundNeededInCurrencyFormat%> </small>
                         </div>
-                        <div style="margin-left: 1em; ">
-                            <span class="text-muted" style="font-size: 14px;"><%= percentage%></span>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="progress" style="height: 15px; width: 95%;">
+                                <div class="progress-bar bg-success" style="width: <%= percentage%>;" role="progressbar" aria-valuenow="<%= donateamount%>" aria-valuemin="0" aria-valuemax="<%= projectTotalFundNeeded%>"></div>
+                            </div>
+                            <div style="margin-left: 1em; ">
+                                <span class="text-muted" style="font-size: 14px;"><%= percentage%></span>
+                            </div>
                         </div>
-                    </div>
-                    <div class="row justify-content-end">
-                        <small class = "text-right font-weight-bold text-info money" style="margin-right: 10%;font-weight: bold;font-size: 16px;"><%= togoInCurrencyFormat%>&nbsp; to go</small>
-                    </div>
-                    <div class="d-flex justify-content-start" style="position: absolute; bottom: 2em;">                         
-                        <form action="" id='<%= projectName%>_follow' role="form" method="post">
-                            <% if(myFollow == "1") {%>
-                                <input hidden name="projName" value="<%= projectName%>"/>
-                                <input hidden name="act" value="deFollow"/>
-                                <button type="submit" class="btn btn-sm btn-outline-secondary active">Followed <i class="fa fa-bookmark" aria-hidden="true"></i></button>
-                                <%} else {%>
+                        <div class="row justify-content-between">
+                            <small class = "text-right font-weight-bold text-success money" style="margin-left: 1.2em;font-weight: bold;font-size: 12px;"><%= myDonate%> from you</small>
+                            <small class = "text-right font-weight-bold text-info money" style="margin-right: 10%;font-weight: bold;font-size: 12px;"><%= togoInCurrencyFormat%>&nbsp; to go</small>
+                        </div>
+                        <div class="d-flex justify-content-start" style="position: absolute; bottom: 2em;">                         
+                            <form action="" id='<%= projectName%>_follow' role="form" method="post">
+                                <% if(myFollow == "1") {%>
                                     <input hidden name="projName" value="<%= projectName%>"/>
-                                    <input hidden name="act" value="follow"/>
-                                    <button type="submit" class="btn btn-sm btn-outline-secondary" >Follow <i class="fa fa-bookmark-o" aria-hidden="true"></i></button>
-                                    <%}%>
-                                </form>
-                                <form style="margin-left:0.5em ;" action="" id='<%= projectName%>_like' role="form" method="post">
-                                    <% if(myLike == "1") {%>
+                                    <input hidden name="act" value="deFollow"/>
+                                    <button type="submit" class="btn btn-sm btn-outline-secondary active">Followed <i class="fa fa-bookmark" aria-hidden="true"></i></button>
+                                    <%} else {%>
                                         <input hidden name="projName" value="<%= projectName%>"/>
-                                        <input hidden name="act" value="deLike"/>
-                                        <button type="submit" class="btn btn-sm btn-outline-secondary active">Liked <i class="fa fa-heart" aria-hidden="true"></i></button>
-                                        <%} else {%>
+                                        <input hidden name="act" value="follow"/>
+                                        <button type="submit" class="btn btn-sm btn-outline-secondary" >Follow <i class="fa fa-bookmark-o" aria-hidden="true"></i></button>
+                                        <%}%>
+                                    </form>
+                                    <form style="margin-left:0.5em ;" action="" id='<%= projectName%>_like' role="form" method="post">
+                                        <% if(myLike == "1") {%>
                                             <input hidden name="projName" value="<%= projectName%>"/>
-                                            <input hidden name="act" value="like"/>
-                                            <button type="submit" class="btn btn-sm btn-outline-secondary">Like <i class="fa fa-heart-o" aria-hidden="true"></i></button>
-                                            <%}%>
-                                        </form>
-                                        
-                                        <% if(creator_email != email) {%>
-                                            <button type="button" style="padding: 0 2em; margin-left:0.5em ; " class="btn btn-sm btn-outline-success">Donate&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-credit-card" aria-hidden="true"></i></button>
-                                            <% } else { %>
-                                                <button type="button" style="padding: 0 2em; margin-left:0.5em ;" class="btn btn-sm btn-outline-success">Update&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
-                                                <% } %>
-                                            </div>
-                                        </div>
-                                    </section>
-                                    
-                                    <section style="width: 91%; margin: 0 auto;z-index: 2;">
-                                        <ul class="nav nav-tabs" id="myTab" role="tablist">
-                                            <li class="nav-item">
-                                                <a class="nav-link active text-secondary" id="update-tab" data-toggle="tab" href="#update" role="tab" aria-controls="update" aria-selected="true">Update</a>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link text-secondary" id="comments-tab" data-toggle="tab" href="#comments" role="tab" aria-controls="comments" aria-selected="false">Comments</a>
-                                            </li>
-                                        </ul>
-                                        <div class="tab-content" id="myTabContent">
-                                            <div class="tab-pane fade active show" id="update" role="tabpanel" aria-labelledby="update-tab">
-                                                
-                                            </div>
-                                            <!-- comment part -->
-                                            <div class="tab-pane fade" style="padding:1em;" id="comments" role="tabpanel" aria-labelledby="comments-tab">
-                                                <%if( commentsTemp != null) {
-                                                    for(var i = 0; i < commentsTemp.length; i++) {
-                                                        var content = commentsTemp[i].content;
-                                                        var date = commentsTemp[i].commentDateTime;
-                                                        var dateStr = date.getFullYear() + "/" + date.getMonth() + "/" + date.getDate();
-                                                        var username = commentsTemp[i].username;
+                                            <input hidden name="act" value="deLike"/>
+                                            <button type="submit" class="btn btn-sm btn-outline-secondary active">Liked <i class="fa fa-heart" aria-hidden="true"></i></button>
+                                            <%} else {%>
+                                                <input hidden name="projName" value="<%= projectName%>"/>
+                                                <input hidden name="act" value="like"/>
+                                                <button type="submit" class="btn btn-sm btn-outline-secondary">Like <i class="fa fa-heart-o" aria-hidden="true"></i></button>
+                                                <%}%>
+                                            </form>
+                                            <% if(creator_email != email) {
+                                                if(myDonate > 0){
                                                     %>
-                                                <div class="card" style="width: 100%; margin-bottom: 1em;">
-                                                    <div class="card-body">
-                                                        <h5 class="card-title"><%= username%></h5>
-                                                        <h6 class="card-subtitle mb-2 text-muted">Commented on <%= dateStr%></h6>
-                                                        <p class="card-text"><%= content%></p>
+                                                    <button type="button" style="padding: 0 1em; margin-left:0.5em ; " class="btn btn-sm btn-outline-success">Donate Again&nbsp;&nbsp;<i class="fa fa-credit-card" aria-hidden="true"></i></button>
+                                                    <% } else {%>
+                                                        <button type="button" style="padding: 0 1em; margin-left:0.5em ; " class="btn btn-sm btn-outline-success">Donate&nbsp;&nbsp;<i class="fa fa-credit-card" aria-hidden="true"></i></button>
+                                                        <%}
+                                                    } else { %>
+                                                        <button type="button" style="padding: 0 1em; margin-left:0.5em ;" class="btn btn-sm btn-outline-success">Update&nbsp;&nbsp;<i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
+                                                        <% } %>
+                                                        <button type="button" style="padding: 0 1em; margin-left:0.5em ; "  data-toggle="modal" data-target="#newComment" class="btn btn-sm btn-outline-success">New Comment&nbsp;&nbsp;<i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
                                                     </div>
                                                 </div>
-                                                <% }
-                                            }%>
+                                            </section>
+                                            
+                                            <div class="modal fade" id="newComment" tabindex="-1" role="dialog" aria-labelledby="newComment" aria-hidden="true">
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="exampleModalLabel">New Comment</h5>
+                                                            <button type="button" onclick="clearData()" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <form action="" method="POST">
+                                                            <div class="modal-body">
+                                                                <div class="form-group">
+                                                                    <label for="message-text" class="col-form-label">Content:</label>
+                                                                    <textarea class="form-control" name="newCommentContent" id="newCommentContent" required data-msg="Please enter comment."></textarea>
+                                                                </div>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <input hidden name="act" value="newComment">
+                                                                <input hidden name="projName" value="<%= projectName%>">
+                                                                <button type="button" class="btn btn-secondary" onclick="clearData()" data-dismiss="modal">Reset</button>
+                                                                <button type="submit" class="btn btn-primary">Post</button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </section>
-                                    <%} else {%>
-                                        <div>NO DATA HERE</div>
-                                        <%}%>
-                                    </body>
-                                    </html>
+                                            
+                                            <section style="width: 91%; margin: 0 auto;z-index: 2;">
+                                                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                                    <li class="nav-item">
+                                                        <a class="nav-link active text-secondary" id="update-tab" data-toggle="tab" href="#update" role="tab" aria-controls="update" aria-selected="true">Update</a>
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a class="nav-link text-secondary" id="comments-tab" data-toggle="tab" href="#comments" role="tab" aria-controls="comments" aria-selected="false">Comments</a>
+                                                    </li>
+                                                </ul>
+                                                <div class="tab-content" id="myTabContent">
+                                                    <div class="tab-pane fade active show" id="update" role="tabpanel" aria-labelledby="update-tab">
+                                                        
+                                                    </div>
+                                                    <!-- comment part -->
+                                                    <div class="tab-pane fade" style="padding:1em;" id="comments" role="tabpanel" aria-labelledby="comments-tab">
+                                                        <%if( commentsTemp != null) {
+                                                            for(var i = 0; i < commentsTemp.length; i++) {
+                                                                var content = commentsTemp[i].content;
+                                                                var date = commentsTemp[i].commentDateTime;
+                                                                var dateStr = date.getFullYear() + "/" + (date.getMonth()+1) + "/" + date.getDate();
+                                                                var username = commentsTemp[i].username;
+                                                                %>
+                                                                <div class="card" style="width: 100%; margin-bottom: 1em;">
+                                                                    <div class="card-body">
+                                                                        <h5 class="card-title"><%= username%></h5>
+                                                                        <h6 class="card-subtitle mb-2 text-muted">Commented on <%= dateStr%></h6>
+                                                                        <p class="card-text"><%= content%></p>
+                                                                    </div>
+                                                                </div>
+                                                                <% }
+                                                            }%>
+                                                        </div>
+                                                    </div>
+                                                </section>
+                                                <%} else {%>
+                                                    <div>NO DATA HERE</div>
+                                                    <%}%>
+                                                </body>
+                                                <script>
+                                                    function clearData() {
+                                                        document.getElementById("newCommentContent").value = "";
+                                                    }
+                                                
+                                                </script>
+                                                </html>
