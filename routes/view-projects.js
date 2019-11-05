@@ -97,7 +97,7 @@ router.get('/', function(req, res, next) {
         }
         
       }
-      console.log(projTemp);
+      //console.log(projTemp);
       getMyLike();
     });
   }
