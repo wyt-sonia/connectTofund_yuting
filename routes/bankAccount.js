@@ -49,7 +49,7 @@ router.post('/', function(req, res, next) {
         } else{
           res.redirect('/bankAccount?error=addBankAccountError');
         }
-      });
+      }); 
       
   });
 
