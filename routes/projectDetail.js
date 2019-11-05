@@ -11,12 +11,7 @@ var email = null;
 var projectName = null;
 var projTemp = null;
 var attachesTemp = null;
-var myFollowTemp = null;
-var myLike_query = null;
-var myFollow_query = null;
-var categories_query = 'SELECT * FROM categories';
-var sortTerm = null;
-var cateTerm = null;
+var commentsTemp = null;
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
@@ -29,7 +24,7 @@ router.get('/', function(req, res, next) {
     var followCount = null;
     var likeCount = null;
     var update_query = "";
-    var comeent_query = "";
+    var comment_query = "";
     if(projectName != null) {
         proj_query = 'WITH likeTemp AS ( SELECT * FROM likes WHERE \"projectName\" = \''+ projectName +'\'), '
         +'followTemp AS ( SELECT * FROM follows WHERE "projectName" =  \''+ projectName +'\') '
@@ -44,6 +39,9 @@ router.get('/', function(req, res, next) {
         +"NATURAL JOIN countries c "
         +"NATURAL JOIN users u WHERE p.\"projectName\" = \'" + projectName + "\'";
         attaches_query = "SELECT * FROM attaches WHERE \"projectName\" = \'" + projectName + "\'";
+        comment_query = "SELECT * FROM comments NATURAL JOIN users "
+                       +"WHERE \"projectName\" = \'" + projectName + "\' "
+                       +"ORDER BY \"commentDateTime\" DESC";
         pool.query(proj_query, (err, data) => {
             if(data != null){
                 projTemp = data.rows[0];
@@ -62,6 +60,16 @@ router.get('/', function(req, res, next) {
             if(data != null){
                 attachesTemp = data.rows;
                 console.log(attachesTemp);
+                getAllComments();
+            } else 
+            console.log(err);
+        });
+    }
+    function getAllComments() {
+        pool.query(comment_query, (err, data) => {
+            if(data != null){
+                commentsTemp = data.rows;
+                console.log(commentsTemp);
                 renderPage();
             } else 
             console.log(err);
@@ -70,11 +78,11 @@ router.get('/', function(req, res, next) {
     function renderPage() {
         if (projTemp != null && attachesTemp != null){
             console.log(myFollow + " : "+ typeof(myFollow));
-            res.render('projectDetail', { title: 'projectDetail', project: projTemp, attaches: attachesTemp, email: email, 
+            res.render('projectDetail', { title: 'projectDetail', project: projTemp, commentsTemp: commentsTemp, attaches: attachesTemp, email: email, 
             myLike: myLike, myFollow: myFollow, likeCount: likeCount, followCount: followCount});
         }
         else
-            res.render('projectDetail', { title: 'projectDetail', project: null, attaches: null, email: null, 
+            res.render('projectDetail', { title: 'projectDetail', project: null, commentsTemp: null,attaches: null, email: null, 
             myFollow: null, myLike: null, likeCount: null, followCount: null});
     }
 });

@@ -96,53 +96,53 @@
                 <p class="d-flex justify-content-between" style="position:relative; top:0em;">
                     <span class="font-weight-bold text-uppercase text-secondary" style="margin-right: 1em;" data-toggle="tooltip" data-placement="right" title="<%= creator_email%>">Created By: <%= username%></span> 
                     <span class="text-secondary" style="font-size: 14px;margin-right: 5%;"><i class="fa fa-users" aria-hidden="true"></i> <%= likeCount%> likes | <%= followCount%> follows</spa>
-                </p>
-                <p class="text-secondary" style="margin-top: 1em;min-height: 25%;"><%= projectDescription%></p>
-                <div class="d-flex justify-content-between" >
-                    <small class="test-left font-weight-bold text-success money" style="font-size: 16px;"><%= amountInCurrencyFormat%>&nbsp; SGD raised</small>
-                    <small class = "money text-right font-weight-bold text-info" style="font-size: 16px;margin-right: 8%;"><%= totalFundNeededInCurrencyFormat%> </small>
-                </div>
-                <div class="d-flex justify-content-between align-items-center">
-                    <div class="progress" style="height: 15px; width: 95%;">
-                        <div class="progress-bar bg-success" style="width: <%= percentage%>;" role="progressbar" aria-valuenow="<%= donateamount%>" aria-valuemin="0" aria-valuemax="<%= projectTotalFundNeeded%>"></div>
+                    </p>
+                    <p class="text-secondary" style="margin-top: 1em;min-height: 25%;"><%= projectDescription%></p>
+                    <div class="d-flex justify-content-between" >
+                        <small class="test-left font-weight-bold text-success money" style="font-size: 16px;"><%= amountInCurrencyFormat%>&nbsp; SGD raised</small>
+                        <small class = "money text-right font-weight-bold text-info" style="font-size: 16px;margin-right: 8%;"><%= totalFundNeededInCurrencyFormat%> </small>
                     </div>
-                    <div style="margin-left: 1em; ">
-                        <span class="text-muted" style="font-size: 14px;"><%= percentage%></span>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="progress" style="height: 15px; width: 95%;">
+                            <div class="progress-bar bg-success" style="width: <%= percentage%>;" role="progressbar" aria-valuenow="<%= donateamount%>" aria-valuemin="0" aria-valuemax="<%= projectTotalFundNeeded%>"></div>
+                        </div>
+                        <div style="margin-left: 1em; ">
+                            <span class="text-muted" style="font-size: 14px;"><%= percentage%></span>
+                        </div>
                     </div>
-                </div>
-                <div class="row justify-content-end">
-                    <small class = "text-right font-weight-bold text-info money" style="margin-right: 10%;font-weight: bold;font-size: 16px;"><%= togoInCurrencyFormat%>&nbsp; to go</small>
-                </div>
-                <div class="d-flex justify-content-start" style="position: absolute; bottom: 2em;">                         
-                    <form action="" id='<%= projectName%>_follow' role="form" method="post">
-                        <% if(myFollow == "1") {%>
-                            <input hidden name="projName" value="<%= projectName%>"/>
-                            <input hidden name="act" value="deFollow"/>
-                            <button type="submit" class="btn btn-sm btn-outline-secondary active">Followed <i class="fa fa-bookmark" aria-hidden="true"></i></button>
-                            <%} else {%>
+                    <div class="row justify-content-end">
+                        <small class = "text-right font-weight-bold text-info money" style="margin-right: 10%;font-weight: bold;font-size: 16px;"><%= togoInCurrencyFormat%>&nbsp; to go</small>
+                    </div>
+                    <div class="d-flex justify-content-start" style="position: absolute; bottom: 2em;">                         
+                        <form action="" id='<%= projectName%>_follow' role="form" method="post">
+                            <% if(myFollow == "1") {%>
                                 <input hidden name="projName" value="<%= projectName%>"/>
-                                <input hidden name="act" value="follow"/>
-                                <button type="submit" class="btn btn-sm btn-outline-secondary" >Follow <i class="fa fa-bookmark-o" aria-hidden="true"></i></button>
-                                <%}%>
-                            </form>
-                            <form style="margin-left:0.5em ;" action="" id='<%= projectName%>_like' role="form" method="post">
-                                <% if(myLike == "1") {%>
+                                <input hidden name="act" value="deFollow"/>
+                                <button type="submit" class="btn btn-sm btn-outline-secondary active">Followed <i class="fa fa-bookmark" aria-hidden="true"></i></button>
+                                <%} else {%>
                                     <input hidden name="projName" value="<%= projectName%>"/>
-                                    <input hidden name="act" value="deLike"/>
-                                    <button type="submit" class="btn btn-sm btn-outline-secondary active">Liked <i class="fa fa-heart" aria-hidden="true"></i></button>
-                                    <%} else {%>
+                                    <input hidden name="act" value="follow"/>
+                                    <button type="submit" class="btn btn-sm btn-outline-secondary" >Follow <i class="fa fa-bookmark-o" aria-hidden="true"></i></button>
+                                    <%}%>
+                                </form>
+                                <form style="margin-left:0.5em ;" action="" id='<%= projectName%>_like' role="form" method="post">
+                                    <% if(myLike == "1") {%>
                                         <input hidden name="projName" value="<%= projectName%>"/>
-                                        <input hidden name="act" value="like"/>
-                                        <button type="submit" class="btn btn-sm btn-outline-secondary">Like <i class="fa fa-heart-o" aria-hidden="true"></i></button>
-                                        <%}%>
-                                    </form>
-                                    
-                                    <% if(creator_email != email) {%>
-                                        <button type="button" style="padding: 0 2em; margin-left:0.5em ; " class="btn btn-sm btn-outline-success">Donate&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-credit-card" aria-hidden="true"></i></button>
-                                        <% } else { %>
-                                            <button type="button" style="padding: 0 2em; margin-left:0.5em ;" class="btn btn-sm btn-outline-success">Update&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
-                                            <% } %>
-                                        </div>
+                                        <input hidden name="act" value="deLike"/>
+                                        <button type="submit" class="btn btn-sm btn-outline-secondary active">Liked <i class="fa fa-heart" aria-hidden="true"></i></button>
+                                        <%} else {%>
+                                            <input hidden name="projName" value="<%= projectName%>"/>
+                                            <input hidden name="act" value="like"/>
+                                            <button type="submit" class="btn btn-sm btn-outline-secondary">Like <i class="fa fa-heart-o" aria-hidden="true"></i></button>
+                                            <%}%>
+                                        </form>
+                                        
+                                        <% if(creator_email != email) {%>
+                                            <button type="button" style="padding: 0 2em; margin-left:0.5em ; " class="btn btn-sm btn-outline-success">Donate&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-credit-card" aria-hidden="true"></i></button>
+                                            <% } else { %>
+                                                <button type="button" style="padding: 0 2em; margin-left:0.5em ;" class="btn btn-sm btn-outline-success">Update&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
+                                                <% } %>
+                                            </div>
                                         </div>
                                     </section>
                                     
@@ -159,8 +159,24 @@
                                             <div class="tab-pane fade active show" id="update" role="tabpanel" aria-labelledby="update-tab">
                                                 
                                             </div>
-                                            <div class="tab-pane fade" id="comments" role="tabpanel" aria-labelledby="comments-tab">
-                                                
+                                            <!-- comment part -->
+                                            <div class="tab-pane fade" style="padding:1em;" id="comments" role="tabpanel" aria-labelledby="comments-tab">
+                                                <%if( commentsTemp != null) {
+                                                    for(var i = 0; i < commentsTemp.length; i++) {
+                                                        var content = commentsTemp[i].content;
+                                                        var date = commentsTemp[i].commentDateTime;
+                                                        var dateStr = date.getFullYear() + "/" + date.getMonth() + "/" + date.getDate();
+                                                        var username = commentsTemp[i].username;
+                                                    %>
+                                                <div class="card" style="width: 100%; margin-bottom: 1em;">
+                                                    <div class="card-body">
+                                                        <h5 class="card-title"><%= username%></h5>
+                                                        <h6 class="card-subtitle mb-2 text-muted">Commented on <%= dateStr%></h6>
+                                                        <p class="card-text"><%= content%></p>
+                                                    </div>
+                                                </div>
+                                                <% }
+                                            }%>
                                             </div>
                                         </div>
                                     </section>
