@@ -90,9 +90,15 @@ router.post('/', function(req, res, next) {
         insertTemp = data.rows;
         console.log(insert_query);
         insertAcc();
-      } else
-        console.log('error happens when insert value into users table');
+      } else{
+        if(String(err.message).includes("username")){
+          res.redirect('/?error=duplicateUsername');
+        }
+        else{
+        console.log(err.message);
         res.redirect('/?error=signupError');
+        }
+      }
     });
 
     function insertAcc() {
