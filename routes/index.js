@@ -19,14 +19,17 @@ router.get('/', function(req, res, next) {
     if(data != null){
       cateTemp = data.rows;
       getCountries();
-    } else 
+    } else {
       console.log("no category");
+    }
   });
 
   function getCountries() {
     pool.query(countries_query, (err, data) => {
-      if(data != null && cateTemp != null) 
+      if(data != null && cateTemp != null) {
         countryTemp = data.rows;
+        res.cookie("countries", countryTemp);
+      }
       else 
         console.log('no country');
       
@@ -60,7 +63,7 @@ router.post('/', function(req, res, next) {
         res.redirect('/home');
         console.log("Login succeed.");
       } else {
-        res.redirect('/');
+        res.redirect('/?error=loginError');
         console.log("Login failed.");
       }
     });
@@ -87,9 +90,15 @@ router.post('/', function(req, res, next) {
         insertTemp = data.rows;
         console.log(insert_query);
         insertAcc();
-      } else
-        console.log('error happens when insert value into users table');
-      // res.redirect('/')
+      } else{
+        if(String(err.message).includes("username")){
+          res.redirect('/?error=duplicateUsername');
+        }
+        else{
+        console.log(err.message);
+        res.redirect('/?error=signupError');
+        }
+      }
     });
 
     function insertAcc() {

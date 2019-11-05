@@ -1,5 +1,7 @@
 var express = require('express');
+var path = require('path');
 var router = express.Router();
+
 
 const { Pool } = require('pg')
 
@@ -9,6 +11,7 @@ const pool = new Pool({
 
 var cateTemp = null;
 var countryTemp = null;
+var attachTemp = null;
 var sql_query = 'SELECT * FROM categories';
 var countries_query = 'SELECT * FROM countries';
 
@@ -19,7 +22,7 @@ router.get('/', function(req, res, next) {
     pool.query(sql_query, (err, data) => {
       if(data != null){
         cateTemp = data.rows;
-        console.log("category selected: "+cateTemp);
+        console.log(cateTemp);
         getCountry();
       } else 
         console.log("no category");
@@ -49,6 +52,7 @@ router.get('/', function(req, res, next) {
 
 router.post('/', function(req, res, next) {
     var projectName = req.body.projectName;
+    console.log("test: "+req.body.projectName);
     var projectDescription = req.body.projectDescription;
     var projectTotalFundNeeded = req.body.projectTotalFundNeeded;
     var projectStartDate = req.body.projectStartDate;
@@ -57,6 +61,7 @@ router.post('/', function(req, res, next) {
     var status = req.body.status;
     var email = req.body.email;
     var countryCode = req.body.countryCode;
+    var pictureAddress = req.body.pictureAddress;
 
     var date_now =  new Date();
     var y = date_now.getFullYear();
@@ -78,15 +83,34 @@ router.post('/', function(req, res, next) {
     var project_query = "INSERT INTO projects VALUES ('" + projectTotalFundNeeded + "','" + status + "','" + projectName +"','"
     + countryCode + "','" + projectDescription+"','" + projectDeadline + "','" + category + "','" + projectStartDate + "','" + email + "')";
     
+    var attaches_query = "INSERT INTO attaches VALUES ('" + pictureAddress + "','" + projectName + "')";
     console.log(project_query);
 
     pool.query(project_query, (err, data) => {
-        if(data != null) 
+        if(data != null) {
             projectTemp = data.rows;
-        else 
-            console.log('create project failed');
-        res.redirect('/createProject')
+            insertAcc();
+            //res.redirect('/createProject');
+        }
+        else  {
+            console.log(err);
+            res.redirect('/createProject?error=createProjectError');
+        }
         });
+
+    function insertAcc() {
+        pool.query(attaches_query, (err, data) => {
+            if(data != null && projectTemp != null) {
+                  attachTemp = data.rows;
+            }
+            else 
+                console.log('Insert account error');
+              
+            res.redirect('/createProject');
+        });
+    }
+
+    
 });
 
 module.exports = router;
