@@ -1,168 +1,191 @@
 <!DOCTYPE html>
 <html>
-  <head>
-		<!-- Page Title -->
-    <title>ConnectToFund</title>
-    <link rel='stylesheet' href='stylesheets/style.css' />
-    <link rel='stylesheet' href='stylesheets/main.css' />
-		
-		<!-- CSS for Styling -->
-		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
-		
-		<!-- JavaScript for Interactivity -->
-		<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
-		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
-
-  </head>
-  <body> 
-    <%- include navbar-after-login %>
-
+<head>
+  <!-- Page Title -->
+  <title>ConnectToFund</title>
+  <link rel='stylesheet' href='stylesheets/style.css' />
+  <link rel='stylesheet' href='stylesheets/main.css' />
+  
+  <!-- CSS for Styling -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+  
+  <!-- JavaScript for Interactivity -->
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+  
+</head>
+<body> 
+  <%- include navbar-after-login %>
+  
   <header>
-        <section class="category section bg-gray">
-                <div class="container">
-                    <div class="section-header">  
-                        <h3 class="section-title">Profile Information</h3>
-                    </div>
-                <form>
-                    <div class="form-group">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="card bg-light">
-                                    <div class="card-body">
-                                        <table class="table" style="width:100%; padding: 3x;">
-                                            <thead>
-                                                <tr>
-                                                    <td width="20%" style="font-weight: bold;">Email</td>
-                                                    <td><%= users[0].email%></td>
-                                                </tr>
-                                                <tr>
-                                                    <td width="20%" style="font-weight: bold;">Username</td>
-                                                    <td><%= users[0].username%></td>
-                                                </tr>
-                                                <tr>
-                                                    <td width="20%" style="font-weight: bold;">Phone Number</td>
-                                                    <td><%= users[0].phoneNumber%></td>
-                                                </tr>
-                                                <tr>
-                                                    <td width="20%" style="font-weight: bold;">Location</td>
-                                                    <td><%= users[0].location%></td>
-                                                </tr>
-                                                
-                                            </thead>
-                                        </table>
-                                        <button class="btn btn-dark" style="float:right;" type="button" 
-                                                data-toggle="modal" data-target="#modalEdit1">Update Profile</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                  </form>
-        
-            </div>
-            </section>
-    </header>
-    
-  </body>
-
-  <!-- Social Footer, Single Coloured -->
-  <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
-  <!-- // -->
-  <div class="container">
-      <hr />
-          <div class="text-center center-block">
-              <p class="txt-railway">- Follow ConnectToFund on social media -</p>
-                <a href="https://www.facebook.com/bootsnipp"><i class="fa fa-facebook-square fa-3x social"></i></a>
-                <a href="https://twitter.com/bootsnipp"><i class="fa fa-twitter-square fa-3x social"></i></a>
-                <a href="https://plus.google.com/+Bootsnipp-page"><i class="fa fa-google-plus-square fa-3x social"></i></a>
-                <a href="mailto:bootsnipp@gmail.com"><i class="fa fa-envelope-square fa-3x social"></i></a>
-          </div>
-      <hr />
-  </div>
-
-  <!-- Modal -->
-<div class="modal fade" id="modalEdit1" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="editModalLabel">Edit Profile</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
+    <section class="category section bg-gray">
+      <div class="container">
+        <div class="section-header">  
+          <h3 class="section-title">Profile Information</h3>
         </div>
-        <div class="modal-body">
-          <form id="edit_profile" action="" role="form" method="post" onsubmit="return validdation()">
-            <div>
-              <label>Username:</label>
-              <input class="input-material" value="<%= users[0].username%>" type="text" name="username_edit" id="username_edit" placeholder="Username" required
-              data-msg="Please enter your username">
-              <input hidden name = "act" value="edit"/>
-            </div>
-            <br>
-            <div>
-                <label>Password:</label>
-                <input class="input-material" value="<%= users[0].password%>" type="password" name="pw_edit" id="pw_edit" placeholder="Password" required
-                data-msg="Please enter your password">
+        <form>
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="card bg-light">
+                  <div class="card-body">
+                    <table class="table table-striped" style="width:100%; padding: 3x;">
+                      <tbody  scope="col">
+                        <tr>
+                          <td  scope="row" width="20%" style="font-weight: bold;"><i class="fa fa-envelope" aria-hidden="true"></i>&nbsp;&nbsp;Email</td>
+                          <td class = "text-muted"><%= users[0].email%></td>
+                        </tr>
+                        <tr>
+                          <td scope="row"  width="20%" style="font-weight: bold;"><i class="fa fa-user" aria-hidden="true"></i>&nbsp;&nbsp;Username</td>
+                          <td><%= users[0].username%></td>
+                        </tr>
+                        <tr>
+                          <td scope="row"  width="20%" style="font-weight: bold;"><i class="fa fa-phone" aria-hidden="true"></i>&nbsp;&nbsp;Phone Number</td>
+                          <td><%= users[0].phoneNumber%></td>
+                        </tr>
+                        <tr>
+                          <td scope="row"  width="20%" style="font-weight: bold;"><i class="fa fa-globe" aria-hidden="true"></i>&nbsp;&nbsp;Location</td>
+                          <td><%= users[0].countryname%></td>
+                        </tr>
+                        
+                      </tbody>
+                    </table>
+                    <button class="btn btn-dark" style="float:right;" type="button" 
+                    data-toggle="modal" data-target="#modalEdit1">Update Profile</button>
+                  </div>
+                </div>
               </div>
-            <br>
-            <div>
-                <label>Phone Number:</label>
-                <input class="input-material" value="<%= users[0].phoneNumber%>" pattern="[0-9]{8,15}" name="phoneNumber_edit" id="phoneNumber_edit" placeholder="Phone number" required
-                data-msg="Please enter your phone number" data-error-msg="Please enter valid phone number.">
-            </div> 
-            <br>
-            <div>           
-                    <label>Location:</label>   
-                    <select class="select1" name="location_edit" id="location_edit">
-                    <option value=<%= users[0].location%>><%= users[0].location%></option>
-                      <% if(countries != null) {
-                          for(var i=0; i < countries.length; i++) { %>
-                            <option value='<%= countries[i].countryCode%>'><%= countries[i].countryName%></option>
-                      <% } 
-                        } else {%>
-                            <option>--</option>
-                      <%} %>
-                    </select>
             </div>
-            <br>
+          </div>
+        </form>
         
-        <div class="modal-footer">
-          <button type="submit" class="btn btn-primary" >Update</button>
+      </div>
+    </section>
+  </header>
+  
+</body>
+
+<!-- Social Footer, Single Coloured -->
+<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+<!-- // -->
+<div class="container">
+  <hr />
+  <div class="text-center center-block">
+    <p class="txt-railway">- Follow ConnectToFund on social media -</p>
+    <a href="https://www.facebook.com/bootsnipp"><i class="fa fa-facebook-square fa-3x social"></i></a>
+    <a href="https://twitter.com/bootsnipp"><i class="fa fa-twitter-square fa-3x social"></i></a>
+    <a href="https://plus.google.com/+Bootsnipp-page"><i class="fa fa-google-plus-square fa-3x social"></i></a>
+    <a href="mailto:bootsnipp@gmail.com"><i class="fa fa-envelope-square fa-3x social"></i></a>
+  </div>
+  <hr />
+</div>
+
+<!-- Modal -->
+<div class="modal fade" style="height: 100%;" id="modalEdit1" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editModalLabel">Edit Profile</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="edit_profile" action="" role="form" method="post" onsubmit="return validdation()">
+          <div style="margin-bottom:.5em;margin-top: 0.5em;">
+            <label style="margin: 0; padding: 0;" class="text-secondary">Username:</label>
+            <input class="input-material" value="<%= users[0].username%>" type="text" name="username_edit" id="username_edit" placeholder="Username" required
+            data-msg="Please enter your username">
+            <input hidden name = "act"  aria-describedby="usernameHelpMsg" value="edit"/>
+            <small id="usernameHelpMsg" class="form-text text-muted">
+              Your username must be 6-50 characters long.
+            </small>
+          </div>
+          <br>
+          <div style="margin-bottom:.5em;">
+            <label class="text-secondary" style="margin: 0; padding: 0;">Password:</label>
+            <input class="input-material" value="<%= users[0].password%>" type="password" name="pw_edit" id="pw_edit" placeholder="Password" required
+            data-msg="Please enter your password" aria-describedby="pwHelpMsg">
+            <i class="fa fa-eye" id="pwToggle" style="position: relative; left: 95%; top: -2.5em;" aria-hidden="true" onclick="pwVisibilityToggle()"></i>
+            <small id="pwHelpMsg" class="form-text text-muted">
+              Your password must be 6-20 characters long.
+            </small>
+          </div>
+          <br>
+          <div  style="margin-bottom:.5em;">
+            <label style="margin: 0; padding: 0;" class="text-secondary">Phone Number:</label>
+            <input class="input-material"  aria-describedby="usernameHelpMsg" value="<%= users[0].phoneNumber%>" pattern="[0-9]{8,15}" name="phoneNumber_edit" id="phoneNumber_edit" placeholder="Phone number" required
+            data-msg="Please enter your phone number"  aria-describedby="telHelpMsg" data-error-msg="Please enter valid phone number.">
+            <small id="telHelpMsg" class="form-text text-muted">
+              Valid phone number is range from 5 to 15.
+            </small>
+          </div> 
+          <br>
+          <div style="margin-bottom:.5em;">           
+            <label style="margin: 0; padding: 0;" class="text-secondary">Location:</label>   
+            <select class="select1" name="location_edit" id="location_edit">
+              <% if(countries != null) {
+                for(var i=0; i < countries.length; i++) { %>
+                  <option value='<%= countries[i].countryCode%>'><%= countries[i].countryName%></option>
+                  <% } 
+                } else {%>
+                  <option>--</option>
+                  <%} %>
+                </select>
+              </div>
+              <br>
+              
+              <div class="modal-footer">
+                <button type="submit" class="btn btn-primary" >Update</button>
+              </div>
+            </form>
+          </div>
         </div>
-      </form>
-    </div>
       </div>
     </div>
-  </div>
-
-</html>
-
-<script>
-
-    var usernameEdit = document.getElementById("username_edit");
-    var pwEdit = document.getElementById("pw_edit");
-    var phoneNumberEdit = document.getElementById("phoneNumber_edit");
-
-    function validdation(){
-
-      if(usernameEdit.value.length < 6 || usernameEdit.value.length > 50){
-        alert("The valid length of username is 6 to 50.");
-        return false;
+    
+    </html>
+    
+    <script>
+      
+      var usernameEdit = document.getElementById("username_edit");
+      var pwEdit = document.getElementById("pw_edit");
+      var phoneNumberEdit = document.getElementById("phoneNumber_edit");
+      
+      function validdation(){
+        
+        if(usernameEdit.value.length < 6 || usernameEdit.value.length > 50){
+          alert("The valid length of username is 6 to 50.");
+          return false;
+        }
+        
+        if(pwEdit.value.length < 6 || pwEdit.value.length > 20){
+          alert("The valid length of password is 6 to 20.");
+          return false;
+        }
+        
       }
-
-      if(pwEdit.value.length < 6 || pwEdit.value.length > 20){
-        alert("The valid length of password is 6 to 20.");
-        return false;
+      
+      function welcomeMessage() {
+        alert ("Welcome to ConnectToFund, you have login as "+sessionStorage.getItem("emailLogin"));
       }
-
-  }
-
-    function welcomeMessage() {
-      alert ("Welcome to ConnectToFund, you have login as "+sessionStorage.getItem("emailLogin"));
-    }
-</script>
-
-
-
-<!-- test comment -->
+      
+      function pwVisibilityToggle() {
+        var x = document.getElementById("pw_edit");
+        var toggle = document.getElementById("pwToggle");
+        if (x.type === "password") {
+          x.type = "text";
+          toggle.classList.remove("fa-eye");
+          toggle.classList.add("fa-eye-slash");
+        } else {
+          x.type = "password";
+          toggle.classList.remove("fa-eye-slash");
+          toggle.classList.add("fa-eye");
+        }
+      }
+    </script>
+    
+    
+    
+    <!-- test comment -->
