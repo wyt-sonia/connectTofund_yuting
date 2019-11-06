@@ -105,9 +105,9 @@
           <br>
           <div style="margin-bottom:.5em;">
             <label class="text-secondary" style="margin: 0; padding: 0;">Password:</label>
+            <i class="fa fa-eye" id="pwToggle" style="position: relative; left: 75%; top: 2.5em;" aria-hidden="true" onclick="pwVisibilityToggle()"></i>
             <input class="input-material" value="<%= users[0].password%>" type="password" name="pw_edit" id="pw_edit" placeholder="Password" required
             data-msg="Please enter your password" aria-describedby="pwHelpMsg">
-            <i class="fa fa-eye" id="pwToggle" style="position: relative; left: 95%; top: -2.5em;" aria-hidden="true" onclick="pwVisibilityToggle()"></i>
             <small id="pwHelpMsg" class="form-text text-muted">
               Your password must be 6-20 characters long.
             </small>
@@ -137,7 +137,7 @@
               <br>
               
               <div class="modal-footer">
-                <button type="submit" class="btn btn-primary" >Update</button>
+                <button type="submit" class="btn btn-outline-primary" >Update</button>
               </div>
             </form>
           </div>

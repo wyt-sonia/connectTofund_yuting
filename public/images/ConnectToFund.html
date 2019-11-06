@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!-- Page Title -->
+  <title>ConnectToFund</title>
+  <link rel='stylesheet' href='stylesheets/style.css' />
+  <link rel='stylesheet' href='stylesheets/main.css' />
+  
+  <!-- CSS for Styling -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+  
+  <!-- JavaScript for Interactivity -->
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+  
+</head>
+<body> 
+  <style>
+    .modal {
+      height: 80%;
+      padding-top:5%;
+    }
+    input.input-material {
+      width: 100%;
+      border: none;
+      border-bottom: 1px solid #eee;
+      padding: 10px 0;
+  }
+  </style>
+  
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container">
+        <a class="navbar-brand" href='/home'>ConnectToFund</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+  
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+              <a class="nav-link" href='/home'>Home <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href='/bankAccount'>Bank Account <span class="sr-only">(current)</span></a>
+              </li>
+            <li class="nav-item active">
+                <a class="nav-link" href='/profile'>Profile <span class="sr-only">(current)</span></a>
+              </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Dropdown
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <a class="dropdown-item" href="#">Action</a>
+                <a class="dropdown-item" href="#">Another action</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="#">Something else here</a>
+              </div>
+            </li>
+          </ul>
+          <form class="form-inline my-2 my-lg-0">
+            <button class="btn btn-outline-danger my-2 my-sm-0" type="button" onclick="location.href='/'">Log off</button>
+          </form>
+        </div>
+    </div>
+  </nav>
+  
+  
+  <header>
+    
+    <section class="category section bg-gray">
+      <div class="container">
+        <div class="section-header">  
+          <h3 class="section-title">Bank Account Information</h3>
+        </div>
+        <form>
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="card bg-light">
+                  <div class="card-body">
+                    
+                        <div style="margin-left: 1em; margin-bottom: 1em;font-size: 16px;position: relative;top:1.5em"><i class="fa fa-credit-card" aria-hidden="true"></i> Binded Account 1 </div>
+                        <div class="dropdown-divider float-right" style="position: relative;top:-0.7em;margin-bottom: 1.5em;width: 82%;border-bottom: 1px solid #ddd;"></div>
+                        <table class="table table-bordered" style="width:100%; padding:0 3x;">
+                          <tbody>
+                            <tr>
+                              <td width="20%" scope="row" style="font-weight: bold;">Bank Account Number</td>
+                              <td>1122112211221122</td>
+                            </tr>
+                            <tr>
+                              <td width="20%"  scope="row"style="font-weight: bold;">Bank Account Holder</td>
+                              <td>DBS</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                        <div class="d-flex justify-content-end"  >
+                          <form action="" role="form" method="post">
+                            <input hidden name="acc" value="1122112211221122"/>
+                            <input hidden name="act" value="updateAcc"/>
+                            <button type="button"  data-toggle="modal" data-target="#modalAdd" class="btn btn-sm btn-outline-info" 
+                            onclick="updateDataBind('', 'DBS')">Update</button>
+                          </form>
+                          <form action="" role="form" style="margin-left: 1em;" method="post">
+                            <input hidden name="acc" value="1122112211221122"/>
+                            <input hidden name="act" value="deleteAcc"/>
+                            <button type="submit" class="btn btn-sm btn-outline-secondary">Remove</button>
+                          </form>
+                        </div>
+                        
+                        <div style="margin-left: 1em; margin-bottom: 1em;font-size: 16px;position: relative;top:1.5em"><i class="fa fa-credit-card" aria-hidden="true"></i> Binded Account 2 </div>
+                        <div class="dropdown-divider float-right" style="position: relative;top:-0.7em;margin-bottom: 1.5em;width: 82%;border-bottom: 1px solid #ddd;"></div>
+                        <table class="table table-bordered" style="width:100%; padding:0 3x;">
+                          <tbody>
+                            <tr>
+                              <td width="20%" scope="row" style="font-weight: bold;">Bank Account Number</td>
+                              <td>2211221122112211</td>
+                            </tr>
+                            <tr>
+                              <td width="20%"  scope="row"style="font-weight: bold;">Bank Account Holder</td>
+                              <td>UOB</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                        <div class="d-flex justify-content-end"  >
+                          <form action="" role="form" method="post">
+                            <input hidden name="acc" value="2211221122112211"/>
+                            <input hidden name="act" value="updateAcc"/>
+                            <button type="button"  data-toggle="modal" data-target="#modalAdd" class="btn btn-sm btn-outline-info" 
+                            onclick="updateDataBind('', 'UOB')">Update</button>
+                          </form>
+                          <form action="" role="form" style="margin-left: 1em;" method="post">
+                            <input hidden name="acc" value="2211221122112211"/>
+                            <input hidden name="act" value="deleteAcc"/>
+                            <button type="submit" class="btn btn-sm btn-outline-secondary">Remove</button>
+                          </form>
+                        </div>
+                        
+                        <div style="margin-left: 1em; margin-bottom: 1em;font-size: 16px;position: relative;top:1.5em"><i class="fa fa-credit-card" aria-hidden="true"></i> Binded Account 3 </div>
+                        <div class="dropdown-divider float-right" style="position: relative;top:-0.7em;margin-bottom: 1.5em;width: 82%;border-bottom: 1px solid #ddd;"></div>
+                        <table class="table table-bordered" style="width:100%; padding:0 3x;">
+                          <tbody>
+                            <tr>
+                              <td width="20%" scope="row" style="font-weight: bold;">Bank Account Number</td>
+                              <td>3344334433443344</td>
+                            </tr>
+                            <tr>
+                              <td width="20%"  scope="row"style="font-weight: bold;">Bank Account Holder</td>
+                              <td>CITY BANK</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                        <div class="d-flex justify-content-end"  >
+                          <form action="" role="form" method="post">
+                            <input hidden name="acc" value="3344334433443344"/>
+                            <input hidden name="act" value="updateAcc"/>
+                            <button type="button"  data-toggle="modal" data-target="#modalAdd" class="btn btn-sm btn-outline-info" 
+                            onclick="updateDataBind('', 'CITY BANK')">Update</button>
+                          </form>
+                          <form action="" role="form" style="margin-left: 1em;" method="post">
+                            <input hidden name="acc" value="3344334433443344"/>
+                            <input hidden name="act" value="deleteAcc"/>
+                            <button type="submit" class="btn btn-sm btn-outline-secondary">Remove</button>
+                          </form>
+                        </div>
+                        
+                        <div style="margin-left: 1em; margin-bottom: 1em;font-size: 16px;position: relative;top:1.5em"><i class="fa fa-credit-card" aria-hidden="true"></i> Binded Account 4 </div>
+                        <div class="dropdown-divider float-right" style="position: relative;top:-0.7em;margin-bottom: 1.5em;width: 82%;border-bottom: 1px solid #ddd;"></div>
+                        <table class="table table-bordered" style="width:100%; padding:0 3x;">
+                          <tbody>
+                            <tr>
+                              <td width="20%" scope="row" style="font-weight: bold;">Bank Account Number</td>
+                              <td>12121</td>
+                            </tr>
+                            <tr>
+                              <td width="20%"  scope="row"style="font-weight: bold;">Bank Account Holder</td>
+                              <td>Yuting Wang</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                        <div class="d-flex justify-content-end"  >
+                          <form action="" role="form" method="post">
+                            <input hidden name="acc" value="12121"/>
+                            <input hidden name="act" value="updateAcc"/>
+                            <button type="button"  data-toggle="modal" data-target="#modalAdd" class="btn btn-sm btn-outline-info" 
+                            onclick="updateDataBind('', 'Yuting Wang')">Update</button>
+                          </form>
+                          <form action="" role="form" style="margin-left: 1em;" method="post">
+                            <input hidden name="acc" value="12121"/>
+                            <input hidden name="act" value="deleteAcc"/>
+                            <button type="submit" class="btn btn-sm btn-outline-secondary">Remove</button>
+                          </form>
+                        </div>
+                        
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+          <button class="btn btn-success" style="float:right;" type="button" 
+          data-toggle="modal" data-target="#modalAdd">Add New Bank Account</button>
+          
+        </div>
+      </section>
+    </header>
+    
+  </body>
+  
+  <!-- Social Footer, Single Coloured -->
+  <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+  <!-- // -->
+  <div class="container">
+    <hr />
+    <div class="text-center center-block">
+      <p class="txt-railway">- Follow ConnectToFund on social media -</p>
+      <a href="https://www.facebook.com/bootsnipp"><i class="fa fa-facebook-square fa-3x social"></i></a>
+      <a href="https://twitter.com/bootsnipp"><i class="fa fa-twitter-square fa-3x social"></i></a>
+      <a href="https://plus.google.com/+Bootsnipp-page"><i class="fa fa-google-plus-square fa-3x social"></i></a>
+      <a href="mailto:bootsnipp@gmail.com"><i class="fa fa-envelope-square fa-3x social"></i></a>
+    </div>
+    <hr />
+  </div>
+  
+  <!-- Modal -->
+  <div class="modal fade" id="modalAdd" tabindex="-1" role="dialog" aria-labelledby="addBankModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addBankModalLabel">Add new bank account</h5>
+          <button type="button" class="close" onclick="clearData()" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form id="addBank_form" action="" role="form" method="post">
+            <div>
+              <input class="input-material" type="text" name="bankAccountNumber" id="bankAccountNumber" 
+              placeholder="Bank Account Number" required
+              data-msg="Please enter your bank account number">
+            </div>
+            <br> 
+            <div>
+              <input class="input-material" type="text" name="bankAccountName" id="bankAccountName" placeholder="Bank Account Holder" required
+              data-msg="Please enter the name of bank account holder">
+            </div>
+            <input hidden name="act" id= "updateORNewTag" value="addNewAcc">
+            <div class="modal-footer">
+              <button type="submit" id="newAccBtn" class="btn btn-primary">Add</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div> 
+  <script>
+    const updateTitle = "Update bank account";
+    const newTitle = "Add new bank account";
+    function updateDataBind(accNumber, accName){
+      document.getElementById("addBankModalLabel").innerHTML = updateTitle;
+      document.getElementById("newAccBtn").innerHTML = "Update";
+      document.getElementById("updateORNewTag").value="updateAcc";
+      document.getElementById().value = accName;
+      document.getElementById().value = accNumber;
+    }
+    
+    function clearData() {
+      document.getElementById("addBankModalLabel").innerHTML = newTitle;
+      document.getElementById("newAccBtn").innerHTML = "Add";
+      document.getElementById("updateORNewTag").value="addNewAcc";
+      document.getElementById().value = "";
+      document.getElementById().value = "";
+    }
+  </script>
+  </html>
+  
+  
+  <!-- test comment -->
