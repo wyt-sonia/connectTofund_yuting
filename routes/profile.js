@@ -11,37 +11,35 @@ const pool = new Pool({
 var cateTemp = null;
 var countryTemp = null;
 var userTemp = null;
-var sql_query = 'SELECT * FROM categories';
+var cate_query = 'SELECT * FROM categories';
 var countries_query = 'SELECT * FROM countries';
 
 router.get('/', function(req, res, next) {
 
   email = req.cookies['email'];
 
-  var user_query = 'SELECT * FROM users WHERE email = \''+ email+'\'';
+  var user_query = 'SELECT u.*, '
+                  +'(SELECT "countryName" from countries where "countryCode" = u."location" ) AS countryName '
+                  +'FROM users u WHERE email = \''+ email+'\'';
   console.log(user_query);
 
-  pool.query(sql_query, (err, data) => {
+  pool.query(cate_query, (err, data) => {
     if(data != null){
       cateTemp = data.rows;
       console.log("home page: "+cateTemp);
       getCountries();
     } else 
       console.log("no category");
-    //renderPage();
   });
 
   function getCountries() {
     pool.query(countries_query, (err, data) => {
       if(data != null && cateTemp != null) {
         countryTemp = data.rows;
-        //res.cookie("countries", countryTemp);
         getUser();
       }
       else 
         console.log('no country');
-      
-      //renderPage();
     });
   }
 
@@ -52,7 +50,7 @@ router.get('/', function(req, res, next) {
         console.log(userTemp);
       }
       else 
-        console.log('no user');
+        console.log(err);
       
       renderPage();
     });
