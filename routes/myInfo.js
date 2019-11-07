@@ -19,13 +19,13 @@ router.get('/', function(req, res, next) {
     
     switch (infoType){
         case "like":
-        info_query = "SELECT * FROM likes WHERE email = '"+ email +"'";
+        info_query = "SELECT * FROM likes WHERE email = '"+ email +"' ORDER BY \"dateTime\" DESC";
         break;
         case "follow":
-        info_query = "SELECT * FROM follows WHERE email = '"+ email +"'";
+        info_query = "SELECT * FROM follows WHERE email = '"+ email +"' ORDER BY \"followDateTime\" DESC";
         break;
         case "comment":
-        info_query = "SELECT * FROM comments WHERE email = '"+ email +"'";
+        info_query = "SELECT * FROM comments WHERE email = '"+ email +"' ORDER BY \"commentDateTime\" DESC";
         break;
         case "donation":
         info_query = "SELECT f.*, "
@@ -61,17 +61,33 @@ router.post('/', function(req, res, next) {
     email = req.cookies['email'];
     var action_query = null ;
     var path = "";
-    var refundProjName = req.body.refundProjName_form;
-    var donateDate = req.body.donateDate_form;
+    var projName = "";
+    var date = "";
+    var updateCommentContent = req.body.updateCommentContent;
     var act = req.body.act;
-
+    
     switch(act){
         case "refund":
+        projName = req.body.refund_comment_ProjName_form;
+        date = req.body.refund_comment_Date_form;
         action_query = "DELETE FROM funds WHERE email = '" + email 
-        + "' AND \"projectName\" = '" + refundProjName + "' AND \"fundDateTime\" = '" + donateDate + "'";
+        + "' AND \"projectName\" = '" + projName + "' AND \"fundDateTime\" = '" + date + "'";
         path = "/myInfo?infoType=donation";
         break;
-
+        case "delete_comment":
+        projName = req.body.refund_comment_ProjName_form;
+        date = req.body.refund_comment_Date_form;
+        action_query = "DELETE FROM comments WHERE email = '" + email 
+        + "' AND \"projectName\" = '" + projName + "' AND \"commentDateTime\" = '" + date + "'";
+        path = "/myInfo?infoType=comment";
+        break;
+        case "updateComment":
+        date = req.body.commentDateTime_form;
+        projName = req.body.commentProjName_form;
+        action_query = "UPDATE comments SET \"content\" = '"+updateCommentContent+ "' WHERE email = '" + email 
+        + "' AND \"projectName\" = '" + projName + "' AND \"commentDateTime\" = '" + date + "'";
+        path = "/myInfo?infoType=comment";
+        break;
     }
     console.log(action_query);
     
