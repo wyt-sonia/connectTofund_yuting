@@ -165,9 +165,9 @@
               var percentage = ((100 * (donateamount / projectTotalFundNeeded)) | 0) + "%" ;
               var amountInCurrencyFormat = Number(donateamount).toLocaleString('en');
               var start = projects[i].projectStartDate;
-              start = start.getDate() + "/" + start.getMonth() + "/" + start.getFullYear() ;
+              start = start.getDate()  + "/" + (start.getMonth() + 1) + "/" + start.getFullYear();
               var deadline = projects[i].projectDeadline;
-              deadline = deadline.getDate()  + "/" + deadline.getMonth() + "/" + deadline.getFullYear();
+              deadline = deadline.getDate()  + "/" + (deadline.getMonth() + 1) + "/" + deadline.getFullYear();
               %>
               <div class='cardContainer col-md-4 projects <%= projects[i].categoryName%> <%= projects[i].location%>' id='<%= projects[i].projectName%>'>
                 <div class="card mb-4 box-shadow">

@@ -110,60 +110,34 @@
                     <label class="custom-file-label" for="imgUpload">Choose picture</label>
                   </div>
                 </div>
-                
-                <!-- 
-                  <div class="form-group" action="/upload" method="post" enctype="multipart/form-data">
-                    <label>Upload your project profile picture:</label> 
-                    <input class="form-control-file" name="pictureAddress" type="file" accept="image/*" >
-                    <input type="submit" onclick="setInput()" value="upload"> 
-                  </div> -->
-                  
-                  <input hidden class="input-material" name="status" id="status" value = false required/>
-                  <input hidden class="input-material" type="text" name="email" id="email" value = "" required/>
-                  <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary" onclick="setInput()">Create</button>
-                    <button type="button" class="btn btn-secondary" onclick="location.href='/createProject'" >Reset</button>
-                  </div>
-                </form>
-              </div>
-            </section>
-          </body>
+                <div class="modal-footer">
+                  <button type="submit" class="btn btn-primary">Create</button>
+                  <button type="button" class="btn btn-secondary" onclick="location.href='/createProject'" >Reset</button>
+                </div>
+              </form>
+            </div>
+          </section>
+        </body>
+        
+        </html>
+        
+        <script>
           
-          </html>
-          
-          <script>
-            //var pictureAddress = document.getElementById("pictureAddress");
-            
-            //document.getElementById("result").innerHTML = sessionStorage.getItem("emailLogin");
-            
-            function setInput() {
-              var projectName = document.getElementById("projectName").value;
-              var projectDescription = document.getElementById("projectDescription").value;
-              var projectTotalFundNeeded = document.getElementById("projectTotalFundNeeded".value);
-              var projectStartDate = document.getElementById("projectStartDate").value;
-              var projectDeadline = document.getElementById("projectDeadline").value;
-              var category = document.getElementById("category");
-              var countryCode = document.getElementById("countryCode");
-              var status = document.getElementById("status");
-              var email = document.getElementById("email");
-              email.value = sessionStorage.getItem("emailLogin");
+          function validdation(){
+            if(projectName.value.length > 50){
+              alert("The valid length of project name is at most 50.");
+              return false;
             }
-            
-            function validdation(){
-              if(projectName.value.length > 50){
-                alert("The valid length of project name is at most 50.");
-                return false;
-              }
+          }
+          
+          function checkIn(){
+            if(window.location.href=="http://localhost:3000/createProject?error=createProjectError") {
+              alert("This project name has been taken, please use another name for your project!");
             }
-            
-            function checkIn(){
-              if(window.location.href=="http://localhost:3000/createProject?error=createProjectError") {
-                alert("This project name has been taken, please use another name for your project!");
-              }
-            }
-            
-          </script>
+          }
           
-          
-          
-          <!-- test comment -->
+        </script>
+        
+        
+        
+        <!-- test comment -->

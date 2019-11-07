@@ -154,7 +154,7 @@ router.post('/', function(req, res, next) {
     act_query = "INSERT INTO likes VALUES ('" + dateStr + "','" + email + "','" + projName +"')";
     break;
     case "follow":
-    act_query = "INSERT INTO follows VALUES ('" + email + "','" + projName +"')";
+    act_query = "INSERT INTO follows VALUES ('" + email + "','" + projName +"','" + dateStr +"')";
     break;
     case "deLike":
     act_query = "DELETE FROM likes WHERE \"email\" = '" + email + "' and \"projectName\" = '" + projName + "'";

@@ -42,7 +42,6 @@ router.get('/', function(req, res, next) {
               console.log(err);
           });
     }
-    
 
     function getCountry() {
         pool.query(countries_query, (err, data) => {
@@ -75,13 +74,11 @@ router.post('/', function(req, res, next) {
     var projectStartDate = req.body.projectStartDate;
     var projectDeadline = req.body.projectDeadline;
     var category = req.body.category;
-    var status = req.body.status;
     var countryCode = req.body.countryCode;
 
     var date_now =  new Date();
     
     console.log("today: "+date_now);
-    console.log("status: "+status);
 
     var project_query = "UPDATE projects SET \"projectTotalFundNeeded\"='" + projectTotalFundNeeded + "', \"projectName\" = '" + projectName +"', \"countryCode\" = '"
     + countryCode + "', \"projectDescription\" = '" + projectDescription+"',\"projectDeadline\"='" + projectDeadline + "', \"categoryName\"='" + category + "', \"projectStartDate\" = '" + projectStartDate  + "' " 
@@ -91,7 +88,7 @@ router.post('/', function(req, res, next) {
     console.log(project_query);
 
     pool.query(project_query, (err, data) => {
-        if(data != null) {
+        if(data != 1) {
             res.redirect('/projectDetail?proj=' + projectName);
         }
         else  {
