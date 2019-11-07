@@ -160,6 +160,7 @@
         <div class="row">
           <%if(projects != null) {
             for(var i = 0; i < projects.length; i++) {
+              var projectStatus = projects[i].projstatus;
               var donateamount = parseFloat(projects[i].donateamount);
               var projectTotalFundNeeded = parseFloat(projects[i].projectTotalFundNeeded);
               var percentage = ((100 * (donateamount / projectTotalFundNeeded)) | 0) + "%" ;
@@ -174,146 +175,152 @@
                   <img class="image card-img-top" src='/images/<%= projects[i].pictureAddress%>' onclick="toProject('<%= projects[i].projectName%>')" alt='<%= projects[i].projectName %> display picture' style="height: 225px; width: 100%; display: block;">
                   <div class="card-body">
                     <div>
-                      <h5 class="card-title" style="display: block; white-space: nowrap; overflow:hidden; text-overflow: ellipsis; height: 2em;"><%= projects[i].projectName%></h5>
-                      <div class="row" style="position: relative; top:-1em; left: 1em;">
-                        <small style="position: relative;top:-0.1em;" ><i class="fa fa-globe" aria-hidden="true"></i>&nbsp;&nbsp;<%= projects[i].location%></small>
-                      </div>
-                      <div class="d-flex justify-content-between align-items-cente" style="position: relative; top:-0.7em;">
-                        <div style="margin-left: 0.1em;">
-                          <i class="fa fa-hourglass-end" style="font-size:12px;" aria-hidden="true"></i><span class="text-muted" style="font-size:14px;position: relative;top:0.1em;" class="deadline"> &nbsp;<%=deadline%></span>
+                      <% if(donateamount >= projectTotalFundNeeded) {%>
+                        <span class="badge badge-success float-right" style="margin-bottom: 0.5em;">enough funds</span>
+                        <% }else if(projectStatus != '1') {%>
+                        <span class="badge badge-danger float-right" style="margin-bottom: 0.5em;">out of date</span>
+                        <%}%>
+                        <h5 class="card-title" style="display: block; white-space: nowrap; overflow:hidden; text-overflow: ellipsis; height: 2em;"><%= projects[i].projectName%></h5>
+                        
+                        <div class="row" style="position: relative; top:-1em; left: 1em;">
+                          <small style="position: relative;top:-0.1em;" ><i class="fa fa-globe" aria-hidden="true"></i>&nbsp;&nbsp;<%= projects[i].location%></small>
                         </div>
-                        <div style="margin-right: 1em;">
-                          <i class="fa fa-calendar-o" style="font-size:12px;" aria-hidden="true"></i> <span class="text-muted" style="font-size:14px;position: relative;top:0.1em;" class="start">&nbsp;<%=start%></span>
+                        <div class="d-flex justify-content-between align-items-cente" style="position: relative; top:-0.7em;">
+                          <div style="margin-left: 0.1em;">
+                            <i class="fa fa-hourglass-end" style="font-size:12px;" aria-hidden="true"></i><span class="text-muted" style="font-size:14px;position: relative;top:0.1em;" class="deadline"> &nbsp;<%=deadline%></span>
+                          </div>
+                          <div style="margin-right: 1em;">
+                            <i class="fa fa-calendar-o" style="font-size:12px;" aria-hidden="true"></i> <span class="text-muted" style="font-size:14px;position: relative;top:0.1em;" class="start">&nbsp;<%=start%></span>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                    <p class="card-text" style="display: block; max-lines: 3; overflow:hidden; text-overflow: ellipsis; height: 6em;"><%= projects[i].projectDescription%></p>
-                    <small class="test-left font-weight-bold text-success money"><%= amountInCurrencyFormat%>&nbsp;SGD raised</small>
-                    <div class="d-flex justify-content-between align-items-center" style="margin-bottom: 1.5em">
-                      <div class="progress" style="height: 5px; width: 85%;">
-                        <div class="progress-bar bg-success" style="width: <%= percentage%>;" role="progressbar" aria-valuenow="<%= donateamount%>" aria-valuemin="0" aria-valuemax="<%= projectTotalFundNeeded%>"></div>
+                      <p class="card-text" style="display: block; max-lines: 3; overflow:hidden; text-overflow: ellipsis; height: 6em;"><%= projects[i].projectDescription%></p>
+                      <small class="test-left font-weight-bold text-success money"><%= amountInCurrencyFormat%>&nbsp;SGD raised</small>
+                      <div class="d-flex justify-content-between align-items-center" style="margin-bottom: 1.5em">
+                        <div class="progress" style="height: 5px; width: 85%;">
+                          <div class="progress-bar bg-success" style="width: <%= percentage%>;" role="progressbar" aria-valuenow="<%= donateamount%>" aria-valuemin="0" aria-valuemax="<%= projectTotalFundNeeded%>"></div>
+                        </div>
+                        <div style="margin-left: 1em; ">
+                          <small class="text-muted"><%= percentage%></small>
+                        </div>
                       </div>
-                      <div style="margin-left: 1em; ">
-                        <small class="text-muted"><%= percentage%></small>
+                      <div class="d-flex justify-content-between align-items-center">
+                        <div class="btn-group">
+                          <form action="" id='<%= projects[i].projectName%>_follow' role="form" method="post">
+                            <button type="button" onclick="toProject('<%= projects[i].projectName%>')" class="btn btn-sm btn-outline-secondary" style="width: 12em;">View</button>
+                          </form>
+                        </div>
+                        <small class="text-muted"><%= projects[i].likecount%> likes | <%= projects[i].followcount%> follows</small>
                       </div>
-                    </div>
-                    <div class="d-flex justify-content-between align-items-center">
-                      <div class="btn-group">
-                        <form action="" id='<%= projects[i].projectName%>_follow' role="form" method="post">
-                          <button type="button" onclick="toProject('<%= projects[i].projectName%>')" class="btn btn-sm btn-outline-secondary" style="width: 12em;">View</button>
-                        </form>
-                      </div>
-                      <small class="text-muted"><%= projects[i].likecount%> likes | <%= projects[i].followcount%> follows</small>
                     </div>
                   </div>
                 </div>
-              </div>
-              <%}
-            }
-            %>
+                <%}
+              }
+              %>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+      
+      
+      
+    </body>
+    </html>
     
-    
-    
-  </body>
-  </html>
-  
-  <script>
-    function toProject(projectName){
-      window.location = '/projectDetail?proj='+projectName;
-    }
-    
-    function checkSort(sortTerm, cate) {
-      if(sortTerm != null && sortTerm != "") {
-        var sortBtn_id = sortTerm + '_sort';
-        document.getElementById(sortBtn_id).checked = true;
-      } else {
-        document.getElementById('start_sort').checked = true;
+    <script>
+      function toProject(projectName){
+        window.location = '/projectDetail?proj='+projectName;
       }
-      if(cate != null && cate != "") {
-        var cate_id = cate + '_cate';
-        document.getElementById(cate_id).classList.add('active');
-      } else {
-        document.getElementById('all_cate').classList.add('active');
-      }
-    }
-    
-    function filterByCate(cate, sortTerm) {
-      var path = '/viewCreatedProjects';
-      if(cate != 'all'){
-        path += '?cate='+ cate;
+      
+      function checkSort(sortTerm, cate) {
         if(sortTerm != null && sortTerm != "") {
-          path += '&sortTerm='+sortTerm;
-        } 
-      }else {
-        if(sortTerm != null && sortTerm != "") {
-          path += '?sortTerm='+sortTerm;
+          var sortBtn_id = sortTerm + '_sort';
+          document.getElementById(sortBtn_id).checked = true;
+        } else {
+          document.getElementById('start_sort').checked = true;
+        }
+        if(cate != null && cate != "") {
+          var cate_id = cate + '_cate';
+          document.getElementById(cate_id).classList.add('active');
+        } else {
+          document.getElementById('all_cate').classList.add('active');
         }
       }
-      window.location = path;
-    }
-    
-    function sortBy(sortTerm, cate){
-      var path = '/viewCreatedProjects';
-      if(cate != null && cate != "") {
-        path += '?cate='+cate+'&sortTerm=' + sortTerm;
-      } else if(sortTerm != 'start'){
-        path += '?sortTerm=' + sortTerm;
-      }
-      window.location = path;
-    }
-    
-    function filterByName() {
-      var name = document.getElementById("searchName").value;
-      var proj = document.getElementsByClassName('projects');
-      if(name.length === 0 || !name.trim()) {
-        for(var i = 0; i < proj.length ; i++) {
-          proj[i].style.display = "block";
+      
+      function filterByCate(cate, sortTerm) {
+        var path = '/viewCreatedProjects';
+        if(cate != 'all'){
+          path += '?cate='+ cate;
+          if(sortTerm != null && sortTerm != "") {
+            path += '&sortTerm='+sortTerm;
+          } 
+        }else {
+          if(sortTerm != null && sortTerm != "") {
+            path += '?sortTerm='+sortTerm;
+          }
         }
-        document.getElementById("searchName").value="";
-      } else {
-        name = name.toLowerCase();
-        for(var i = 0; i < proj.length ; i++) {
-          var proj_id = proj[i].id.toLowerCase();
-          if (!proj_id.includes(name)) {
-            proj[i].style.display = "none";
-          } else {
+        window.location = path;
+      }
+      
+      function sortBy(sortTerm, cate){
+        var path = '/viewCreatedProjects';
+        if(cate != null && cate != "") {
+          path += '?cate='+cate+'&sortTerm=' + sortTerm;
+        } else if(sortTerm != 'start'){
+          path += '?sortTerm=' + sortTerm;
+        }
+        window.location = path;
+      }
+      
+      function filterByName() {
+        var name = document.getElementById("searchName").value;
+        var proj = document.getElementsByClassName('projects');
+        if(name.length === 0 || !name.trim()) {
+          for(var i = 0; i < proj.length ; i++) {
             proj[i].style.display = "block";
           }
-        }
-      }
-    }
-    
-    function filterByCountry(){
-      var proj = document.getElementsByClassName('projects');
-      var countries = document.getElementsByClassName('countryCheckBox');
-      var counter = 0;
-      
-      for(var i = 0; i < countries.length; i++) {
-        if(countries[i].checked) {
-          counter++;
-          var selected = document.getElementsByClassName(countries[i].value);
-          for(var j = 0; j < selected.length; j++) {
-            selected[j].style.display = "block";
-          }
+          document.getElementById("searchName").value="";
         } else {
-          var not_selected = document.getElementsByClassName(countries[i].value);
-          for(var j = 0; j < not_selected.length; j++) {
-            not_selected[j].style.display = "none";
+          name = name.toLowerCase();
+          for(var i = 0; i < proj.length ; i++) {
+            var proj_id = proj[i].id.toLowerCase();
+            if (!proj_id.includes(name)) {
+              proj[i].style.display = "none";
+            } else {
+              proj[i].style.display = "block";
+            }
           }
         }
       }
-      if(counter == 0) {
-        for(var j = 0; j < proj.length; j++) {
-          proj[j].style.display = "block";
+      
+      function filterByCountry(){
+        var proj = document.getElementsByClassName('projects');
+        var countries = document.getElementsByClassName('countryCheckBox');
+        var counter = 0;
+        
+        for(var i = 0; i < countries.length; i++) {
+          if(countries[i].checked) {
+            counter++;
+            var selected = document.getElementsByClassName(countries[i].value);
+            for(var j = 0; j < selected.length; j++) {
+              selected[j].style.display = "block";
+            }
+          } else {
+            var not_selected = document.getElementsByClassName(countries[i].value);
+            for(var j = 0; j < not_selected.length; j++) {
+              not_selected[j].style.display = "none";
+            }
+          }
+        }
+        if(counter == 0) {
+          for(var j = 0; j < proj.length; j++) {
+            proj[j].style.display = "block";
+          }
         }
       }
-    }
-  </script>
-  
-  
-  
-  <!-- test comment -->
+    </script>
+    
+    
+    
+    <!-- test comment -->
