@@ -17,6 +17,8 @@ var createProjectRouter = require('./routes/createProject');
 var viewCreatedProjectsRouter = require('./routes/viewCreatedProjects');
 var profileRouter = require('./routes/profile');
 var bankAccountRouter = require('./routes/bankAccount');
+var myInfoRouter = require('./routes/myInfo');
+
 
 var app = express();
 
@@ -41,6 +43,7 @@ app.use('/createProject', createProjectRouter);
 app.use('/viewCreatedProjects', viewCreatedProjectsRouter);
 app.use('/profile', profileRouter);
 app.use('/bankAccount', bankAccountRouter);
+app.use('/myInfo', myInfoRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
