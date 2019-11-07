@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- Page Title -->
+    <title>ConnectToFund</title>
+    <link rel='stylesheet' href='stylesheets/style.css' />
+    <link rel='stylesheet' href='stylesheets/main.css' />
+    
+    <!-- CSS for Styling -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <link rel="stylesheet" href="/stylesheets/font-awesome-4.7.0/css/font-awesome.min.css">
+    
+    <!-- JavaScript for Interactivity -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+    <style>
+        .money::before {
+            content:"$";
+        }
+        .image {
+            opacity: 1;
+            display: block;
+            transition: .3s ease;
+            backface-visibility: hidden;
+        }
+        .cardContainer:hover .image {
+            opacity: 0.7;
+        }
+    </style>
+</head>
+<body onload="uiBind('<%= infoType%>')">
+    <%- include navbar-after-login %>
+    <section class="category section bg-gray">
+        <div class="section-header">  
+            <h3 class="section-title" id="infoTitle">My Info</h3>
+        </div>
+        <div class="row" style="margin-bottom: 1em;">
+            <div class="col-md-12 card bg-light">
+                <div class="card-body">
+                    <table class="table table-hover" style="padding: 0 2em;"> 
+                        <%
+                        if((infoType == "donation" || infoType == "comment") && infoTemp != null) {
+                            var donation_comment_table_title_1 = infoType == "donation" ? "Amount" : "Content";
+                            var donation_comment_table_title_2 = infoType == "donation" ? "Donate" : "Comment";
+                            %>
+                            <thead>
+                                <tr>
+                                    <th scope="col">Project Name</th>
+                                    <th scope="col"><%= donation_comment_table_title_1%></th>
+                                    <th scope="col"><%= donation_comment_table_title_2%> Date</th>
+                                    <th scope="col">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <%
+                                for(var i = 0; i < infoTemp.length; i++) {
+                                    var projName = infoTemp[i].projectName;
+                                    var dateStrInDB = "";
+                                    var dateStr = "";
+                                    var amount = "";
+                                    var content = "";
+                                    var status = "";
+                                    if(infoType == "donation" ) {
+                                        var date = infoTemp[i].fundDateTime;
+                                        dateStrInDB = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " + date.getHours() + ":" + date.getMinutes() + ":" +date.getSeconds();
+                                        dateStr = date.getDate() + "/" + (date.getMonth()+1) + "/" + date.getFullYear() + " " + date.getHours() + ":" + date.getMinutes() + ":" +date.getSeconds();
+                                        amount = infoTemp[i].amount;
+                                        status = infoTemp[i].projstatus;
+                                    } else {
+                                        var date = infoTemp[i].commentDateTime;
+                                        dateStrInDB = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " + date.getHours() + ":" + date.getMinutes() + ":" +date.getSeconds();
+                                        dateStr = date.getDate() + "/" + (date.getMonth()+1) + "/" + date.getFullYear() + " " + date.getHours() + ":" + date.getMinutes() + ":" +date.getSeconds();
+                                        content =  infoTemp[i].content;
+                                    }
+                                    %>
+                                    <tr class="<%= projName%>_donation donation_row">
+                                        <th scope="row" class = "donateCol" onclick="toggleContributeView('<%= infoType%>','isolate', '<%= projName%>')"><%= projName%></th>
+                                        <%  if(infoType == "donation" ) {%>
+                                            <td class = "donateCol"  onclick="toggleContributeView('<%= infoType%>','isolate', '<%= projName%>')"> <%= amount%></td>
+                                            <%} else {%>
+                                                <td class = "donateCol"  onclick="toggleContributeView('<%= infoType%>','isolate', '<%= projName%>')"> <%= content%></td>
+                                                <%}%>
+                                                <td class = "donateCol"  onclick="toggleContributeView('<%= infoType%>','isolate', '<%= projName%>')"><%= dateStr%></td>
+                                                <td>
+                                                    <% if(infoType == "donation" && status == '1') {%>
+                                                        <button type="button" style="z-index: 2;" class="btn btn-sm btn-outline-secondary"  data-toggle="modal" data-target="#refund_deleteComment_alert" 
+                                                        onclick="refund_comment_DataBind('refund', '<%= projName%>', '<%= amount%>', '<%= dateStr%>', '<%= dateStrInDB%>')">Refund</button>
+                                                        <% } else if (infoType == "donation" && status != '1') {%>
+                                                            <button type="button" style="z-index: 2;" class="btn btn-sm btn-outline-secondary" disabled >Project Completed</button>
+                                                            <% } else if(infoType == "comment") {%>
+                                                                <button type="button" style="z-index: 2;" class="btn btn-sm btn-outline-info"  data-toggle="modal" data-target="#updateComment" 
+                                                                onclick="commentDataBind('<%= projName%>', '<%= dateStrInDB%>', '<%= content%>')">Modify</button>
+                                                                <button type="button" style="z-index: 2;" class="btn btn-sm btn-outline-secondary"  data-toggle="modal" data-target="#refund_deleteComment_alert" 
+                                                                onclick="refund_comment_DataBind('comment' ,'<%= projName%>', '<%= content%>', '<%= dateStr%>', '<%= dateStrInDB%>')">Delete</button>
+                                                                <%}%>
+                                                            </td>
+                                                        </tr>
+                                                        <%}%> 
+                                                    </tbody>
+                                                    <%} else if ((infoType == "like" || infoType == "follow") && infoTemp != null) {
+                                                        var like_follow_table_title = infoType == "like" ? "Like" : "Follow";
+                                                        %>
+                                                        <thead>
+                                                            <tr>
+                                                                <th scope="col">Project Name</th>
+                                                                <th scope="col"><%= like_follow_table_title%> Date</th>
+                                                                <th scope="col">Action</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <%
+                                                            for(var i = 0; i < infoTemp.length; i++) {
+                                                                var projName = infoTemp[i].projectName;
+                                                                var dateStrInDB = "";
+                                                                var dateStr = "";
+                                                                if(infoType == "like") {
+                                                                    var date = infoTemp[i].dateTime;
+                                                                    dateStrInDB = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " + date.getHours() + ":" + date.getMinutes() + ":" +date.getSeconds();;
+                                                                    dateStr = date.getDate() + "/" + (date.getMonth()+1) + "/" + date.getFullYear() + " " + date.getHours() + ":" + date.getMinutes() + ":" +date.getSeconds();
+                                                                }
+                                                                else {
+                                                                    date = infoTemp[i].followDateTime;
+                                                                    dateStrInDB = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " + date.getHours() + ":" + date.getMinutes() + ":" +date.getSeconds();;
+                                                                    dateStr = date.getDate() + "/" + (date.getMonth()+1) + "/" + date.getFullYear() + " " + date.getHours() + ":" + date.getMinutes() + ":" +date.getSeconds();    
+                                                                }
+                                                                %>                      
+                                                                <tr class="<%= projName%>_donation donation_row">
+                                                                    <th scope="row"><%= projName%></th>
+                                                                    <td> <%= dateStr%></td>
+                                                                    <td>
+                                                                        <button type="button" style="z-index: 2;" class="btn btn-sm btn-outline-secondary" onclick="toProj('<%=projName %>')">View Detail</button>
+                                                                    </td>
+                                                                </tr>
+                                                                <%}%> 
+                                                            </tbody>
+                                                            <%}%>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </section>
+                                        <div class="modal fade" id="refund_deleteComment_alert" tabindex="-1" role="dialog" aria-labelledby="refund_deleteComment_alert" aria-hidden="true">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="modalLabel"></h5>
+                                                        <button type="button" class="close" data-dismiss="modal" onclick="clearData()" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <p class="text-dark" style="font-size: 16px;" id="refund_comment_alert_msg"></p>
+                                                        <p class="text-secondary" style="font-size: 14px;" id="refund_comment_ProjName"> </p>
+                                                        <p class="text-secondary" style="font-size: 14px;" id="refundAmount_comment"> </p>
+                                                        <p class="text-secondary" style="font-size: 14px;" id="donate_comment_Date"></p>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <form method="POST">
+                                                            <input hidden name="refund_comment_ProjName_form" id="refund_comment_ProjName_form">
+                                                            <input hidden name="refund_comment_Date_form" id="refund_comment_Date_form">
+                                                            <input hidden name="act" id="act_refund_comment" value="refund">
+                                                            <button type="button" class="btn btn-sm btn-outline-secondary" data-dismiss="modal" onclick="clearData()">Close</button>
+                                                            <button type="submit" class="btn btn-sm btn-outline-primary">Confirm</button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="modal fade  bd-example-modal-lg" id="updateComment" tabindex="-1" role="dialog" aria-labelledby="updateComment" aria-hidden="true">
+                                            <div class="modal-dialog modal-lg" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title">Modify Comment</h5>
+                                                        <button type="button" onclick="clearData()" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <form action="" method="POST">
+                                                        <div class="modal-body">
+                                                            <div class="form-group">
+                                                                <label for="message-text" class="col-form-label">Content:</label>
+                                                                <textarea class="form-control" name="updateCommentContent" id="updateCommentContent" required data-msg="Please enter comment."></textarea>
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <input hidden name="act" value="updateComment">
+                                                            <input hidden name="commentProjName_form" id= "commentProjName_form">
+                                                            <input hidden name="commentDateTime_form" id= "commentDateTime_form">
+                                                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="clearData()">Reset</button>
+                                                            <button type="submit" class="btn btn-sm btn-outline-success">Update <i class="fa fa-comments-o" aria-hidden="true"></i></button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </body>
+                                    <script>
+                                        function uiBind(infoType){
+                                            
+                                            var title = "";
+                                            switch (infoType){
+                                                case "like":
+                                                title = "The projects I liked";
+                                                break;
+                                                
+                                                case "follow":
+                                                title = "The projects I followed";
+                                                
+                                                break;
+                                                case "comment":
+                                                title = "My comments"
+                                                break;
+                                                
+                                                case "donation":
+                                                title="My contribution"
+                                                break;
+                                                
+                                                case "systemMessage":
+                                                title="My message"
+                                                break;
+                                            }
+                                            
+                                            document.getElementById("infoTitle").innerHTML = title;
+                                        }
+                                        
+                                        function refund_comment_DataBind(flag , projName, amount_content, dateStr, date){
+                                            if(flag == "refund") {
+                                                document.getElementById("act_refund_comment").value = "refund";
+                                                document.getElementById("refund_comment_alert_msg").innerHTML = "Confirm to make a refund request?";
+                                                document.getElementById("modalLabel").innerHTML = "Refund request";
+                                                document.getElementById("refund_comment_ProjName").innerHTML = "Project Name: " + projName;
+                                                document.getElementById("refundAmount_comment").innerHTML = "Amount: " + amount_content;
+                                                document.getElementById("donate_comment_Date").innerHTML = "Donate Date: "+ dateStr;
+                                            } else {
+                                                document.getElementById("act_refund_comment").value = "delete_comment";
+                                                document.getElementById("refund_comment_alert_msg").innerHTML = "Confirm to delete the comment?";
+                                                document.getElementById("modalLabel").innerHTML = "Delete Comment";
+                                                document.getElementById("refund_comment_ProjName").innerHTML = "Project Name: " + projName;
+                                                document.getElementById("refundAmount_comment").innerHTML = "comment time: " + dateStr;
+                                                document.getElementById("donate_comment_Date").innerHTML = "comment content: "+ amount_content;
+                                            }
+                                            document.getElementById("refund_comment_ProjName_form").value = projName;
+                                            document.getElementById("refund_comment_Date_form").value = date; 
+                                        }
+                                        
+                                        function commentDataBind(projName, date, content) {
+                                            
+                                            document.getElementById("updateCommentContent").value = content;
+                                            document.getElementById("commentProjName_form").value = projName;
+                                            document.getElementById("commentDateTime_form").value = date;                                            
+                                        }
+                                        
+                                        function clearData(){
+                                            document.getElementById("refund_comment_alert_msg").innerHTML = "";
+                                            document.getElementById("modalLabel").innerHTML ="";
+                                            document.getElementById("refund_comment_ProjName").innerHTML="";
+                                            document.getElementById("refundAmount_comment").innerHTML="";
+                                            document.getElementById("donate_comment_Date").innerHTML="";
+                                            document.getElementById("refund_comment_ProjName_form").value = "";
+                                            document.getElementById("refund_comment_Date_form").value = "";
+                                            document.getElementById("updateCommentContent").value = "";
+                                            document.getElementById("commentProjName_form").value = "";
+                                            document.getElementById("commentDateTime_form").value = "";    
+                                        }
+                                        
+                                        function toggleContributeView(donation_comment, flag, projName){
+                                            var selectedClass = projName+"_donation";
+                                            var rows =  document.getElementsByClassName("donation_row");
+                                            var donateCol = document.getElementsByClassName("donateCol");
+                                            var path = donation_comment == "donation" ? '/myInfo?infoType=donation': '/myInfo?infoType=comment';
+                                            if(flag == "isolate") {
+                                                for(var i = 0; i < rows.length; i++) {
+                                                    var test = rows[i].classList.value;
+                                                    var test2 = selectedClass + " donation_row";
+                                                    if(rows[i].classList.value != (selectedClass + " donation_row"))
+                                                    rows[i].style.display = "none";
+                                                }
+                                                for(var j = 0; j < donateCol.length; j++) {
+                                                    donateCol[j].onclick = function() { toggleContributeView(donation_comment, "all", ""); }
+                                                }
+                                            } else {
+                                                for(var j = 0; j < donateCol.length; j++) {
+                                                    donateCol[j].onclick = window.location = path;
+                                                }
+                                            }
+                                        }
+                                        
+                                        function toProj(projectName){
+                                            window.location='/projectDetail?proj='+projectName;
+                                        }
+                                    </script>
+                                    </html>
