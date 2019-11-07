@@ -19,13 +19,13 @@ router.get('/', function(req, res, next) {
     
     switch (infoType){
         case "like":
-        info_query = "SELECT * FROM likes WHERE email = '"+ email +"'";
+        info_query = "SELECT * FROM likes WHERE email = '"+ email +"' ORDER BY \"dateTime\" DESC";
         break;
         case "follow":
-        info_query = "SELECT * FROM follows WHERE email = '"+ email +"'";
+        info_query = "SELECT * FROM follows WHERE email = '"+ email +"' ORDER BY \"followDateTime\" DESC";
         break;
         case "comment":
-        info_query = "SELECT * FROM comments WHERE email = '"+ email +"'";
+        info_query = "SELECT * FROM comments WHERE email = '"+ email +"' ORDER BY \"commentDateTime\" DESC";
         break;
         case "donation":
         info_query = "SELECT f.*, "
