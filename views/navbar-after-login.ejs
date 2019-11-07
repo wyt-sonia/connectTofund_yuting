@@ -1,50 +1,54 @@
 <style>
-    .modal {
-      height: 80%;
-      padding-top:5%;
-    }
-    input.input-material {
-      width: 100%;
-      border: none;
-      border-bottom: 1px solid #eee;
-      padding: 10px 0;
+  .modal {
+    height: 80%;
+    padding-top:5%;
   }
-  </style>
-  
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <div class="container">
-        <a class="navbar-brand" href='/home'>ConnectToFund</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-  
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-              <a class="nav-link" href='/home'>Home <span class="sr-only">(current)</span></a>
-            </li>
-            <li class="nav-item active">
-                <a class="nav-link" href='/bankAccount'>Bank Account <span class="sr-only">(current)</span></a>
-              </li>
-            <li class="nav-item active">
-                <a class="nav-link" href='/profile'>Profile <span class="sr-only">(current)</span></a>
-              </li>
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Dropdown
-              </a>
-              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <a class="dropdown-item" href="#">Action</a>
-                <a class="dropdown-item" href="#">Another action</a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#">Something else here</a>
-              </div>
-            </li>
-          </ul>
-          <form class="form-inline my-2 my-lg-0">
-            <button class="btn btn-outline-danger my-2 my-sm-0" type="button" onclick="location.href='/'">Log off</button>
-          </form>
-        </div>
+  input.input-material {
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid #eee;
+    padding: 10px 0;
+  }
+</style>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container">
+    <a class="navbar-brand" href='/home'>ConnectToFund</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href='/home'>Home <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href='/bankAccount'>Bank Account <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href='/profile'>Profile <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            More
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href="/viewCreatedProjects">&nbsp;<i class="fa fa-lightbulb-o" aria-hidden="true"></i>&nbsp;&nbsp;My Projects</a>
+            <a class="dropdown-item" href="/myInfo?infoType=donation"><i class="fa fa-money" aria-hidden="true"></i>  My Contribution</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="/myInfo?infoType=like"><i class="fa fa-heart" aria-hidden="true"></i> &nbsp;My Likes</a>
+            <a class="dropdown-item" href="/myInfo?infoType=follow"><i class="fa fa-star-o" aria-hidden="true"></i>  &nbsp;My Follows</a>
+            <a class="dropdown-item" href="/myInfo?infoType=comment"><i class="fa fa-comments-o" aria-hidden="true"></i>  &nbsp;My Comments</a>
+          </div>
+        </li>
+        <li class="nav-item active">
+            <a class="nav-link" href='#'><i class="fa fa-envelope-o" aria-hidden="true"></i>  Message <span class="sr-only">(current)</span></a>
+          </li>
+      </ul>
+      <form class="form-inline my-2 my-lg-0">
+        <button class="btn btn-outline-danger my-2 my-sm-0" type="button" onclick="location.href='/'">Log off</button>
+      </form>
     </div>
-  </nav>
-  
+  </div>
+</nav>

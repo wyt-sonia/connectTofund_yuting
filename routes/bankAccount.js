@@ -11,10 +11,6 @@ var email = null;
 var bankAccountTemp = null;
 router.get('/', function(req, res, next) {
   email = req.cookies['email'];
-
-  if(req.query.error == "") {
-
-  }
   
   var user_query = 'SELECT * FROM binds WHERE email = \''+ email+'\'';
   console.log(user_query);

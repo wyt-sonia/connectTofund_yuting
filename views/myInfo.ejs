@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- Page Title -->
+    <title>ConnectToFund</title>
+    <link rel='stylesheet' href='stylesheets/style.css' />
+    <link rel='stylesheet' href='stylesheets/main.css' />
+    
+    <!-- CSS for Styling -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <link rel="stylesheet" href="/stylesheets/font-awesome-4.7.0/css/font-awesome.min.css">
+    
+    <!-- JavaScript for Interactivity -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+    <style>
+        .money::before {
+            content:"$";
+        }
+        .image {
+            opacity: 1;
+            display: block;
+            transition: .3s ease;
+            backface-visibility: hidden;
+        }
+        .cardContainer:hover .image {
+            opacity: 0.7;
+        }
+    </style>
+</head>
+<body onload="uiBind('<%= infoType%>')">
+    <%- include navbar-after-login %>
+    <section class="category section bg-gray">
+        <div class="section-header">  
+            <h3 class="section-title" id="infoTitle">My Info</h3>
+        </div>
+        <div class="row" style="margin-bottom: 1em;">
+            <div class="col-md-12 card bg-light">
+                <div class="card-body">
+                    <table class="table table-hover" style="padding: 0 2em;"> 
+                        <%
+                        if(infoType == "donation" && infoTemp != null) {%>
+                            <thead>
+                                <tr>
+                                    <th scope="col">Project Name</th>
+                                    <th scope="col">Amount</th>
+                                    <th scope="col">Donate Date</th>
+                                    <th scope="col">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <%
+                                for(var i = 0; i < infoTemp.length; i++) {
+                                    var projName = infoTemp[i].projectName;
+                                    var date = infoTemp[i].fundDateTime;
+                                    var dateStrInDB = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " + date.getHours() + ":" + date.getMinutes() + ":" +date.getSeconds();;
+                                    var dateStr = date.getDate() + "/" + (date.getMonth()+1) + "/" + date.getFullYear() + " " + date.getHours() + ":" + date.getMinutes() + ":" +date.getSeconds();
+                                    var amount = infoTemp[i].amount;
+                                    var status = infoTemp[i].projstatus;
+                                    %>
+                                    <tr class="<%= projName%>_donation donation_row">
+                                        <th scope="row" class = "donateCol" onclick="toggleContributeView('isolate', '<%= projName%>')"><%= projName%></th>
+                                        <td class = "donateCol"  onclick="toggleContributeView('isolate', '<%= projName%>')"> <%= amount%></td>
+                                        <td class = "donateCol"  onclick="toggleContributeView('isolate', '<%= projName%>')"><%= dateStr%></td>
+                                        <td>
+                                            <% if(status == '1') {%>
+                                                <button type="button" style="z-index: 2;" class="btn btn-sm btn-outline-secondary"  data-toggle="modal" data-target="#refund_alert" 
+                                                onclick="refundDateBind('<%= projName%>', '<%= amount%>', '<%= dateStr%>', '<%= dateStrInDB%>')">Refund</button>
+                                                <% } else {%>
+                                                    <button type="button" style="z-index: 2;" class="btn btn-sm btn-outline-secondary" disabled >Project Completed</button>
+                                                <% }%>
+                                                </td>
+                                            </tr>
+                                            <%
+                                        } 
+                                    }
+                                    %>                           
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <div class="modal fade" id="refund_alert" tabindex="-1" role="dialog" aria-labelledby="refund_alert" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Refund request</h5>
+                            <button type="button" class="close" data-dismiss="modal" onclick="clearData()" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <p class="text-dark" style="font-size: 16px;" >Confirm to make a refund request?</p>
+                            <p class="text-secondary" style="font-size: 14px;" id="refundProjName"> </p>
+                            <p class="text-secondary" style="font-size: 14px;" id="refundAmount"> </p>
+                            <p class="text-secondary" style="font-size: 14px;" id="donateDate"></p>
+                        </div>
+                        <div class="modal-footer">
+                            <form method="POST">
+                                <input hidden name="refundProjName_form" id="refundProjName_form">
+                                <input hidden name="donateDate_form" id="donateDate_form">
+                                <input hidden name="act" value="refund">
+                                <button type="button" class="btn btn-sm btn-outline-secondary" data-dismiss="modal" onclick="clearData()">Close</button>
+                                <button type="submit" class="btn btn-sm btn-outline-primary">Confirm</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </body>
+        <script>
+            function uiBind(infoType){
+                
+                var title = "";
+                switch (infoType){
+                    case "like":
+                    title = "The projects I liked";
+                    break;
+                    
+                    case "follow":
+                    title = "The projects I followed";
+                    
+                    break;
+                    case "comments":
+                    title = "My comments"
+                    break;
+                    
+                    case "donation":
+                    title="My contribution"
+                    break;
+                    
+                    case "systemMessage":
+                    title="My message"
+                    break;
+                }
+                
+                document.getElementById("infoTitle").innerHTML = title;
+            }
+            
+            function refundDateBind(projName, amount, dateStr, date){
+                document.getElementById("refundProjName").innerHTML = "Project Name: " + projName;
+                document.getElementById("refundAmount").innerHTML = "Amount: " + amount;
+                document.getElementById("donateDate").innerHTML = "Donate Date: "+ dateStr;
+                document.getElementById("refundProjName_form").value = projName;
+                document.getElementById("donateDate_form").value = date;
+            }
+            
+            function clearData(){
+                document.getElementById("refundProjName").innerHTML="";
+                document.getElementById("refundAmount").innerHTML="";
+                document.getElementById("donateDate").innerHTML="";
+                document.getElementById("refundProjName_form").value = "";
+                document.getElementById("donateDate_form").value = "";
+            }
+            
+            function toggleContributeView(flag, projName){
+                var selectedClass = projName+"_donation";
+                var rows =  document.getElementsByClassName("donation_row");
+                var donateCol = document.getElementsByClassName("donateCol");
+                if(flag == "isolate") {
+                    for(var i = 0; i < rows.length; i++) {
+                        var test = rows[i].classList.value;
+                        var test2 = selectedClass + " donation_row";
+                        if(rows[i].classList.value != (selectedClass + " donation_row"))
+                        rows[i].style.display = "none";
+                    }
+                    for(var j = 0; j < donateCol.length; j++) {
+                        donateCol[j].onclick = function() { toggleContributeView("all", ""); }
+                    }
+                } else {
+                    for(var j = 0; j < donateCol.length; j++) {
+                        donateCol[j].onclick = window.location = '/myInfo?infoType=donation';
+                    }
+                }
+            }
+        </script>
+        </html>
