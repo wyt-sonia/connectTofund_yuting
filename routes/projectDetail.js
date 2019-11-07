@@ -36,7 +36,9 @@ router.get('/', function(req, res, next) {
         +' SELECT p.*, u.*, c.*, '
         +'(SELECT COALESCE(SUM(amount), 0) FROM funds fu WHERE fu."projectName" = p."projectName") AS donateAmount, '
         +'(SELECT COUNT(*) FROM likeTemp) AS likeCount,'
-        +'(SELECT SUM(mfu.amount) FROM funds mfu NATURAL JOIN users myu WHERE myu.email = \''+ email+'\' AND \"projectName\"=\''+ projectName +'\') AS myDonate, '
+        +'(SELECT COUNT(*) FROM projects pro WHERE pro.\"projectName\"= p.\"projectName\" '
+        +'AND pro.\"projectDeadline\" >= cast(now() as date)) AS projStatus, '
+        +'(SELECT COALESCE(SUM(mfu.amount), 0) FROM funds mfu NATURAL JOIN users myu WHERE myu.email = \''+ email+'\' AND \"projectName\"=\''+ projectName +'\') AS myDonate, '
         +'(SELECT COUNT(*) FROM followTemp) AS followCount,'
         +'(SELECT COUNT(*) FROM followTemp myf WHERE myf.\"email\" =\'' + email + '\') AS myFollow, '
         +'(SELECT COUNT(*) FROM likeTemp myl WHERE myl.\"email\" =\'' + email + '\') AS myLike, '
@@ -132,7 +134,7 @@ router.post('/', function(req, res, next){
         act_query = "INSERT INTO likes VALUES ('" + dateStr + "','" + email + "','" + projName +"')";
         break;
         case "follow":
-        act_query = "INSERT INTO follows VALUES ('" + email + "','" + projName +"')";
+        act_query = "INSERT INTO follows VALUES ('" + email + "','" + projName +"','" + dateStr +"')";
         break;
         case "deLike":
         act_query = "DELETE FROM likes WHERE \"email\" = '" + email + "' and \"projectName\" = '" + projName + "'";
