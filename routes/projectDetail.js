@@ -36,7 +36,7 @@ router.get('/', function(req, res, next) {
         +' SELECT p.*, u.*, c.*, '
         +'(SELECT COALESCE(SUM(amount), 0) FROM funds fu WHERE fu."projectName" = p."projectName") AS donateAmount, '
         +'(SELECT COUNT(*) FROM likeTemp) AS likeCount,'
-        +'(SELECT SUM(mfu.amount) FROM funds mfu NATURAL JOIN users myu WHERE myu.email = \''+ email+'\' AND \"projectName\"=\''+ projectName +'\') AS myDonate, '
+        +'(SELECT COALESCE(SUM(mfu.amount), 0) FROM funds mfu NATURAL JOIN users myu WHERE myu.email = \''+ email+'\' AND \"projectName\"=\''+ projectName +'\') AS myDonate, '
         +'(SELECT COUNT(*) FROM followTemp) AS followCount,'
         +'(SELECT COUNT(*) FROM followTemp myf WHERE myf.\"email\" =\'' + email + '\') AS myFollow, '
         +'(SELECT COUNT(*) FROM likeTemp myl WHERE myl.\"email\" =\'' + email + '\') AS myLike, '
