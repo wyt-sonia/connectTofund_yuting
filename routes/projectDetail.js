@@ -36,7 +36,9 @@ router.get('/', function(req, res, next) {
         +' SELECT p.*, u.*, c.*, '
         +'(SELECT COALESCE(SUM(amount), 0) FROM funds fu WHERE fu."projectName" = p."projectName") AS donateAmount, '
         +'(SELECT COUNT(*) FROM likeTemp) AS likeCount,'
-        +'(SELECT SUM(mfu.amount) FROM funds mfu NATURAL JOIN users myu WHERE myu.email = \''+ email+'\' AND \"projectName\"=\''+ projectName +'\') AS myDonate, '
+        +'(SELECT COUNT(*) FROM projects pro WHERE pro.\"projectName\"= p.\"projectName\" '
+        +'AND pro.\"projectDeadline\" >= cast(now() as date)) AS projStatus, '
+        +'(SELECT COALESCE(SUM(mfu.amount), 0) FROM funds mfu NATURAL JOIN users myu WHERE myu.email = \''+ email+'\' AND \"projectName\"=\''+ projectName +'\') AS myDonate, '
         +'(SELECT COUNT(*) FROM followTemp) AS followCount,'
         +'(SELECT COUNT(*) FROM followTemp myf WHERE myf.\"email\" =\'' + email + '\') AS myFollow, '
         +'(SELECT COUNT(*) FROM likeTemp myl WHERE myl.\"email\" =\'' + email + '\') AS myLike, '
@@ -66,7 +68,7 @@ router.get('/', function(req, res, next) {
         pool.query(attaches_query, (err, data) => {
             if(data != null){
                 attachesTemp = data.rows;
-                console.log(attachesTemp);
+                console.log("attachesTemp: "+attachesTemp);
                 getAllComments();
             } else 
             console.log(err);
@@ -76,7 +78,6 @@ router.get('/', function(req, res, next) {
         pool.query(comment_query, (err, data) => {
             if(data != null){
                 commentsTemp = data.rows;
-                console.log(commentsTemp);
                 getBankAcc();
             } else 
             console.log(err);
@@ -86,7 +87,6 @@ router.get('/', function(req, res, next) {
         pool.query(bankAcc_query, (err, data) => {
             if(data != null){
                 bankAccTemp = data.rows;
-                console.log(bankAccTemp);
                 getAllUpdates();
             } else 
             console.log(err);
@@ -104,7 +104,6 @@ router.get('/', function(req, res, next) {
     }
     function renderPage() {
         if (projTemp != null && attachesTemp != null){
-            console.log(myFollow + " : "+ typeof(myFollow));
             res.render('projectDetail', { title: 'projectDetail', project: projTemp, commentsTemp: commentsTemp, attaches: attachesTemp, email: email, 
             myLike: myLike, myFollow: myFollow, likeCount: likeCount, followCount: followCount, myDonate: myDonate, bankAccTemp: bankAccTemp, updateTemp: updateTemp});
         }
@@ -132,7 +131,7 @@ router.post('/', function(req, res, next){
         act_query = "INSERT INTO likes VALUES ('" + dateStr + "','" + email + "','" + projName +"')";
         break;
         case "follow":
-        act_query = "INSERT INTO follows VALUES ('" + email + "','" + projName +"')";
+        act_query = "INSERT INTO follows VALUES ('" + email + "','" + projName +"','" + dateStr +"')";
         break;
         case "deLike":
         act_query = "DELETE FROM likes WHERE \"email\" = '" + email + "' and \"projectName\" = '" + projName + "'";

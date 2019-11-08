@@ -3,10 +3,10 @@
 <head>
     <!-- Page Title -->
     <title>ConnectToFund</title>
-    <link rel='stylesheet' href='stylesheets/style.css' />
-    <link rel='stylesheet' href='stylesheets/main.css' />
     
     <!-- CSS for Styling -->
+    <link rel='stylesheet' href='stylesheets/style.css' />
+    <link rel='stylesheet' href='stylesheets/main.css' />
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
     <link rel="stylesheet" href="/stylesheets/font-awesome-4.7.0/css/font-awesome.min.css">
     
@@ -38,7 +38,7 @@
         <div class="row" style="margin-bottom: 1em;">
             <div class="col-md-12 card bg-light">
                 <div class="card-body">
-                    <table class="table table-hover" style="padding: 0 2em;"> 
+                    <table class="table table-hover"  style="padding: 0 2em;"> 
                         <%
                         if((infoType == "donation" || infoType == "comment") && infoTemp != null) {
                             var donation_comment_table_title_1 = infoType == "donation" ? "Amount" : "Content";
@@ -47,7 +47,7 @@
                             <thead>
                                 <tr>
                                     <th scope="col">Project Name</th>
-                                    <th scope="col"><%= donation_comment_table_title_1%></th>
+                                    <th scope="col" class="text-center"><%= donation_comment_table_title_1%></th>
                                     <th scope="col"><%= donation_comment_table_title_2%> Date</th>
                                     <th scope="col">Action</th>
                                 </tr>
@@ -75,20 +75,22 @@
                                     }
                                     %>
                                     <tr class="<%= projName%>_donation donation_row">
-                                        <th scope="row" class = "donateCol" onclick="toggleContributeView('<%= infoType%>','isolate', '<%= projName%>')"><%= projName%></th>
+                                        <th scope="row" style="width: 20%;" class = "donateCol" onclick="toggleContributeView('<%= infoType%>','isolate', '<%= projName%>')"><%= projName%></th>
                                         <%  if(infoType == "donation" ) {%>
-                                            <td class = "donateCol"  onclick="toggleContributeView('<%= infoType%>','isolate', '<%= projName%>')"> <%= amount%></td>
+                                            <td class = "donateCol text-center" style="width: 40%;"  onclick="toggleContributeView('<%= infoType%>','isolate', '<%= projName%>')"> <%= amount%></td>
                                             <%} else {%>
-                                                <td class = "donateCol"  onclick="toggleContributeView('<%= infoType%>','isolate', '<%= projName%>')"> <%= content%></td>
+                                                <td class = "donateCol text-center" style="width: 40%;"  onclick="toggleContributeView('<%= infoType%>','isolate', '<%= projName%>')"> <%= content%></td>
                                                 <%}%>
-                                                <td class = "donateCol"  onclick="toggleContributeView('<%= infoType%>','isolate', '<%= projName%>')"><%= dateStr%></td>
-                                                <td>
+                                                <td class = "donateCol" style="width: 15%;"  onclick="toggleContributeView('<%= infoType%>','isolate', '<%= projName%>')"><%= dateStr%></td>
+                                                <td style="max-width: 40%;" >
                                                     <% if(infoType == "donation" && status == '1') {%>
+                                                        <button type="button" style="z-index: 2;" class="btn btn-sm btn-outline-info" onclick="toProj('<%=projName %>')">View Project</button>
                                                         <button type="button" style="z-index: 2;" class="btn btn-sm btn-outline-secondary"  data-toggle="modal" data-target="#refund_deleteComment_alert" 
                                                         onclick="refund_comment_DataBind('refund', '<%= projName%>', '<%= amount%>', '<%= dateStr%>', '<%= dateStrInDB%>')">Refund</button>
                                                         <% } else if (infoType == "donation" && status != '1') {%>
                                                             <button type="button" style="z-index: 2;" class="btn btn-sm btn-outline-secondary" disabled >Project Completed</button>
                                                             <% } else if(infoType == "comment") {%>
+                                                                <button type="button" style="z-index: 2;" class="btn btn-sm btn-outline-info" onclick="toProj('<%=projName %>')">View Project</button>
                                                                 <button type="button" style="z-index: 2;" class="btn btn-sm btn-outline-info"  data-toggle="modal" data-target="#updateComment" 
                                                                 onclick="commentDataBind('<%= projName%>', '<%= dateStrInDB%>', '<%= content%>')">Modify</button>
                                                                 <button type="button" style="z-index: 2;" class="btn btn-sm btn-outline-secondary"  data-toggle="modal" data-target="#refund_deleteComment_alert" 
@@ -129,7 +131,7 @@
                                                                     <th scope="row"><%= projName%></th>
                                                                     <td> <%= dateStr%></td>
                                                                     <td>
-                                                                        <button type="button" style="z-index: 2;" class="btn btn-sm btn-outline-secondary" onclick="toProj('<%=projName %>')">View Detail</button>
+                                                                        <button type="button" style="z-index: 2;" class="btn btn-sm btn-outline-info" onclick="toProj('<%=projName %>')">View Project</button>
                                                                     </td>
                                                                 </tr>
                                                                 <%}%> 

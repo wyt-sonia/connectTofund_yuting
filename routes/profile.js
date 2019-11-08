@@ -74,7 +74,7 @@ router.post('/', function(req, res, next) {
     var updateInfo_query = "UPDATE users SET username = '"+username+"' , password = '"+password+"' , location = '"+location+"' , \"phoneNumber\" = '"+phoneNumber+"' where email = '"+email+"'";
     console.log(updateInfo_query);
     pool.query(updateInfo_query, (err, data) => {
-      if(data != null){
+      if(data.rowCount == 1){
         res.redirect('/profile');
       } else 
         console.log("update failed");

@@ -1,19 +1,20 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <!-- Page Title -->
-  <title>ConnectToFund</title>
-  <link rel='stylesheet' href='stylesheets/style.css' />
-  <link rel='stylesheet' href='stylesheets/main.css' />
-  
-  <!-- CSS for Styling -->
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
-  
-  <!-- JavaScript for Interactivity -->
-  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
-  
+    <!-- Page Title -->
+    <title>ConnectToFund</title>
+    
+    <!-- CSS for Styling -->
+    <link rel='stylesheet' href='stylesheets/style.css' />
+    <link rel='stylesheet' href='stylesheets/main.css' />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <link rel="stylesheet" href="/stylesheets/font-awesome-4.7.0/css/font-awesome.min.css">
+    
+    <!-- JavaScript for Interactivity -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+
 </head>
 <body onload="checkIn()"> 
   <%- include navbar-after-login %>
@@ -22,7 +23,7 @@
       <div class="section-header">  
         <h3 class="section-title">Create new project</h3>
       </div>
-      <form id="create_form" action="" role="form" method="post" onsubmit="return validdation()">
+      <form id="uploadPicForm" action="http://localhost:3200/upload" method="post" id="uploadPicForm" enctype="multipart/form-data">
         <div class="input-group mb-3">
           <div class="input-group-prepend">
             <span class="input-group-text">Projrct Name</span>
@@ -106,64 +107,91 @@
                     <span class="input-group-text" id="inputGroupFileAddon01">Upload your project profile picture:</span>
                   </div>
                   <div class="custom-file">
-                    <input type="file" class="custom-file-input" name="pictureAddress" accept="image/*" aria-describedby="inputGroupFileAddon01">
-                    <label class="custom-file-label" for="imgUpload">Choose picture</label>
+                    <input type="file" class="custom-file-input" multiple="multiple" agccept="image/*" name="file" id="projPic" aria-describedby="inputGroupFileAddon01">
+                    <label class="custom-file-label" style="display: block; white-space: nowrap; overflow:hidden; text-overflow: ellipsis;padding-right: 15%;" id="picNames" for="imgUpload">Choose picture</label>
                   </div>
                 </div>
-                
-                <!-- 
-                  <div class="form-group" action="/upload" method="post" enctype="multipart/form-data">
-                    <label>Upload your project profile picture:</label> 
-                    <input class="form-control-file" name="pictureAddress" type="file" accept="image/*" >
-                    <input type="submit" onclick="setInput()" value="upload"> 
-                  </div> -->
-                  
-                  <input hidden class="input-material" name="status" id="status" value = false required/>
-                  <input hidden class="input-material" type="text" name="email" id="email" value = "" required/>
-                  <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary" onclick="setInput()">Create</button>
-                    <button type="button" class="btn btn-secondary" onclick="location.href='/createProject'" >Reset</button>
-                  </div>
-                </form>
-              </div>
-            </section>
-          </body>
+                <div class="modal-footer">
+                  <input hidden name="email" value="<%= email%>">
+                  <button type="button" class="btn btn-primary" onclick="validdation()">Create</button>
+                  <button type="button" class="btn btn-secondary" onclick="location.href='/createProject'" >Reset</button>
+                </div>
+              </form>
+              
+            </div>
+          </section>
+        </body>
+        
+        </html>
+        
+        <script>         
           
-          </html>
-          
-          <script>
-            //var pictureAddress = document.getElementById("pictureAddress");
+          $('input#projPic').change(function(){
+            var picNames = document.getElementById("picNames");
+            var temp = "files choosed: ";
+            var files = $(this)[0].files;
+            for(var i = 0; i < files.length; i++){
+              if(i < files.length - 1)
+              temp += files[i].name + ", ";
+              else
+              temp += files[i].name;
+            }
+            picNames.innerHTML = temp;
+          });
+          function validdation(){
+            var valid = true;
+            var projectName = document.getElementById("projectName");
+            var projectTotalFundNeeded = document.getElementById("projectTotalFundNeeded");
+            var projectDescription = document.getElementById("projectDescription");
+            var projectStartDate = document.getElementById("projectStartDate");
+            var projectDeadline = document.getElementById("projectDeadline");
+            var pictures = document.getElementById("projPic").files;
+            if(projectName.value == null || projectName.value ==""){
+              alert("Please enter your project name.");
+              return;
+            } 
+            if(projectName.value.length > 50){
+              alert("The valid length of project name is at most 50.");
+              return;
+            } 
+            if(projectTotalFundNeeded.value == null || projectTotalFundNeeded.value == ""){
+              alert("Please enter the total fund needed for this project.");
+              return;
+            } 
+            if(isNaN(projectTotalFundNeeded.value)){
+              alert("Please enter valid amount as the total fund needed for this project.");
+              return;
+            } 
+            if(projectDescription.value == null || projectDescription.value == ""){
+              alert("Please enter your project description.");
+              return;
+            } 
+            if(projectStartDate.value == null || projectStartDate.value == ""){
+              alert("Please set your project's start date.");
+              return;
+            } 
+            if(projectDeadline.value == null || projectDeadline.value == ""){
+              alert("Please set your project's deadline.");
+              return;
+            } 
             
-            //document.getElementById("result").innerHTML = sessionStorage.getItem("emailLogin");
-            
-            function setInput() {
-              var projectName = document.getElementById("projectName").value;
-              var projectDescription = document.getElementById("projectDescription").value;
-              var projectTotalFundNeeded = document.getElementById("projectTotalFundNeeded".value);
-              var projectStartDate = document.getElementById("projectStartDate").value;
-              var projectDeadline = document.getElementById("projectDeadline").value;
-              var category = document.getElementById("category");
-              var countryCode = document.getElementById("countryCode");
-              var status = document.getElementById("status");
-              var email = document.getElementById("email");
-              email.value = sessionStorage.getItem("emailLogin");
+            if(pictures.length == 0 ){
+              alert("Please upload at least 1 project image.");
+              return;
             }
             
-            function validdation(){
-              if(projectName.value.length > 50){
-                alert("The valid length of project name is at most 50.");
-                return false;
-              }
-            }
+            document.getElementById("uploadPicForm").submit();
             
-            function checkIn(){
-              if(window.location.href=="http://localhost:3000/createProject?error=createProjectError") {
-                alert("This project name has been taken, please use another name for your project!");
-              }
+          }
+          
+          function checkIn(){
+            if(window.location.href=="http://localhost:3000/createProject?error=createProjectError") {
+              alert("This project name has been taken, please use another name for your project!");
             }
-            
-          </script>
+          }
           
-          
-          
-          <!-- test comment -->
+        </script>
+        
+        
+        
+        <!-- test comment -->
