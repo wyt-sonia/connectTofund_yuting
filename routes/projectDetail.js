@@ -68,7 +68,7 @@ router.get('/', function(req, res, next) {
         pool.query(attaches_query, (err, data) => {
             if(data != null){
                 attachesTemp = data.rows;
-                console.log(attachesTemp);
+                console.log("attachesTemp: "+attachesTemp);
                 getAllComments();
             } else 
             console.log(err);
@@ -78,7 +78,6 @@ router.get('/', function(req, res, next) {
         pool.query(comment_query, (err, data) => {
             if(data != null){
                 commentsTemp = data.rows;
-                console.log(commentsTemp);
                 getBankAcc();
             } else 
             console.log(err);
@@ -88,7 +87,6 @@ router.get('/', function(req, res, next) {
         pool.query(bankAcc_query, (err, data) => {
             if(data != null){
                 bankAccTemp = data.rows;
-                console.log(bankAccTemp);
                 getAllUpdates();
             } else 
             console.log(err);
@@ -106,7 +104,6 @@ router.get('/', function(req, res, next) {
     }
     function renderPage() {
         if (projTemp != null && attachesTemp != null){
-            console.log(myFollow + " : "+ typeof(myFollow));
             res.render('projectDetail', { title: 'projectDetail', project: projTemp, commentsTemp: commentsTemp, attaches: attachesTemp, email: email, 
             myLike: myLike, myFollow: myFollow, likeCount: likeCount, followCount: followCount, myDonate: myDonate, bankAccTemp: bankAccTemp, updateTemp: updateTemp});
         }
