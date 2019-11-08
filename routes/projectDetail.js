@@ -29,7 +29,7 @@ router.get('/', function(req, res, next) {
     var updateTemp = null;
     var bankAccTemp = null;
     var bankAcc_query = "SELECT * FROM binds WHERE email = \'" + email +"\'";
-    var update_query = "SELECT * FROM updates WHERE \"projectName\"='" + projectName + "'";
+    var update_query = "SELECT * FROM updates WHERE \"projectName\"='" + projectName + "' ORDER BY \"progressDateTime\" DESC";
     if(projectName != null) {
         proj_query = 'WITH likeTemp AS ( SELECT * FROM likes WHERE \"projectName\" = \''+ projectName +'\'), '
         +'followTemp AS ( SELECT * FROM follows WHERE "projectName" =  \''+ projectName +'\') '
