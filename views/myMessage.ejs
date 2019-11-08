@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- Page Title -->
+    <title>ConnectToFund</title>
+    
+    <!-- CSS for Styling -->
+    <link rel='stylesheet' href='stylesheets/style.css' />
+    <link rel='stylesheet' href='stylesheets/main.css' />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <link rel="stylesheet" href="/stylesheets/font-awesome-4.7.0/css/font-awesome.min.css">
+    
+    <!-- JavaScript for Interactivity -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+    
+</head>
+<body>
+    <%- include navbar-after-login %>
+    <section class="container-fluid section bg-gray" style="padding-left:4em;padding-right: 4em;">
+        <div class="section-header">  
+            <h3 class="section-title" id="infoTitle">My Messages</h3>
+        </div>
+        <ul class="nav nav-tabs" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link text-muted <%= channel != 'myProjects' ? 'active' : '' %>" id="myFollow-tab" data-toggle="tab" href="#myFollow" role="tab" aria-controls="myFollow" aria-selected="true">
+                    <i class="fa fa-bookmark-o" aria-hidden="true" style="position: relative; top:0.1em"></i>&nbsp;&nbsp;My Follow</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-muted <%= channel == 'myProjects' ? 'active' : '' %>" id="myProject-tab" data-toggle="tab" href="#myProject" role="tab" aria-controls="myProject" aria-selected="false">
+                        <i class="fa fa-lightbulb-o" style="font-size: 17px;" aria-hidden="true"></i>&nbsp;&nbsp;My Project</a>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane fade <%= channel != 'myProjects' ? 'show active' : '' %>" style="padding: 1em 2em;" id="myFollow" role="tabpanel" aria-labelledby="myFollow-tab">
+                        <%if(followingMsgTemp != null) {
+                            for(var i = 0; i < followingMsgTemp.length; i++) {
+                                var topic = followingMsgTemp[i].topic;
+                                var projectName = followingMsgTemp[i].projectName;
+                                var content = followingMsgTemp[i].messageContent;
+                                var date = followingMsgTemp[i].messageDateTime;
+                                var email = followingMsgTemp[i].email;
+                                var dateStrInDB = date.getFullYear() + "-" + (date.getMonth() + 1) 
+                                + "-" + date.getDate() + " " + date.getHours() + ":" + date.getMinutes() + ":" +date.getSeconds();
+                                var dateStr = date.getDate() + "/" + (date.getMonth()+1) + "/" + date.getFullYear() 
+                                + " " + date.getHours() + ":" + date.getMinutes() + ":" +date.getSeconds();
+                                %>
+                                <div class="<%= projectName%>_followProj followProj_msg">
+                                    <div class="card border-secondary <%= topic%>_topic" style="margin-bottom: 1em;">
+                                        <div class="card-header d-flex justify-content-start <%= projectName%>_handler " onclick="toggleContributeView('followProj', 'isolate', '<%= projectName%>')">
+                                            <h6 style="margin:0;">PROJECT <%= topic.toUpperCase()%> || <%= projectName%></h6>
+                                            <small style="margin-left: 1em;"><%= dateStr%></small>
+                                        </div>
+                                        <div class="card-body">
+                                            <p class="card-text text-justify text-secondary"><%= content%></p>
+                                            <form method="POST" action="">
+                                                <input hidden name="projectName" value="<%= projectName%>">
+                                                <input hidden name="topic" value="<%= topic%>">
+                                                <input hidden name="dateTime" value="<%= dateStrInDB%>">
+                                                <div class="btn-group float-right">
+                                                    <button class="btn btn-sm btn-outline-info" type="button" onclick="toProj('<%= projectName%>')">VIEW PROJECT</button>
+                                                    <button class="btn btn-sm btn-outline-secondary" type="submit" >Delete</button>                     
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                                <%}
+                            }%>
+                        </div>
+                        <div class="tab-pane fade <%= channel == 'myProjects' ? 'show active' : '' %>" id="myProject" tyle="padding: 1em 2em;"  role="tabpanel" aria-labelledby="myProject-tab">
+                            <%if(myProjMsgTemp != null) {
+                                for(var i = 0; i < myProjMsgTemp.length; i++) {
+                                    var topic = myProjMsgTemp[i].topic;
+                                    var projectName = myProjMsgTemp[i].projectName;
+                                    var content = myProjMsgTemp[i].messageContent;
+                                    var date = myProjMsgTemp[i].messageDateTime;
+                                    var email = myProjMsgTemp[i].email;
+                                    var dateStrInDB = date.getFullYear() + "-" + (date.getMonth() + 1) 
+                                    + "-" + date.getDate() + " " + date.getHours() + ":" + date.getMinutes() + ":" +date.getSeconds();
+                                    var dateStr = date.getDate() + "/" + (date.getMonth()+1) + "/" + date.getFullYear() 
+                                    + " " + date.getHours() + ":" + date.getMinutes() + ":" +date.getSeconds();
+                                    %>
+                                    <div class="<%= projectName%>_myProj myProj_msg">
+                                        <div class="card border-secondary <%= topic%>_topic" style="margin-bottom: 1em;">
+                                            <div class="card-header d-flex justify-content-start <%= projectName%>_handler " onclick="toggleContributeView('myProj', 'isolate', '<%= projectName%>')">
+                                                <h6 style="margin:0;">PROJECT <%= topic.toUpperCase()%> || <%= projectName%></h6>
+                                                <small style="margin-left: 1em;"><%= dateStr%></small>
+                                            </div>
+                                            <div class="card-body">
+                                                <p class="card-text text-justify text-secondary"><%= content%></p>
+                                                <form method="POST" action="">
+                                                    <input hidden name="projectName" value="<%= projectName%>">
+                                                    <input hidden name="topic" value="<%= topic%>">
+                                                    <input hidden name="dateTime" value="<%= dateStrInDB%>">
+                                                    <div class="btn-group float-right">
+                                                        <button class="btn btn-sm btn-outline-info" onclick="toProj('<%= projectName%>')">VIEW PROJECT</button>
+                                                        <button class="btn btn-sm btn-outline-secondary" type="submit" >Delete</button>                     
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <%}
+                                }%>
+                            </div>
+                        </div>
+                    </section>
+                </body>
+                <script>
+                    
+                    function toggleContributeView(myProj_followProj, flag, projName){
+                        if(myProj_followProj == "followProj") {
+                            var selectedClass = projName+"_followProj";
+                            var rows =  document.getElementsByClassName("followProj_msg");
+                            var handler = document.getElementsByClassName(projName + "_handler");
+                            if(flag == "isolate") {
+                                for(var i = 0; i < rows.length; i++) {
+                                    if(rows[i].classList.value != (selectedClass + " followProj_msg"))
+                                    rows[i].style.display = "none";
+                                }
+                                for(var j = 0; j < handler.length; j++) {
+                                    handler[j].onclick = function() { toggleContributeView(myProj_followProj, "all", ""); }
+                                }
+                            } else {
+                                for(var j = 0; j < rows.length; j++) {
+                                    handler[j].onclick = window.location = "myMessage?channel=follows";
+                                }
+                            }
+                        } else {
+                            var selectedClass = projName+"_myProj";
+                            var rows =  document.getElementsByClassName("myProj_msg");
+                            var handler = document.getElementsByClassName(projName + "_handler");
+                            if(flag == "isolate") {
+                                for(var i = 0; i < rows.length; i++) {
+                                    if(rows[i].classList.value != (selectedClass + " myProj_msg"))
+                                    rows[i].style.display = "none";
+                                }
+                                for(var j = 0; j < handler.length; j++) {
+                                    handler[j].onclick = function() { toggleContributeView(myProj_followProj, "all", ""); }
+                                }
+                            } else {
+                                for(var j = 0; j < rows.length; j++) {
+                                    handler[j].onclick = window.location = "myMessage?channel=myProject";
+                                }
+                            }
+                        }
+                        
+                    }
+                    
+                    function toProj(projectName){
+                        window.location='/projectDetail?proj='+projectName;
+                    }
+                </script>
+                </html>

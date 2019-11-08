@@ -143,97 +143,126 @@
                                                 <input hidden name="email" value="<%= email%>">
                                                 <input hidden name="originalImgs" value="<%= imgs%>">
                                                 <input hidden name="reupload" id="reupload">
+                                                <button type="button" data-toggle="modal" data-target="#deleteAlert" class="btn btn-danger">Delete</button>
                                                 <button type="button" onclick="validdation()" class="btn btn-primary" >Update</button>
-                                                <button type="button" class="btn btn-secondary" onclick="databind()" >Reset</button>
+                                                <button type="button" class="btn btn-secondary" onclick="databind('<%= projectTotalFundNeeded%>', '<%= projName%>',
+                                                    '<%= countryCode%>', '<%= countryName%>', '<%= projectDescription%>', '<%= projectDeadline%>', 
+                                                    '<%= categoryName%>', '<%= projectStartDate%>', '<%= src%>')"" >Reset</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </section>
+                                    
+                                    <div class="modal fade" id="deleteAlert" tabindex="-1" role="dialog" aria-labelledby="deleteAlert" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title">Delete Alert</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    Do you confirm to delete the project?
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <form method="POST" action="http://localhost:3200/delete" enctype="multipart/form-data">
+                                                        <input hidden name="projectName" value="<%= projName%>">
+                                                        <input hidden name="images" value="<%= imgs%>">
+                                                        <input hidden name="email" value="<%= email%>">
+                                                        <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cancel</button>
+                                                        <button type="submit" class="btn btn-outline-danger">Delete</button>
+                                                    </form>
+                                                </div>
                                             </div>
-                                        </form>
-                                    </div>
-                                </section>
-                            </body>
-                            
-                            </html>
-                            
-                            <script>
-                                var reupload = false;
-                                function databind(projectTotalFundNeeded, projName, countryCode, countryName, projectDescription, projectDeadline, categoryName, projectStartDate, src){
-                                    document.getElementById("projectName").value = projName;
-                                    document.getElementById("projectTotalFundNeeded").value = projectTotalFundNeeded;
-                                    document.getElementById("category").value = categoryName;
-                                    document.getElementById("countryCode").value = countryCode;
-                                    document.getElementById("projectDescription").value = projectDescription;
-                                    var start = new Date(projectStartDate);
-                                    var dead = new Date(projectDeadline);
-                                    document.getElementById("projectStartDate").valueAsDate = start;
-                                    document.getElementById("projectDeadline").valueAsDate = dead;
-                                    document.getElementById("picNames").innerHTML = src;
-                                }
+                                        </div>
+                                    </div>                         
+                                </body>
                                 
-                                $('input#projPic').change(function(){
-                                    reupload = true;
-                                    var picNames = document.getElementById("picNames");
-                                    var temp = "files choosed: ";
-                                    var files = $(this)[0].files;
-                                    for(var i = 0; i < files.length; i++){
-                                        if(i < files.length - 1)
-                                        temp += files[i].name + ", ";
-                                        else
-                                        temp += files[i].name;
-                                    }
-                                    picNames.innerHTML = temp;
-                                });
+                                </html>
                                 
-                                function validdation(){
-                                    var projectName = document.getElementById("projectName");
-                                    var projectTotalFundNeeded = document.getElementById("projectTotalFundNeeded");
-                                    var projectDescription = document.getElementById("projectDescription");
-                                    var projectStartDate = document.getElementById("projectStartDate");
-                                    var projectDeadline = document.getElementById("projectDeadline");
-                                    var pictures = document.getElementById("projPic").files;
-                                    if(projectName.value == null || projectName.value ==""){
-                                        alert("Please enter your project name.");
-                                        return;
-                                    } 
-                                    if(projectName.value.length > 50){
-                                        alert("The valid length of project name is at most 50.");
-                                        return;
-                                    } 
-                                    if(projectTotalFundNeeded.value == null || projectTotalFundNeeded.value == ""){
-                                        alert("Please enter the total fund needed for this project.");
-                                        return;
-                                    } 
-                                    if(isNaN(projectTotalFundNeeded.value)){
-                                        alert("Please enter valid amount as the total fund needed for this project.");
-                                        return;
-                                    } 
-                                    if(projectDescription.value == null || projectDescription.value == ""){
-                                        alert("Please enter your project description.");
-                                        return;
-                                    } 
-                                    if(projectStartDate.value == null || projectStartDate.value == ""){
-                                        alert("Please set your project's start date.");
-                                        return;
-                                    } 
-                                    if(projectDeadline.value == null || projectDeadline.value == ""){
-                                        alert("Please set your project's deadline.");
-                                        return;
-                                    } 
-                                    
-                                    if(reupload && pictures.length == 0 ){
-                                        alert("Please upload at least 1 project image.");
-                                        return;
+                                <script>
+                                    var reupload = false;
+                                    function databind(projectTotalFundNeeded, projName, countryCode, countryName, projectDescription, projectDeadline, categoryName, projectStartDate, src){
+                                        reupload = false;
+                                        document.getElementById("projectName").value = projName;
+                                        document.getElementById("projectTotalFundNeeded").value = projectTotalFundNeeded;
+                                        document.getElementById("category").value = categoryName;
+                                        document.getElementById("countryCode").value = countryCode;
+                                        document.getElementById("projectDescription").value = projectDescription;
+                                        var start = new Date(projectStartDate);
+                                        var dead = new Date(projectDeadline);
+                                        document.getElementById("projectStartDate").valueAsDate = start;
+                                        document.getElementById("projectDeadline").valueAsDate = dead;
+                                        document.getElementById("picNames").innerHTML = src;
                                     }
                                     
-                                    document.getElementById("reupload").value = reupload;
-                                    document.getElementById("modify_form").submit();
-                                }
-                                
-                                function checkIn(){
-                                    if(window.location.href=="http://localhost:3000/createProject?error=createProjectError") {
-                                        alert("This project name has been taken, please use another name for your project!");
+                                    $('input#projPic').change(function(){
+                                        reupload = true;
+                                        var picNames = document.getElementById("picNames");
+                                        var temp = "files choosed: ";
+                                        var files = $(this)[0].files;
+                                        for(var i = 0; i < files.length; i++){
+                                            if(i < files.length - 1)
+                                            temp += files[i].name + ", ";
+                                            else
+                                            temp += files[i].name;
+                                        }
+                                        picNames.innerHTML = temp;
+                                    });
+                                    
+                                    function validdation(){
+                                        var projectName = document.getElementById("projectName");
+                                        var projectTotalFundNeeded = document.getElementById("projectTotalFundNeeded");
+                                        var projectDescription = document.getElementById("projectDescription");
+                                        var projectStartDate = document.getElementById("projectStartDate");
+                                        var projectDeadline = document.getElementById("projectDeadline");
+                                        var pictures = document.getElementById("projPic").files;
+                                        if(projectName.value == null || projectName.value ==""){
+                                            alert("Please enter your project name.");
+                                            return;
+                                        } 
+                                        if(projectName.value.length > 50){
+                                            alert("The valid length of project name is at most 50.");
+                                            return;
+                                        } 
+                                        if(projectTotalFundNeeded.value == null || projectTotalFundNeeded.value == ""){
+                                            alert("Please enter the total fund needed for this project.");
+                                            return;
+                                        } 
+                                        if(isNaN(projectTotalFundNeeded.value)){
+                                            alert("Please enter valid amount as the total fund needed for this project.");
+                                            return;
+                                        } 
+                                        if(projectDescription.value == null || projectDescription.value == ""){
+                                            alert("Please enter your project description.");
+                                            return;
+                                        } 
+                                        if(projectStartDate.value == null || projectStartDate.value == ""){
+                                            alert("Please set your project's start date.");
+                                            return;
+                                        } 
+                                        if(projectDeadline.value == null || projectDeadline.value == ""){
+                                            alert("Please set your project's deadline.");
+                                            return;
+                                        } 
+                                        
+                                        if(reupload && pictures.length == 0 ){
+                                            alert("Please upload at least 1 project image.");
+                                            return;
+                                        }
+                                        
+                                        document.getElementById("reupload").value = reupload;
+                                        document.getElementById("modify_form").submit();
                                     }
-                                }
-                            </script>
-                            
-                            
-                            
-                            <!-- test comment -->
+                                    
+                                    function checkIn(){
+                                        if(window.location.href=="http://localhost:3000/createProject?error=createProjectError") {
+                                            alert("This project name has been taken, please use another name for your project!");
+                                        }
+                                    }
+                                </script>
+                                
+                                
+                                
+                                <!-- test comment -->
