@@ -40,12 +40,13 @@ router.post('/', function(req, res, next) {
     var projectName = req.body.projectName;
     var topic = req.body.topic;
     var dateTime = req.body.dateTime;
-    var delete_msg_query = 'DELETE FROM messages WHERE projectName = \''+ projectName +'\' AND topic = \''+ topic +'\' AND messageDateTime=\''+dateTime+'\' AND email = \'' + email + '\'';
+    var delete_msg_query = 'DELETE FROM messages WHERE projectName = \''+ projectName +'\' AND topic = \''+ topic +'\' AND  cast(messageDateTime as text) LIKE \''+dateTime+'\%\' AND email = \'' + email + '\'';
     
     console.log(delete_msg_query);
     
     pool.query(delete_msg_query, (err, data) => {
         if(data != null){
+            console.log(data);
             res.redirect("/myMessage");
         } else 
         console.log(err);
