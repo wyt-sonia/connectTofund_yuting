@@ -16,38 +16,8 @@
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
   
 </head>
-<body> 
+<body onload="save('<%= email%>')"> 
   <%- include navbar-after-login %>
-  <!-- <header class="masthead2 text-white text-center">
-    <div class="container">      
-      <div class="row justify-content-center">
-        <div class="col-lg-10 col-md-12 col-xs-12">
-          <div class="contents">
-            <div style="height: 6em;"></div>
-            <h2 class="head-title">As a funder,</h2>
-            <h2 class="head-title">Find the interesting project to support</h2>
-            <br>
-            <br>
-            
-            <p>Click find more below to browse more projects</p>
-            <div class="col-md-12 text-center">
-              <button class="btn btn-info" type="button" onclick="location.href='/view-projects'">Find More</button>
-            </div>
-            <div style="height: 6em;"></div>
-            
-            <h2 class="head-title">As a creater,</h2>
-            <h2 class="head-title">Create your project to get the fund</h2>
-            <div style="height: 4em;"></div>
-            <p>Select create below to create your own project</p>
-            <div class="col-md-12 text-center">
-              <button class="btn btn-info" type="button" onclick="location.href='/createProject'">Create</button>
-            </div>
-            <div style="height: 8em;"></div>
-          </div>
-        </div> 
-      </div>
-    </div>
-  </header> -->
   
   <header>
     <div id="carouselExampleIndicators" style="width: 100%;" class="carousel slide" data-ride="carousel">
@@ -130,29 +100,17 @@
   
 </body>
 
-<!-- Social Footer, Single Coloured -->
-<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
-<!-- // -->
 <div class="container">
   <hr />
   <div class="text-center center-block">
-    <p class="txt-railway">- Follow ConnectToFund on social media -</p>
-    <a href="https://www.facebook.com/bootsnipp"><i class="fa fa-facebook-square fa-3x social"></i></a>
-    <a href="https://twitter.com/bootsnipp"><i class="fa fa-twitter-square fa-3x social"></i></a>
-    <a href="https://plus.google.com/+Bootsnipp-page"><i class="fa fa-google-plus-square fa-3x social"></i></a>
-    <a href="mailto:bootsnipp@gmail.com"><i class="fa fa-envelope-square fa-3x social"></i></a>
+    <p class="txt-railway">-  Welcome to <i class="fa fa-copyright" aria-hidden="true"></i> ConnectToFund, have a nice day <i class="fa fa-smile-o" aria-hidden="true"></i> -</p>
   </div>
   <hr />
 </div>
 
-</html>
-
 <script>
-  function welcomeMessage() {
-    alert ("Welcome to ConnectToFund, you have login as "+sessionStorage.getItem("emailLogin"));
+  function save(email){
+    sessionStorage.setItem("emailLogin", email);
   }
 </script>
-
-
-
-<!-- test comment -->
+</html>

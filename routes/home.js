@@ -15,6 +15,7 @@ var countries_query = 'SELECT * FROM countries';
 
 router.get('/', function(req, res, next) {
 
+  var email = req.cookies['email'];
   pool.query(sql_query, (err, data) => {
     if(data != null){
       cateTemp = data.rows;
@@ -26,9 +27,9 @@ router.get('/', function(req, res, next) {
   
   function renderPage() {
     if(cateTemp != null)
-      res.render('home', { title: '', categories :  cateTemp});
+      res.render('home', { title: '', categories :  cateTemp, email: email});
     else 
-      res.render('home', { title: '', categories: null })
+      res.render('home', { title: '', categories: null, email: email })
   }
   
 });

@@ -12,36 +12,25 @@ router.get('/', function(req, res, next) {
     var channel = req.query.channel;
     var followingMsgTemp = null;
     var myProjMsgTemp = null;
-    var following_proj_msg_query = 'SELECT * FROM messages NATURAL JOIN follows WHERE email = \''+ email +'\' ORDER BY \"messageDateTime\" DESC';
-    var my_proj_msg_query = 'SELECT * FROM messages NATURAL JOIN projects WHERE email = \''+ email +'\' ORDER BY \"messageDateTime\" DESC';
+    var msg_query = 'SELECT *, '
+    + '(SELECT COUNT(*) FROM projects WHERE \"projectName\"= m.\"projectName\") AS projectExist '
+    +'FROM messages m WHERE m.email = \''+ email +'\' ORDER BY \"messageDateTime\" DESC';   
     
-    
-    pool.query(following_proj_msg_query, (err, data) => {
+    pool.query(msg_query, (err, data) => {
         if(data != null){
-            followingMsgTemp = data.rows;
-            console.log(followingMsgTemp);
+            msgTemp = data.rows;
+            console.log(msgTemp);
         } else
         console.log(err); 
-        getMyProjMsg();
+        renderPage();
     });
     
-    function getMyProjMsg() {
-        pool.query(my_proj_msg_query, (err, data) => {
-            if(data != null){
-                myProjMsgTemp = data.rows;
-                console.log(myProjMsgTemp);
-            } else 
-            console.log(err); 
-            renderPage();
-        });
-    }
-    
     function renderPage() {
-        if(myProjMsgTemp != null){
-            res.render('myMessage', { title: '', followingMsgTemp : followingMsgTemp, myProjMsgTemp : null, channel : channel });
+        if(msgTemp != null){
+            res.render('myMessage', { title: '', msgTemp : msgTemp, channel : channel });
         }
         else 
-        res.render('myMessage', { title: '', followingMsgTemp : null, myProjMsgTemp: null, channel : null })
+        res.render('myMessage', { title: '', msgTemp : null, channel : null })
     }
 });
 

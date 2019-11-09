@@ -53,7 +53,7 @@ router.post('/', function(req, res, next) {
     var password = req.body.pw;
     var login_query = '';
     
-    login_query = "SELECT count(*) as result from users where email = '" + userEmail + "' and password = '" + password +"'";
+    login_query = "SELECT COUNT(*) as result from users where email = '" + userEmail + "' and password = '" + password +"'";
     
     console.log(login_query);
     
@@ -108,7 +108,7 @@ router.post('/', function(req, res, next) {
         else 
         console.log(err);
         
-        res.cookie("email", userEmail);
+        res.cookie("email", email);
         res.redirect('/home')
       });
     }
