@@ -132,11 +132,11 @@ app.post('/modify', upload.any(), function(req, res, next){
   var attaches_query = "INSERT INTO attaches VALUES " + imgs;
   console.log(req.files.length + " : " + attaches_query);
   
-  var attaches_remove_query = "DELETE FROM attaches WHERE \"projectName\"='" + projectName +"'";
+  var attaches_remove_query = "DELETE FROM attaches WHERE projectName='" + projectName +"'";
   
-  var project_query = "UPDATE projects SET \"projectTotalFundNeeded\"='" + projectTotalFundNeeded + "', \"projectName\" = '" + projectName +"', \"countryCode\" = '"
-  + countryCode + "', \"projectDescription\" = '" + projectDescription+"',\"projectDeadline\"='" + projectDeadline + "', \"categoryName\"='" + category + "', \"projectStartDate\" = '" + projectStartDate  + "' " 
-  +"WHERE \"projectName\"='" + originalName +"'";
+  var project_query = "UPDATE projects SET projectTotalFundNeeded='" + projectTotalFundNeeded + "', projectName = '" + projectName +"', countryCode = '"
+  + countryCode + "', projectDescription = '" + projectDescription+"',projectDeadline='" + projectDeadline + "', categoryName='" + category + "', projectStartDate = '" + projectStartDate  + "' " 
+  +"WHERE projectName='" + originalName +"'";
   
   pool.query(project_query, (err, data) => {
     if(data != null && data.rowCount == 1) {
@@ -208,7 +208,7 @@ app.post('/modify', upload.any(), function(req, res, next){
 
 app.post('/delete', upload.any(), function(req, res, next) {
   var projectName = req.body.projectName;
-  var delete_query = "DELETE FROM projects WHERE \"projectName\"='" + projectName +"'";
+  var delete_query = "DELETE FROM projects WHERE projectName='" + projectName +"'";
   var imgsArr = req.body.images.split(",");
 
   console.log(delete_query);

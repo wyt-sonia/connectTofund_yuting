@@ -43,9 +43,9 @@
                                     myProjMsgTemp.push(msgTemp[i]);
                                     continue;
                                 }
-                                var projectName = msgTemp[i].projectName;
-                                var content = msgTemp[i].messageContent;
-                                var date = msgTemp[i].messageDateTime;
+                                var projectName = msgTemp[i].projectname;
+                                var content = msgTemp[i].messagecontent;
+                                var date = msgTemp[i].messagedatetime;
                                 var email = msgTemp[i].email;
                                 var exist = parseInt(msgTemp[i].projectexist);
                                 var dateStrInDB = date.getFullYear() + "-" + (date.getMonth() + 1) 
@@ -84,9 +84,9 @@
                                     <%if(myProjMsgTemp != null) {
                                         for(var i = 0; i < myProjMsgTemp.length; i++) {
                                             var topic = myProjMsgTemp[i].topic;
-                                            var projectName = myProjMsgTemp[i].projectName;
-                                            var content = myProjMsgTemp[i].messageContent;
-                                            var date = myProjMsgTemp[i].messageDateTime;
+                                            var projectName = myProjMsgTemp[i].projectname;
+                                            var content = myProjMsgTemp[i].messagecontent;
+                                            var date = myProjMsgTemp[i].messagedatetime;
                                             var email = myProjMsgTemp[i].email;
                                             var exist = parseInt(myProjMsgTemp[i].projectexist);
                                             var dateStrInDB = date.getFullYear() + "-" + (date.getMonth() + 1) 

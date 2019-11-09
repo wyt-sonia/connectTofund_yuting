@@ -43,7 +43,7 @@
                         </tr>
                         <tr>
                           <td scope="row"  width="20%" style="font-weight: bold;"><i class="fa fa-phone" aria-hidden="true"></i>&nbsp;&nbsp;Phone Number</td>
-                          <td><%= users[0].phoneNumber%></td>
+                          <td><%= users[0].phonenumber%></td>
                         </tr>
                         <tr>
                           <td scope="row"  width="20%" style="font-weight: bold;"><i class="fa fa-globe" aria-hidden="true"></i>&nbsp;&nbsp;Location</td>
@@ -115,7 +115,7 @@
           <br>
           <div  style="margin-bottom:.5em;">
             <label style="margin: 0; padding: 0;" class="text-secondary">Phone Number:</label>
-            <input class="input-material"  aria-describedby="usernameHelpMsg" value="<%= users[0].phoneNumber%>" pattern="[0-9]{8,15}" name="phoneNumber_edit" id="phoneNumber_edit" placeholder="Phone number" required
+            <input class="input-material"  aria-describedby="usernameHelpMsg" value="<%= users[0].phonenumber%>" pattern="[0-9]{8,15}" name="phoneNumber_edit" id="phoneNumber_edit" placeholder="Phone number" required
             data-msg="Please enter your phone number"  aria-describedby="telHelpMsg" data-error-msg="Please enter valid phone number.">
             <small id="telHelpMsg" class="form-text text-muted">
               Valid phone number is range from 5 to 15.
@@ -127,7 +127,7 @@
             <select class="select1" name="location_edit" id="location_edit">
               <% if(countries != null) {
                 for(var i=0; i < countries.length; i++) { %>
-                  <option value='<%= countries[i].countryCode%>'><%= countries[i].countryName%></option>
+                  <option value='<%= countries[i].countrycode%>'><%= countries[i].countryname%></option>
                   <% } 
                 } else {%>
                   <option>--</option>

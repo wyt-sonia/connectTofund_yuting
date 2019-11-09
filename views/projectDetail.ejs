@@ -42,11 +42,11 @@
                     <%
                     if(attaches != null) {%>
                         <div class="carousel-item active" style="height: 450px;">
-                            <img src="/images/<%= attaches[0].pictureAddress%>" height="450px" class="d-block w-100">
+                            <img src="/images/<%= attaches[0].pictureaddress%>" height="450px" class="d-block w-100">
                         </div>
                         <%
                         for(var i = 1; i < attaches.length; i++) {
-                            var src = attaches[i].pictureAddress;
+                            var src = attaches[i].pictureaddress;
                             %>
                             <div class="carousel-item" style="height: 450px;">
                                 <img src="/images/<%= src%>" height="450px" class="d-block w-100">
@@ -72,33 +72,33 @@
         var creator_email = null; 
         if(project != null) {
             creator_email = project.email;
-            var projectTotalFundNeeded = project.projectTotalFundNeeded;
+            var projectTotalFundNeeded = project.projecttotalfundneeded;
             var projectStatus = project.projstatus;
-            var projectName = project.projectName;
-            var countryName = project.countryName;
-            var projectDescription = project.projectDescription;
-            var projectDeadline = project.projectDeadline;
-            var categoryName = project.categoryName;
-            var projectStartDate = project.projectStartDate;
+            var projectName = project.projectname;
+            var countryName = project.countryname;
+            var projectDescription = project.projectdescription;
+            var projectDeadline = project.projectdeadline;
+            var categoryName = project.categoryname;
+            var projectStartDate = project.projectstartdate;
             var username = project.username;
             var donateamount = parseFloat(project.donateamount);
             var amountInCurrencyFormat = Number(donateamount).toLocaleString('en');
             var togo = parseFloat(project.togo);
-            var projectTotalFundNeeded = parseFloat(project.projectTotalFundNeeded);
+            var projectTotalFundNeeded = parseFloat(project.projecttotalfundneeded);
             var togoInCurrencyFormat = Number(togo).toLocaleString('en');
             var totalFundNeededInCurrencyFormat = Number(projectTotalFundNeeded).toLocaleString('en');
             var percentage = ((100 * (donateamount / projectTotalFundNeeded)) | 0) + "%";
             var myDonate = parseInt(myDonate);
-            var start = project.projectStartDate;
+            var start = project.projectstartdate;
             start = start.getDate()  + "/" + (start.getMonth() + 1) + "/" + start.getFullYear();
-            var deadline = project.projectDeadline;
+            var deadline = project.projectdeadline;
             deadline = deadline.getDate() + "/" + (deadline.getMonth() + 1) + "/" + deadline.getFullYear();
             
             var imgs = [];
             
             if(attaches != null) {
                 for(var i = 0; i < attaches.length; i++) {
-                    imgs.push("/images/" + attaches[i].pictureAddress);
+                    imgs.push("/images/" + attaches[i].pictureaddress);
                 }
             }
             %>
@@ -283,7 +283,7 @@
                                                                                             <select class="custom-select" name="bankAcc" id="bankAcc">
                                                                                                 <% if(bankAccTemp != null) {
                                                                                                     for(var i=0; i < bankAccTemp.length; i++) { %>
-                                                                                                        <option><%= bankAccTemp[i].bankAccountName%> | <%= bankAccTemp[i].bankAccountNo%></option>
+                                                                                                        <option><%= bankAccTemp[i].bankaccountname%> | <%= bankAccTemp[i].bankaccountno%></option>
                                                                                                         <% } } else {%>
                                                                                                             <option>--</option>
                                                                                                             <%} %>
@@ -314,8 +314,8 @@
                                                                                             <div class="tab-pane fade active show" style="padding:1em;" id="update" role="tabpanel" aria-labelledby="update-tab">
                                                                                                 <%if( updateTemp != null) {
                                                                                                     for(var i = 0; i < updateTemp.length; i++) {
-                                                                                                        var content = updateTemp[i].progressContent;
-                                                                                                        var date = updateTemp[i].progressDateTime;
+                                                                                                        var content = updateTemp[i].progresscontent;
+                                                                                                        var date = updateTemp[i].progressdatetime;
                                                                                                         var dateStr = date.getDate() + "/" + (date.getMonth()+1) + "/" + date.getFullYear();
                                                                                                         %>
                                                                                                         <div class="card" style="width: 100%; margin-bottom: 1em;">
@@ -332,7 +332,7 @@
                                                                                                     <%if( commentsTemp != null) {
                                                                                                         for(var i = 0; i < commentsTemp.length; i++) {
                                                                                                             var content = commentsTemp[i].content;
-                                                                                                            var date = commentsTemp[i].commentDateTime;
+                                                                                                            var date = commentsTemp[i].commentdatetime;
                                                                                                             var dateStr = date.getDate() + "/" + (date.getMonth()+1) + "/" + date.getFullYear();
                                                                                                             var username = commentsTemp[i].username;
                                                                                                             %>

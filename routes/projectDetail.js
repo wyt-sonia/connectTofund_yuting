@@ -29,27 +29,27 @@ router.get('/', function(req, res, next) {
     var updateTemp = null;
     var bankAccTemp = null;
     var bankAcc_query = "SELECT * FROM binds WHERE email = \'" + email +"\'";
-    var update_query = "SELECT * FROM updates WHERE \"projectName\"='" + projectName + "' ORDER BY \"progressDateTime\" DESC";
+    var update_query = "SELECT * FROM updates WHERE projectName='" + projectName + "' ORDER BY progressDateTime DESC";
     if(projectName != null) {
-        proj_query = 'WITH likeTemp AS ( SELECT * FROM likes WHERE \"projectName\" = \''+ projectName +'\'), '
-        +'followTemp AS ( SELECT * FROM follows WHERE "projectName" =  \''+ projectName +'\') '
+        proj_query = 'WITH likeTemp AS ( SELECT * FROM likes WHERE projectName = \''+ projectName +'\'), '
+        +'followTemp AS ( SELECT * FROM follows WHERE projectName =  \''+ projectName +'\') '
         +' SELECT p.*, u.*, c.*, '
-        +'(SELECT COALESCE(SUM(amount), 0) FROM funds fu WHERE fu."projectName" = p."projectName") AS donateAmount, '
+        +'(SELECT COALESCE(SUM(amount), 0) FROM funds fu WHERE fu.projectName = p.projectName) AS donateAmount, '
         +'(SELECT COUNT(*) FROM likeTemp) AS likeCount,'
-        +'(SELECT COUNT(*) FROM projects pro WHERE pro.\"projectName\"= p.\"projectName\" '
-        +'AND pro.\"projectDeadline\" >= cast(now() as date)) AS projStatus, '
-        +'(SELECT COALESCE(SUM(mfu.amount), 0) FROM funds mfu NATURAL JOIN users myu WHERE myu.email = \''+ email+'\' AND \"projectName\"=\''+ projectName +'\') AS myDonate, '
+        +'(SELECT COUNT(*) FROM projects pro WHERE pro.projectName= p.projectName '
+        +'AND pro.projectDeadline >= cast(now() as date)) AS projStatus, '
+        +'(SELECT COALESCE(SUM(mfu.amount), 0) FROM funds mfu NATURAL JOIN users myu WHERE myu.email = \''+ email+'\' AND projectName=\''+ projectName +'\') AS myDonate, '
         +'(SELECT COUNT(*) FROM followTemp) AS followCount,'
-        +'(SELECT COUNT(*) FROM followTemp myf WHERE myf.\"email\" =\'' + email + '\') AS myFollow, '
-        +'(SELECT COUNT(*) FROM likeTemp myl WHERE myl.\"email\" =\'' + email + '\') AS myLike, '
-        +'(SELECT p.\"projectTotalFundNeeded\" - COALESCE(SUM(amount), 0) FROM funds fu WHERE fu."projectName" = p."projectName") AS togo '
+        +'(SELECT COUNT(*) FROM followTemp myf WHERE myf.email =\'' + email + '\') AS myFollow, '
+        +'(SELECT COUNT(*) FROM likeTemp myl WHERE myl.email =\'' + email + '\') AS myLike, '
+        +'(SELECT p.projectTotalFundNeeded - COALESCE(SUM(amount), 0) FROM funds fu WHERE fu.projectName = p.projectName) AS togo '
         +"FROM projects p "
         +"NATURAL JOIN countries c "
-        +"NATURAL JOIN users u WHERE p.\"projectName\" = \'" + projectName + "\'";
-        attaches_query = "SELECT * FROM attaches WHERE \"projectName\" = \'" + projectName + "\'";
+        +"NATURAL JOIN users u WHERE p.projectName = \'" + projectName + "\'";
+        attaches_query = "SELECT * FROM attaches WHERE projectName = \'" + projectName + "\'";
         comment_query = "SELECT * FROM comments NATURAL JOIN users "
-        +"WHERE \"projectName\" = \'" + projectName + "\' "
-        +"ORDER BY \"commentDateTime\" DESC";
+        +"WHERE projectName = \'" + projectName + "\' "
+        +"ORDER BY commentDateTime DESC";
         pool.query(proj_query, (err, data) => {
             if(data != null){
                 projTemp = data.rows[0];
@@ -134,10 +134,10 @@ router.post('/', function(req, res, next){
         act_query = "INSERT INTO follows VALUES ('" + email + "','" + projName +"','" + dateStr +"')";
         break;
         case "deLike":
-        act_query = "DELETE FROM likes WHERE \"email\" = '" + email + "' and \"projectName\" = '" + projName + "'";
+        act_query = "DELETE FROM likes WHERE email = '" + email + "' and projectName = '" + projName + "'";
         break;
         case "deFollow":
-        act_query = "DELETE FROM follows WHERE \"email\" = '" + email + "' and \"projectName\" = '" + projName + "'";
+        act_query = "DELETE FROM follows WHERE email = '" + email + "' and projectName = '" + projName + "'";
         break;
         case "newComment":
         act_query = "INSERT INTO comments VALUES ('" + email + "','" + projName +"', '" + dateStr + "','" +newCommentContent+ "')";
