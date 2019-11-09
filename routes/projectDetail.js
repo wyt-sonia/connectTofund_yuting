@@ -146,7 +146,7 @@ router.post('/', function(req, res, next){
         act_query = "INSERT INTO funds VALUES ('" + email + "'," + newDonateAmount +", '" + projName +"', '" + dateStr + "')";
         break;
         case "updateProj":
-        act_query = "INSERT INTO updates VALUES ('" + dateStr + "','" + progressContent + "', '" + projName  + "')";
+        act_query = "INSERT INTO updates VALUES ('" + dateStr + "', '" + progressContent + "', '" + projName  + "')";
         break;
     }
     

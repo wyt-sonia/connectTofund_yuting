@@ -12,7 +12,6 @@ require('dotenv').config();
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var navbarRouter = require('./routes/navbar');
-var aboutRouter = require('./routes/about');
 var homeRouter = require('./routes/home');
 var viewprojectsRouter = require('./routes/view-projects');
 var projectDetailRouter = require('./routes/projectDetail');
@@ -87,6 +86,7 @@ app.post('/upload', upload.any(), function(req, res, next){
       insertAttach();
     }
     else  {
+      console.log(project_query);
       console.log(err);
       res.redirect('/createProject?error=createProjectError');
     }
@@ -139,7 +139,7 @@ app.post('/modify', upload.any(), function(req, res, next){
   +"WHERE \"projectName\"='" + originalName +"'";
   
   pool.query(project_query, (err, data) => {
-    if(data.rowCount == 1) {
+    if(data != null && data.rowCount == 1) {
       if(reupload == "true"){
         removeAttch();
       } else {
@@ -211,8 +211,9 @@ app.post('/delete', upload.any(), function(req, res, next) {
   var delete_query = "DELETE FROM projects WHERE \"projectName\"='" + projectName +"'";
   var imgsArr = req.body.images.split(",");
 
+  console.log(delete_query);
   pool.query(delete_query, (err, data) => {
-    if(data.rowCount == 1) {
+    if(data != null && data.rowCount == 1) {
       removeFromServer();
     }
     else  {
@@ -264,7 +265,6 @@ app.use(bodyParser.json());
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/navbar', navbarRouter);
-app.use('/about', aboutRouter);
 app.use('/home', homeRouter);
 app.use('/view-projects', viewprojectsRouter);
 app.use('/projectDetail', projectDetailRouter);
