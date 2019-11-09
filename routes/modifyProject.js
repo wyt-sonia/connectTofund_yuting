@@ -22,8 +22,8 @@ var projectTemp = null;
 router.get('/', function(req, res, next) {
   email = req.cookies['email'];
   var projName = req.query.proj;
-  attaches_query = 'SELECT * FROM attaches WHERE "projectName" = \'' + projName +'\'';
-  proj_query = 'SELECT * FROM projects NATURAL JOIN countries NATURAL JOIN categories WHERE "projectName" = \'' + projName +'\'';
+  attaches_query = 'SELECT * FROM attaches WHERE projectName = \'' + projName +'\'';
+  proj_query = 'SELECT * FROM projects NATURAL JOIN countries NATURAL JOIN categories WHERE projectName = \'' + projName +'\'';
   
   pool.query(proj_query, (err, data) => {
     if(data != null){

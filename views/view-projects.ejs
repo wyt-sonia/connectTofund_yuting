@@ -59,9 +59,9 @@
     <li class="nav-item" ><a class="nav-link text-secondary" id="all_cate" onclick="filterByCate('all', '<%= sortTerm%>')">ALL</a></li>
     <% if (categories != null) {
       for(var i = 0; i < categories.length; i++) {
-        var id = categories[i].categoryName + '_cate';
+        var id = categories[i].categoryname + '_cate';
         %>
-        <li class="nav-item"> <a class="nav-link text-uppercase text-secondary" id="<%=id%>" onclick="filterByCate('<%= categories[i].categoryName %>', '<%= sortTerm%>')"> <%= categories[i].categoryName%></a></li>
+        <li class="nav-item"> <a class="nav-link text-uppercase text-secondary" id="<%=id%>" onclick="filterByCate('<%= categories[i].categoryname %>', '<%= sortTerm%>')"> <%= categories[i].categoryname%></a></li>
         <%
       }
     }%>
@@ -81,9 +81,9 @@
                   %>
                   <li class="nav-item" style="margin-bottom:.5em;">
                     <div class="form-check">
-                      <input class="form-check-input countryCheckBox " type="checkbox" onchange="filterByCountry()" value=" <%= countries[i].countryName%>">
+                      <input class="form-check-input countryCheckBox " type="checkbox" onchange="filterByCountry()" value=" <%= countries[i].countryname%>">
                       <label class="form-check-label text-muted" style="font-size: 14px;">
-                        <%= countries[i].countryName%>
+                        <%= countries[i].countryname%>
                       </label>
                     </div>
                   </li>
@@ -161,24 +161,24 @@
           <%if(projects != null) {
             for(var i = 0; i < projects.length; i++) {
               var donateamount = parseFloat(projects[i].donateamount);
-              var projectTotalFundNeeded = parseFloat(projects[i].projectTotalFundNeeded);
+              var projectTotalFundNeeded = parseFloat(projects[i].projecttotalfundneeded);
               var percentage = ((100 * (donateamount / projectTotalFundNeeded)) | 0) + "%" ;
               var amountInCurrencyFormat = Number(donateamount).toLocaleString('en');
-              var start = projects[i].projectStartDate;
+              var start = projects[i].projectstartdate;
               start = start.getDate()  + "/" + (start.getMonth() + 1) + "/" + start.getFullYear();
-              var deadline = projects[i].projectDeadline;
+              var deadline = projects[i].projectdeadline;
               deadline = deadline.getDate()  + "/" + (deadline.getMonth() + 1) + "/" + deadline.getFullYear();
               %>
-              <div class='cardContainer col-md-4 projects <%= projects[i].categoryName%> <%= projects[i].location%>' id='<%= projects[i].projectName%>'>
+              <div class='cardContainer col-md-4 projects <%= projects[i].categoryname%> <%= projects[i].location%>' id='<%= projects[i].projectname%>'>
                 <div class="card mb-4 box-shadow">
-                  <img class="image card-img-top" src='/images/<%= projects[i].pictureAddress%>' onclick="toProject('<%= projects[i].projectName%>')" alt='<%= projects[i].projectName %> display picture' style="height: 225px; width: 100%; display: block;">
+                  <img class="image card-img-top" src='/images/<%= projects[i].pictureaddress%>' onclick="toProject('<%= projects[i].projectname%>')" alt='<%= projects[i].projectname %> display picture' style="height: 225px; width: 100%; display: block;">
                   <div class="card-body">
                     <div>
                         <% if(donateamount >= projectTotalFundNeeded) {%>
                           <span class="badge badge-success float-right" style="margin-bottom: 0.5em;">enough funds</span>
                           <% }%>
                       <h5 class="card-title" style="display: block; white-space: nowrap; overflow:hidden; text-overflow: ellipsis; height: 2em;">
-                        <%= projects[i].projectName%>
+                        <%= projects[i].projectname%>
                       </h5>
                       <div class="row" style="position: relative; top:-1em; left: 1em;">
                         <small style="position: relative;top:-0.1em;" ><i class="fa fa-globe" aria-hidden="true"></i>&nbsp;&nbsp;<%= projects[i].location%></small>
@@ -192,7 +192,7 @@
                         </div>
                       </div>
                     </div>
-                    <p class="card-text" style="display: block; max-lines: 3; overflow:hidden; text-overflow: ellipsis; height: 6em;"><%= projects[i].projectDescription%></p>
+                    <p class="card-text" style="display: block; max-lines: 3; overflow:hidden; text-overflow: ellipsis; height: 6em;"><%= projects[i].projectdescription%></p>
                     <small class="test-left font-weight-bold text-success money"><%= amountInCurrencyFormat%>&nbsp;SGD raised</small>
                     <div class="d-flex justify-content-between align-items-center" style="margin-bottom: 1.5em">
                       <div class="progress" style="height: 5px; width: 85%;">
@@ -204,24 +204,24 @@
                     </div>
                     <div class="d-flex justify-content-between align-items-center">
                       <div class="btn-group">
-                        <form action="" id='<%= projects[i].projectName%>_follow' role="form" method="post">
-                          <% if(myFollows != null && myFollows.includes(projects[i].projectName)) {%>
-                            <input hidden name="projName" value="<%= projects[i].projectName%>"/>
+                        <form action="" id='<%= projects[i].projectname%>_follow' role="form" method="post">
+                          <% if(myFollows != null && myFollows.includes(projects[i].projectname)) {%>
+                            <input hidden name="projName" value="<%= projects[i].projectname%>"/>
                             <input hidden name="act" value="deFollow"/>
                             <button type="submit" class="btn btn-sm btn-outline-secondary active">Followed</button>
                             <%} else {%>
-                              <input hidden name="projName" value="<%= projects[i].projectName%>"/>
+                              <input hidden name="projName" value="<%= projects[i].projectname%>"/>
                               <input hidden name="act" value="follow"/>
                               <button type="submit" class="btn btn-sm btn-outline-secondary" >Follow</button>
                               <%}%>
                             </form>
-                            <form style="margin-left:0.5em ;" action="" id='<%= projects[i].projectName%>_like' role="form" method="post">
-                              <% if(myLikes != null && myLikes.includes(projects[i].projectName)) {%>
-                                <input hidden name="projName" value="<%= projects[i].projectName%>"/>
+                            <form style="margin-left:0.5em ;" action="" id='<%= projects[i].projectname%>_like' role="form" method="post">
+                              <% if(myLikes != null && myLikes.includes(projects[i].projectname)) {%>
+                                <input hidden name="projName" value="<%= projects[i].projectname%>"/>
                                 <input hidden name="act" value="deLike"/>
                                 <button type="submit" class="btn btn-sm btn-outline-secondary active">Liked</button>
                                 <%} else {%>
-                                  <input hidden name="projName" value="<%= projects[i].projectName%>"/>
+                                  <input hidden name="projName" value="<%= projects[i].projectname%>"/>
                                   <input hidden name="act" value="like"/>
                                   <button type="submit" class="btn btn-sm btn-outline-secondary">Like</button>
                                   <%}%>

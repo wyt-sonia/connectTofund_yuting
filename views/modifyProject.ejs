@@ -17,24 +17,24 @@
     
 </head>
 <%if (projectTemp != null) {
-    var projectTotalFundNeeded = projectTemp.projectTotalFundNeeded; 
-    var projName = projectTemp.projectName;
-    var countryCode = projectTemp.countryCode;
-    var countryName = projectTemp.countryName;
-    var projectDescription = projectTemp.projectDescription;
-    var projectDeadline = projectTemp.projectDeadline;
-    var categoryName = projectTemp.categoryName;
-    var projectStartDate = projectTemp.projectStartDate;
+    var projectTotalFundNeeded = projectTemp.projecttotalfundneeded; 
+    var projName = projectTemp.projectname;
+    var countryCode = projectTemp.countrycode;
+    var countryName = projectTemp.countryname;
+    var projectDescription = projectTemp.projectdescription;
+    var projectDeadline = projectTemp.projectdeadline;
+    var categoryName = projectTemp.categoryname;
+    var projectStartDate = projectTemp.projectstartdate;
     var src = "current images: "
     var imgs = [];
     
     if(attachTemp != null) {
         for(var i = 0; i < attachTemp.length; i++) {
-            imgs.push("/images/" + attachTemp[i].pictureAddress);
+            imgs.push("/images/" + attachTemp[i].pictureaddress);
             if(i < attachTemp.length - 1)
-            src += attachTemp[i].pictureAddress +", ";
+            src += attachTemp[i].pictureaddress +", ";
             else
-            src += attachTemp[i].pictureAddress;
+            src += attachTemp[i].pictureaddress;
         }
     }
     %>
@@ -81,7 +81,7 @@
                                     <select class="custom-select" name="category" id="category">
                                         <% if(categories != null) {
                                             for(var i=0; i < categories.length; i++) { %>
-                                                <option><%= categories[i].categoryName%></option>
+                                                <option><%= categories[i].categoryname%></option>
                                                 <% } 
                                             } else {%>
                                                 <option>--</option>
@@ -95,7 +95,7 @@
                                             <select class="custom-select" name="countryCode" id="countryCode">
                                                 <% if(countries != null) {
                                                     for(var i=0; i < countries.length; i++) { %>
-                                                        <option value='<%= countries[i].countryCode%>'><%= countries[i].countryName%></option>
+                                                        <option value='<%= countries[i].countrycode%>'><%= countries[i].countryname%></option>
                                                         <% } 
                                                     } else {%>
                                                         <option>--</option>

@@ -19,7 +19,7 @@ router.get('/', function(req, res, next) {
   email = req.cookies['email'];
 
   var user_query = 'SELECT u.*, '
-                  +'(SELECT "countryName" from countries where "countryCode" = u."location" ) AS countryName '
+                  +'(SELECT countryName from countries where countryCode = u.location ) AS countryName '
                   +'FROM users u WHERE email = \''+ email+'\'';
   console.log(user_query);
 
@@ -71,7 +71,7 @@ router.post('/', function(req, res, next) {
     var phoneNumber = req.body.phoneNumber_edit;
     var password = req.body.pw_edit;
     var location = req.body.location_edit;
-    var updateInfo_query = "UPDATE users SET username = '"+username+"' , password = '"+password+"' , location = '"+location+"' , \"phoneNumber\" = '"+phoneNumber+"' where email = '"+email+"'";
+    var updateInfo_query = "UPDATE users SET username = '"+username+"' , password = '"+password+"' , location = '"+location+"' , phoneNumber = '"+phoneNumber+"' where email = '"+email+"'";
     console.log(updateInfo_query);
     pool.query(updateInfo_query, (err, data) => {
       if(data != null && data.rowCount == 1){

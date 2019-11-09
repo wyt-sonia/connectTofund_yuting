@@ -13,8 +13,8 @@ router.get('/', function(req, res, next) {
     var followingMsgTemp = null;
     var myProjMsgTemp = null;
     var msg_query = 'SELECT *, '
-    + '(SELECT COUNT(*) FROM projects WHERE \"projectName\"= m.\"projectName\") AS projectExist '
-    +'FROM messages m WHERE m.email = \''+ email +'\' ORDER BY \"messageDateTime\" DESC';   
+    + '(SELECT COUNT(*) FROM projects WHERE projectName= m.projectName) AS projectExist '
+    +'FROM messages m WHERE m.email = \''+ email +'\' ORDER BY messageDateTime DESC';   
     
     pool.query(msg_query, (err, data) => {
         if(data != null){
@@ -40,7 +40,7 @@ router.post('/', function(req, res, next) {
     var projectName = req.body.projectName;
     var topic = req.body.topic;
     var dateTime = req.body.dateTime;
-    var delete_msg_query = 'DELETE FROM messages WHERE \"projectName\" = \''+ projectName +'\' AND topic = \''+ topic +'\' AND \"messageDateTime\"=\''+dateTime+'\' AND email = \'' + email + '\'';
+    var delete_msg_query = 'DELETE FROM messages WHERE projectName = \''+ projectName +'\' AND topic = \''+ topic +'\' AND messageDateTime=\''+dateTime+'\' AND email = \'' + email + '\'';
     
     console.log(delete_msg_query);
     

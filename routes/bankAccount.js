@@ -43,13 +43,13 @@ router.post('/', function(req, res, next) {
   var query = "";
   switch(act) {
     case "updateAcc":
-    query= "UPDATE binds SET \"bankAccountNo\" = '" 
-    + bankAccountNumber+ "', \"bankAccountName\" = '" 
-    + bankAccountName+"' WHERE email = '" + email + "' AND \"bankAccountNo\" = '" + originalAcc + "'";
+    query= "UPDATE binds SET bankAccountNo = '" 
+    + bankAccountNumber+ "', bankAccountName = '" 
+    + bankAccountName+"' WHERE email = '" + email + "' AND bankAccountNo = '" + originalAcc + "'";
     break;
     
     case "deleteAcc":
-    query="DELETE FROM binds WHERE \"bankAccountNo\" = '" + bankAccountNumber + "' AND email = '" + email + "'";
+    query="DELETE FROM binds WHERE bankAccountNo = '" + bankAccountNumber + "' AND email = '" + email + "'";
     break;
     
     case "addNewAcc":

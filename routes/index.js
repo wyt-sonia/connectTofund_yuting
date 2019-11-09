@@ -18,6 +18,7 @@ router.get('/', function(req, res, next) {
   pool.query(categories_query, (err, data) => {
     if(data != null){
       cateTemp = data.rows;
+      console.log(data);
       getCountries();
     } else {
       console.log("no category");
@@ -88,6 +89,8 @@ router.post('/', function(req, res, next) {
     pool.query(insert_query, (err, data) => {
       if (data != null){
         insertTemp = data.rows;
+        console.log("I'm here");
+        console.log(data);
         console.log(insert_query);
         insertAcc();
       } else{
