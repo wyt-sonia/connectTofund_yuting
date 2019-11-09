@@ -4,7 +4,7 @@ var router = express.Router();
 const { Pool } = require('pg')
 
 const pool = new Pool({
-	connectionString: process.env.DATABASE_URL
+  connectionString: process.env.DATABASE_URL
 });
 
 
@@ -14,7 +14,7 @@ var categories_query = 'SELECT * FROM categories';
 var countries_query = 'SELECT * FROM countries';
 
 router.get('/', function(req, res, next) {
-
+  
   pool.query(categories_query, (err, data) => {
     if(data != null){
       cateTemp = data.rows;
@@ -23,7 +23,7 @@ router.get('/', function(req, res, next) {
       console.log("no category");
     }
   });
-
+  
   function getCountries() {
     pool.query(countries_query, (err, data) => {
       if(data != null && cateTemp != null) {
@@ -31,7 +31,7 @@ router.get('/', function(req, res, next) {
         res.cookie("countries", countryTemp);
       }
       else 
-        console.log('no country');
+      console.log('no country');
       
       renderPage();
     });
@@ -39,9 +39,9 @@ router.get('/', function(req, res, next) {
   
   function renderPage() {
     if(cateTemp != null && countryTemp != null)
-      res.render('index', { title: '', countries: countryTemp, categories :  cateTemp});
+    res.render('index', { title: '', countries: countryTemp, categories :  cateTemp});
     else 
-      res.render('index', { title: '', countries: null, categories: null })
+    res.render('index', { title: '', countries: null, categories: null })
   }
   
 });
@@ -53,7 +53,7 @@ router.post('/', function(req, res, next) {
     var password = req.body.pw;
     var login_query = '';
     
-    login_query = "SELECT count(*) as result from users where email = '" + userEmail + "' and password = '" + password +"'";
+    login_query = "SELECT COUNT(*) as result from users where email = '" + userEmail + "' and password = '" + password +"'";
     
     console.log(login_query);
     
@@ -73,18 +73,18 @@ router.post('/', function(req, res, next) {
     var phoneNumber = req.body.phoneNumber;
     var password = req.body.pw;
     var location = req.body.location;
-
+    
     var bankAccountNo = req.body.bankAccountNo;
     var bankAccountName = req.body.bankAccountName;
     var insertTemp;
     var accTemp = null;
     console.log(req.body);
-  
+    
     var insert_query = "INSERT INTO users VALUES ('" + username + "','" + email + "','" + password +"','"
-                        + location + "','" + phoneNumber+"')";
-
+    + location + "','" + phoneNumber+"')";
+    
     var insert_acc_query = "INSERT INTO binds VALUES ('" + bankAccountNo + "','" + bankAccountName + "', '" + email + "')";
-  
+    
     pool.query(insert_query, (err, data) => {
       if (data != null){
         insertTemp = data.rows;
@@ -95,20 +95,21 @@ router.post('/', function(req, res, next) {
           res.redirect('/?error=duplicateUsername');
         }
         else{
-        console.log(err.message);
-        res.redirect('/?error=signupError');
+          console.log(err.message);
+          res.redirect('/?error=signupError');
         }
       }
     });
-
+    
     function insertAcc() {
       pool.query(insert_acc_query, (err, data) => {
         if(data != null && insertTemp != null) 
-          accTemp = data.rows;
+        accTemp = data.rows;
         else 
-          console.log('no country');
+        console.log(err);
         
-        res.redirect('/')
+        res.cookie("email", email);
+        res.redirect('/home')
       });
     }
     

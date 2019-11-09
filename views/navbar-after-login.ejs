@@ -12,16 +12,14 @@
 </style>
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <div class="container">
-    <a class="navbar-brand" href='/home'>ConnectToFund</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
+  <div class="container row" style="margin: 0 auto;width: 100%;">
+    <a class="navbar-brand" style="position: relative;right: 2em;"  href='/home'>ConnectToFund</a>
     </button>
     
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <div class="collapse navbar-collapse"  style="position: relative;right: 2em;" style="width: 100%;" id="navbarSupportedContent">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item active">
-          <a class="nav-link" href='/view-projects'>Projects <span class="sr-only">(current)</span></a>
+          <a class="nav-link" href='/view-projects'>View Projects <span class="sr-only">(current)</span></a>
         </li>
         <li class="nav-item active">
           <a class="nav-link" href='/bankAccount'>Bank Account <span class="sr-only">(current)</span></a>
@@ -38,7 +36,7 @@
             <a class="dropdown-item" href="/myInfo?infoType=donation"><i class="fa fa-money" aria-hidden="true"></i>  My Contribution</a>
             <div class="dropdown-divider"></div>
             <a class="dropdown-item" href="/myInfo?infoType=like"><i class="fa fa-heart" aria-hidden="true"></i> &nbsp;My Likes</a>
-            <a class="dropdown-item" href="/myInfo?infoType=follow"><i class="fa fa-star-o" aria-hidden="true"></i>  &nbsp;My Follows</a>
+            <a class="dropdown-item" href="/myInfo?infoType=follow"><i class="fa fa-bookmark-o" aria-hidden="true"></i> &nbsp;My Follows</a>
             <a class="dropdown-item" href="/myInfo?infoType=comment"><i class="fa fa-comments-o" aria-hidden="true"></i>  &nbsp;My Comments</a>
           </div>
         </li>
@@ -46,12 +44,19 @@
             <a class="nav-link" href='/createProject'><i class="fa fa-child" aria-hidden="true"></i> New Project<span class="sr-only">(current)</span></a>
           </li>
         <li class="nav-item active">
-            <a class="nav-link" href='#'><i class="fa fa-envelope-o" aria-hidden="true"></i>  Message <span class="sr-only">(current)</span></a>
+            <a class="nav-link" href='/myMessage'><i class="fa fa-envelope-o" aria-hidden="true"></i>  Message <span class="sr-only">(current)</span></a>
           </li>
       </ul>
-      <form class="form-inline my-2 my-lg-0">
-        <button class="btn btn-outline-danger my-2 my-sm-0" type="button" onclick="location.href='/'">Log off</button>
+      <form class="form-inline my-2 my-lg-0" action="/home" method="POST">
+        <input hidden name="logOff" value="logOff">
+        <button class="btn btn-sm btn-outline-danger my-2 my-sm-0" style="padding-left: 1.5em;padding-right: 1.5em;position: relative;left: 6em;" type="submit" onsubmit="clearSession()">Log off</button>
       </form>
     </div>
   </div>
 </nav>
+
+<script>
+function clearSession() {
+  sessionStorage.clear();
+}
+</script>

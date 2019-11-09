@@ -12,7 +12,6 @@ require('dotenv').config();
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var navbarRouter = require('./routes/navbar');
-var aboutRouter = require('./routes/about');
 var homeRouter = require('./routes/home');
 var viewprojectsRouter = require('./routes/view-projects');
 var projectDetailRouter = require('./routes/projectDetail');
@@ -22,6 +21,7 @@ var profileRouter = require('./routes/profile');
 var bankAccountRouter = require('./routes/bankAccount');
 var myInfoRouter = require('./routes/myInfo');
 var modifyProjectRouter = require('./routes/modifyProject');
+var myMessageRouter= require('./routes/myMessage');
 
 
 var app = express();
@@ -86,6 +86,7 @@ app.post('/upload', upload.any(), function(req, res, next){
       insertAttach();
     }
     else  {
+      console.log(project_query);
       console.log(err);
       res.redirect('/createProject?error=createProjectError');
     }
@@ -103,7 +104,6 @@ app.post('/upload', upload.any(), function(req, res, next){
     });
   }
 });
-
 
 app.post('/modify', upload.any(), function(req, res, next){
   console.log(req.files);
@@ -139,7 +139,7 @@ app.post('/modify', upload.any(), function(req, res, next){
   +"WHERE \"projectName\"='" + originalName +"'";
   
   pool.query(project_query, (err, data) => {
-    if(data.rowCount == 1) {
+    if(data != null && data.rowCount == 1) {
       if(reupload == "true"){
         removeAttch();
       } else {
@@ -206,6 +206,50 @@ app.post('/modify', upload.any(), function(req, res, next){
   }
 });
 
+app.post('/delete', upload.any(), function(req, res, next) {
+  var projectName = req.body.projectName;
+  var delete_query = "DELETE FROM projects WHERE \"projectName\"='" + projectName +"'";
+  var imgsArr = req.body.images.split(",");
+
+  console.log(delete_query);
+  pool.query(delete_query, (err, data) => {
+    if(data != null && data.rowCount == 1) {
+      removeFromServer();
+    }
+    else  {
+      console.log(err);
+      res.redirect('/modifyProject?proj=' + projectName);
+    }
+  });
+
+  function removeFromServer(index){
+
+    function deleteFiles(files, callback){
+      var i = files.length;
+      files.forEach(function(filepath){
+        fs.unlink(filepath, function(err) {
+          i--;
+          if (err != null && err.errno != -2) {
+            callback(err);
+            return;
+          } else if (i <= 0) {
+            callback(null);
+          }
+        });
+      });
+    }
+    
+    deleteFiles(imgsArr, function(err) {
+      if (err != null && err.errno != -2) {
+        console.log(err);
+      } else {
+        res.redirect('/viewCreatedProjects');
+        console.log('all files removed');
+      }
+    });
+  }
+});
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -221,7 +265,6 @@ app.use(bodyParser.json());
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/navbar', navbarRouter);
-app.use('/about', aboutRouter);
 app.use('/home', homeRouter);
 app.use('/view-projects', viewprojectsRouter);
 app.use('/projectDetail', projectDetailRouter);
@@ -231,6 +274,7 @@ app.use('/profile', profileRouter);
 app.use('/bankAccount', bankAccountRouter);
 app.use('/myInfo', myInfoRouter);
 app.use('/modifyProject', modifyProjectRouter);
+app.use('/myMessage', myMessageRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

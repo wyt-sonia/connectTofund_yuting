@@ -1,30 +1,30 @@
 <style>
-
+  
   input.input-material {
     width: 100%;
     border: none;
     border-bottom: 1px solid #eee;
     padding: 10px 0;
-}
+  }
 </style>
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <div class="container">
-      <a class="navbar-brand" href="#">ConnectToFund</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-
-        </ul>
-        <form class="form-inline my-2 my-lg-0">
-          <button class="btn btn-primary my-2 my-sm-0" type="button" data-toggle="modal" data-target="#modalSign">Sign up</button>
-          &nbsp;&nbsp;
-          <button class="btn btn-success my-2 my-sm-0" type="button" data-toggle="modal" data-target="#modalLog">Log in</button>
-        </form>
-      </div>
+    <a class="navbar-brand" style="position: relative;right: 2em;"  href="#">ConnectToFund</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        
+      </ul>
+      <form class="form-inline my-2 my-lg-0" style="position: relative;left: 6em;">
+        <button class="btn btn-sm btn-outline-primary my-2 my-sm-0" type="button" data-toggle="modal" style="padding-left: 1.5em; padding-right: 1.5em;" data-target="#modalSign">Sign up</button>
+        &nbsp;&nbsp;
+        <button class="btn btn-sm btn-outline-success my-2 my-sm-0" type="button" data-toggle="modal" style="padding-left: 1.5em; padding-right: 1.5em;" data-target="#modalLog">Log in</button>
+      </form>
+    </div>
   </div>
 </nav>
 
@@ -40,141 +40,175 @@
       </div>
       <div class="modal-body">
         <form id="signUp_form" action="" role="form" method="post" onsubmit="return validdation()">
-            <div>
-                <input class="input-material" type="email" name="email" id="email_signUp" placeholder="Email" required
-                data-msg="Please enter your email">
-                <input hidden name = "act" value="signup"/>
-              </div>
-            <br>
           <div>
-            <input class="input-material" type="text" name="username" id="username_signUp" placeholder="Username" required
-            data-msg="Please enter your username">
+            <input class="input-material" type="email" name="email" id="email_signUp" placeholder="Email" required
+            data-msg="Please enter your email">
+            <small id="emailHelpMsg" class="form-text text-muted">
+              We accepet at most 100 digits email.
+            </small>
+            <input hidden name = "act" value="signup"/>
           </div>
           <br>
           <div>
-              <input class="input-material" type="password" name="pw" id="pw_signUp" placeholder="Password" required
-              data-msg="Please enter your password">
-            </div>
+            <input class="input-material" style="padding: 0; margin: 0;" type="text" name="username" id="username_signUp" placeholder="Username" required
+            data-msg="Please enter your username">
+            <small id="usernameHelpMsg" class="form-text text-muted">
+              Your username must be 6-50 characters long.
+            </small>
+          </div>
+          <br>
+          <div style="height: 3em;">
+              <input class="input-material" style="padding: 0; margin: 0;"  type="password" name="pw" id="pw_signUp" placeholder="Password" required
+              data-msg="Please enter your password" aria-describedby="pwHelpMsg">
+              <small id="pwHelpMsg" class="form-text text-muted">
+                Your password must be 6-20 characters long.
+              </small>
+            <i class="fa fa-eye" id="pwToggle" style="position: relative; left: 90%; top: -3em;padding: 0; margin: 0" aria-hidden="true" onclick="pwVisibilityToggle()"></i>
+          </div>
           <br>
           <div>
-              <input class="input-material" pattern="[0-9]{8,15}" name="phoneNumber" id="phoneNumber_signUp" placeholder="Phone number" required
-              data-msg="Please enter your phone number" data-error-msg="Please enter valid phone number.">
+            <input class="input-material" style="padding: 0; margin: 0" pattern="[0-9]{5,15}" name="phoneNumber" id="phoneNumber_signUp" placeholder="Phone number" required
+            data-msg="Please enter your phone number" data-error-msg="Please enter valid phone number.">
+            <small id="telHelpMsg" class="form-text text-muted">
+              Valid phone number is range from 5 to 15.
+            </small>
           </div> 
           <br>
           <div>              
-                  <select class="select1" name="location" id="location_signUp">
-                  <option value="0">Select Location</option>
-                    <% if(countries != null) {
-                        for(var i=0; i < countries.length; i++) { %>
-                          <option value='<%= countries[i].countryCode%>'><%= countries[i].countryName%></option>
-                    <% } 
-                      } else {%>
-                          <option>--</option>
-                    <%} %>
-                  </select>
+            <select class="select1" name="location" id="location_signUp">
+              <option value="0">Select Location</option>
+              <% if(countries != null) {
+                for(var i=0; i < countries.length; i++) { %>
+                  <option value='<%= countries[i].countryCode%>'><%= countries[i].countryName%></option>
+                  <% } 
+                } else {%>
+                  <option>--</option>
+                  <%} %>
+                </select>
+              </div>
+              <br>
+              <div>
+                <input class="input-material" style="padding: 0; margin: 0;"  type="text" name="bankAccountNo" id="bankAccountNo" placeholder="Bank Account Number" required
+                data-msg="Please enter your bank account number">
+                <small id="accHelpMsg" class="form-text text-muted">
+                    Please enter valid bank account.
+                  </small>
+              </div>
+              <br>
+              <div>
+                <input class="input-material" style="padding: 0; margin: 0;"  type="text" name="bankAccountName" id="bankAccountName" placeholder="Bank Account Holder" required
+                data-msg="Please enter the name shown on the bank card">
+                <small id="accNameHelpMsg" style="margin-bottom: 3em;" class="form-text text-muted">
+                    Please enter the name of the account holder.
+                  </small>
+              </div>
+              
+              <div class="modal-footer">
+                <button type="submit" class="btn btn-sm btn-outline-primary" >Sign up</button>
+                <button type="button" class="btn btn-sm btn-outline-secondary" onclick="clearData(false)">Reset</button>
+              </div>
+            </form>
           </div>
-          <br>
-          <div>
-            <input class="input-material" type="text" name="bankAccountNo" id="bankAccountNo" placeholder="Bank Account Number" required
-            data-msg="Please enter your bank account number">
+        </div>
+      </div>
+    </div>
+    
+    <!-- Modal -->
+    <div class="modal fade" id="modalLog" tabindex="-1" role="dialog" aria-labelledby="logInModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="loginModalLabel">Log in</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
           </div>
-          <br>
-          <div>
-              <input class="input-material" type="text" name="bankAccountName" id="bankAccountName" placeholder="Bank Account Name" required
-              data-msg="Please enter the name shown on the bank card">
-            </div>
+          <div class="modal-body">
+            <form id="login_form" action="" role="form" method="post">
+              <div>
+                <input class="input-material" type="text" name="userEmail" id="email_login" 
+                placeholder="Email" required
+                data-msg="Please enter your email">
+                <input hidden name = "act" value="login"/>
+              </div>
+              <br> 
+              <div>
+                <input class="input-material" type="password" name="pw" id="pw_login" placeholder="Password" required
+                data-msg="Please enter your password">
+              </div>
+              <div class="modal-footer">
+                <button type="submit" class="btn btn-sm btn-outline-primary" onclick="save()">Log in</button>
+                <button type="button" class="btn btn-sm btn-outline-secondary" onclick="clearData(true)" >Reset</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <script>
+      //initiat all controller
+      var email_login = document.getElementById("email_login");
+      var pw_login = document.getElementById("pw_login");
+      var username_signUp = document.getElementById("username_signUp");
+      var pw_signUp = document.getElementById("pw_signUp");
+      var email_signUp = document.getElementById("email_signUp");
+      var phoneNumber_signUp = document.getElementById("phoneNumber_signUp");
+      var location_signUp = document.getElementById("location_signUp");
+
       
-      <div class="modal-footer">
-        <button type="submit" class="btn btn-primary" >Sign up</button>
-        <button type="button" class="btn btn-secondary" onclick="clearData(false)">Reset</button>
-      </div>
-    </form>
-  </div>
-    </div>
-  </div>
-</div>
-
-<!-- Modal -->
-<div class="modal fade" id="modalLog" tabindex="-1" role="dialog" aria-labelledby="logInModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="loginModalLabel">Log in</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <form id="login_form" action="" role="form" method="post">
-          <div>
-            <input class="input-material" type="text" name="userEmail" id="email_login" 
-            placeholder="Email" required
-            data-msg="Please enter your email">
-            <input hidden name = "act" value="login"/>
-          </div>
-        <br> 
-          <div>
-            <input class="input-material" type="password" name="pw" id="pw_login" placeholder="Password" required
-            data-msg="Please enter your password">
-          </div>
-      <div class="modal-footer">
-        <button type="submit" class="btn btn-primary" onclick="save()">Log in</button>
-        <button type="button" class="btn btn-secondary" onclick="clearData(true)" >Reset</button>
-      </div>
-    </form>
-    </div>
-  </div>
-</div>
-</div>
-
-<script>
-    //initiat all controller
-        var email_login = document.getElementById("email_login");
-        var pw_login = document.getElementById("pw_login");
-        var username_signUp = document.getElementById("username_signUp");
-        var pw_signUp = document.getElementById("pw_signUp");
-        var email_signUp = document.getElementById("email_signUp");
-        var phoneNumber_signUp = document.getElementById("phoneNumber_signUp");
-        var location_signUp = document.getElementById("location_signUp");
-
-        function clearData(isLogin) {
-          if(isLogin){
-              email_login.value = "";
-              pw_login.value = "";
-          } else {
-              username_signUp.value = "";
-              pw_signUp.value = "";
-              phoneNumber_signUp.value = "";
-              email_signUp.value = "";
-              location_signUp.selectedIndex = 0;
-          }
+      function clearData(isLogin) {
+        if(isLogin){
+          email_login.value = "";
+          pw_login.value = "";
+        } else {
+          username_signUp.value = "";
+          pw_signUp.value = "";
+          phoneNumber_signUp.value = "";
+          email_signUp.value = "";
+          location_signUp.selectedIndex = 0;
         }
-
-        function validdation(){
-
-          if(email_signUp.value.length > 100){
-            alert("The valid length of email is at most 100.");
-            return false;
-          }
-
-          if(username_signUp.value.length < 6 || username_signUp.value.length > 50){
-            alert("The valid length of username is 6 to 50.");
-            return false;
-          }
-
-          if(pw_signUp.value.length < 6 || pw_signUp.value.length > 20){
-            alert("The valid length of password is 6 to 20.");
-            return false;
-          }
-
-          if(location_signUp.selectedIndex == 0) {
-            //location_signUp.setAttribute("data-error-msg", "Please select your location.");
-            alert("Please select your location.");
-            return false;
-          }
+      }
+      
+      function validdation(){
+        
+        if(email_signUp.value.length > 100){
+          alert("The valid length of email is at most 100.");
+          return false;
         }
-        //store the login email in the session
-        function save(){
-          sessionStorage.setItem("emailLogin", email_login.value);
+        
+        if(username_signUp.value.length < 6 || username_signUp.value.length > 50){
+          alert("The valid length of username is 6 to 50.");
+          return false;
         }
+        
+        if(pw_signUp.value.length < 6 || pw_signUp.value.length > 20){
+          alert("The valid length of password is 6 to 20.");
+          return false;
+        }
+        
+        if(location_signUp.selectedIndex == 0) {
+          //location_signUp.setAttribute("data-error-msg", "Please select your location.");
+          alert("Please select your location.");
+          return false;
+        }
+      }
+      //store the login email in the session
+      function save(){
+        sessionStorage.setItem("emailLogin", email_login.value);
+      }
+
+      function pwVisibilityToggle() {
+        var x = document.getElementById("pw_signUp");
+        var toggle = document.getElementById("pwToggle");
+        if (x.type === "password") {
+          x.type = "text";
+          toggle.classList.remove("fa-eye");
+          toggle.classList.add("fa-eye-slash");
+        } else {
+          x.type = "password";
+          toggle.classList.remove("fa-eye-slash");
+          toggle.classList.add("fa-eye");
+        }
+      }
     </script>
