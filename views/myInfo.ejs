@@ -55,20 +55,20 @@
                             <tbody>
                                 <%
                                 for(var i = 0; i < infoTemp.length; i++) {
-                                    var projName = infoTemp[i].projectName;
+                                    var projName = infoTemp[i].projectname;
                                     var dateStrInDB = "";
                                     var dateStr = "";
                                     var amount = "";
                                     var content = "";
                                     var status = "";
                                     if(infoType == "donation" ) {
-                                        var date = infoTemp[i].fundDateTime;
+                                        var date = infoTemp[i].funddatetime;
                                         dateStrInDB = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " + date.getHours() + ":" + date.getMinutes() + ":" +date.getSeconds();
                                         dateStr = date.getDate() + "/" + (date.getMonth()+1) + "/" + date.getFullYear() + " " + date.getHours() + ":" + date.getMinutes() + ":" +date.getSeconds();
                                         amount = infoTemp[i].amount;
                                         status = infoTemp[i].projstatus;
                                     } else {
-                                        var date = infoTemp[i].commentDateTime;
+                                        var date = infoTemp[i].commentdatetime;
                                         dateStrInDB = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " + date.getHours() + ":" + date.getMinutes() + ":" +date.getSeconds();
                                         dateStr = date.getDate() + "/" + (date.getMonth()+1) + "/" + date.getFullYear() + " " + date.getHours() + ":" + date.getMinutes() + ":" +date.getSeconds();
                                         content =  infoTemp[i].content;
@@ -113,16 +113,16 @@
                                                         <tbody>
                                                             <%
                                                             for(var i = 0; i < infoTemp.length; i++) {
-                                                                var projName = infoTemp[i].projectName;
+                                                                var projName = infoTemp[i].projectname;
                                                                 var dateStrInDB = "";
                                                                 var dateStr = "";
                                                                 if(infoType == "like") {
-                                                                    var date = infoTemp[i].dateTime;
+                                                                    var date = infoTemp[i].datetime;
                                                                     dateStrInDB = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " + date.getHours() + ":" + date.getMinutes() + ":" +date.getSeconds();;
                                                                     dateStr = date.getDate() + "/" + (date.getMonth()+1) + "/" + date.getFullYear() + " " + date.getHours() + ":" + date.getMinutes() + ":" +date.getSeconds();
                                                                 }
                                                                 else {
-                                                                    date = infoTemp[i].followDateTime;
+                                                                    date = infoTemp[i].followdatetime;
                                                                     dateStrInDB = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " + date.getHours() + ":" + date.getMinutes() + ":" +date.getSeconds();;
                                                                     dateStr = date.getDate() + "/" + (date.getMonth()+1) + "/" + date.getFullYear() + " " + date.getHours() + ":" + date.getMinutes() + ":" +date.getSeconds();    
                                                                 }

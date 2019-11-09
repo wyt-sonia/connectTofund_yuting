@@ -20,21 +20,22 @@ var categories_query = 'SELECT * FROM categories';
 var sortTerm = null;
 var cateTerm = null;
 
-var project_query = 'SELECT DISTINCT ON ("projectStartDate","projectName") p.*, '
-+'(SELECT "countryName" FROM countries c WHERE c."countryCode" = p."countryCode") AS location, '
-+'(SELECT COUNT(*) FROM likes l WHERE l."projectName" = p."projectName") AS likeCount, '
-+'(SELECT COALESCE(SUM(amount), 0) FROM funds fu WHERE fu."projectName" = p."projectName") AS donateAmount, '
-+'(SELECT COUNT(*) FROM follows f WHERE f."projectName" = p."projectName") AS followCount, a."pictureAddress" FROM projects p '
+var project_query = 'SELECT DISTINCT ON (projectStartDate,projectName) p.*, '
++'(SELECT countryName FROM countries c WHERE c.countryCode = p.countryCode) AS location, '
++'(SELECT COUNT(*) FROM likes l WHERE l.projectName = p.projectName) AS likeCount, '
++'(SELECT COALESCE(SUM(amount), 0) FROM funds fu WHERE fu.projectName = p.projectName) AS donateAmount, '
++'(SELECT COUNT(*) FROM follows f WHERE f.projectName = p.projectName) AS followCount, a.pictureAddress FROM projects p '
 +'NATURAL JOIN attaches a '
-+'WHERE "projectStartDate" <= cast(now() as date) '
-+'AND "projectDeadline" >= cast(now() as date) '
-+'ORDER BY "projectStartDate", "projectName", "pictureAddress" DESC';
++'WHERE projectStartDate <= cast(now() as date) '
++'AND projectDeadline >= cast(now() as date) '
++'ORDER BY projectStartDate, projectName, pictureAddress DESC';
+
 
 router.get('/', function(req, res, next) {
   
   email = req.cookies['email'];
-  myLike_query =  "SELECT \"projectName\" FROM likes WHERE email = '" + email + "'";
-  myFollow_query =  "SELECT \"projectName\" FROM follows WHERE email = '" + email + "'";
+  myLike_query =  "SELECT projectName FROM likes WHERE email = '" + email + "'";
+  myFollow_query =  "SELECT projectName FROM follows WHERE email = '" + email + "'";
   
   cateTerm = req.query.cate;
   sortTerm = req.query.sortTerm;
@@ -50,20 +51,20 @@ router.get('/', function(req, res, next) {
   
   function getAllProjects() {
     pool.query(project_query, (err, data) => {
-      console.log(err);
       if(data != null){
         projTemp = data.rows;
-        //console.log(projTemp);
+        console.log(project_query);
+        console.log(projTemp);
         
         if(sortTerm != null) {
           switch(sortTerm) {
             case 'start':
             projTemp.sort((a,b) => 
-            (a.projectStartDate > b.projectStartDate) ? 1 : ((b.projectStartDate > a.projectStartDate) ? -1 : 0));
+            (a.projectstartdate > b.projectstartdate) ? 1 : ((b.projectstartdate > a.projectstartdate) ? -1 : 0));
             break;
             case 'deadline':
             projTemp.sort((a,b) => 
-            (a.projectDeadline > b.projectDeadline) ? 1 : ((b.projectDeadline > a.projectDeadline) ? -1 : 0));
+            (a.projectdeadline > b.projectdeadline) ? 1 : ((b.projectdeadline > a.projectdeadline) ? -1 : 0));
             break
             case 'follower':
             projTemp.sort((a,b) => 
@@ -82,8 +83,8 @@ router.get('/', function(req, res, next) {
             break; 
             case 'percentage':
             projTemp.sort((a,b) => 
-            (parseFloat(a.donateamount) / parseFloat(a.projectTotalFundNeeded) < parseFloat(b.donateamount) / parseFloat(b.projectTotalFundNeeded)) ? 1
-            : ((parseFloat(b.donateamount) / parseFloat(b.projectTotalFundNeeded) < parseFloat(a.donateamount)) / parseFloat(a.projectTotalFundNeeded) ? -1 : 0));
+            (parseFloat(a.donateamount) / parseFloat(a.projecttotalfundneeded) < parseFloat(b.donateamount) / parseFloat(b.projecttotalfundneeded)) ? 1
+            : ((parseFloat(b.donateamount) / parseFloat(b.projecttotalfundneeded) < parseFloat(a.donateamount)) / parseFloat(a.projecttotalfundneeded) ? -1 : 0));
             break; 
             default:
             break;
@@ -92,7 +93,7 @@ router.get('/', function(req, res, next) {
         
         if(cateTerm != null && cateTerm != 'all') {
           projTemp = projTemp.filter(function(proj) {
-            return proj.categoryName === cateTerm;
+            return proj.categoryname === cateTerm;
           });          
         }
         
@@ -108,7 +109,7 @@ router.get('/', function(req, res, next) {
         var temp = data.rows;
         myLikeTemp = [];
         for(var i = 0; i < temp.length; i++) {
-          myLikeTemp.push(temp[i].projectName);
+          myLikeTemp.push(temp[i].projectname);
         }
       }
       getMyFollows();
@@ -121,7 +122,7 @@ router.get('/', function(req, res, next) {
         var temp = data.rows;
         myFollowTemp=[];
         for(var i = 0; i < temp.length; i++) {
-          myFollowTemp.push(temp[i].projectName);
+          myFollowTemp.push(temp[i].projectname);
         }
       } 
       renderPage();
@@ -129,6 +130,9 @@ router.get('/', function(req, res, next) {
   }
   
   function renderPage() {
+    console.log(myLikeTemp);
+    console.log(myFollowTemp);
+
     if(cateTemp != null)
     res.render('view-projects', { title: '', categories :  cateTemp, projects : projTemp, myLikes : myLikeTemp, myFollows : myFollowTemp, countries: req.cookies['countries'] , 
     sortTerm: sortTerm, cateTerm: cateTerm});
@@ -157,10 +161,10 @@ router.post('/', function(req, res, next) {
     act_query = "INSERT INTO follows VALUES ('" + email + "','" + projName +"','" + dateStr +"')";
     break;
     case "deLike":
-    act_query = "DELETE FROM likes WHERE \"email\" = '" + email + "' and \"projectName\" = '" + projName + "'";
+    act_query = "DELETE FROM likes WHERE email = '" + email + "' and projectName = '" + projName + "'";
     break;
     case "deFollow":
-    act_query = "DELETE FROM follows WHERE \"email\" = '" + email + "' and \"projectName\" = '" + projName + "'";
+    act_query = "DELETE FROM follows WHERE email = '" + email + "' and projectName = '" + projName + "'";
     break;
   }
   

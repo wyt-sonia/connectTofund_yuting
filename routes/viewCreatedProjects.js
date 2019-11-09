@@ -23,19 +23,19 @@ var cateTerm = null;
 router.get('/', function(req, res, next) {
   
   email = req.cookies['email'];
-  var project_query = 'SELECT DISTINCT ON (projStatus, "projectStartDate","projectName") p.*, '
-  +'(SELECT "countryName" FROM countries c WHERE c."countryCode" = p."countryCode") AS location, '
-  +'(SELECT COUNT(*) FROM likes l WHERE l."projectName" = p."projectName") AS likeCount, '
-  +'(SELECT COUNT(*) FROM projects pro WHERE pro.\"projectName\"= p.\"projectName\" '
-  +'AND pro.\"projectDeadline\" >= cast(now() as date)) AS projStatus, '
-  +'(SELECT COALESCE(SUM(amount), 0) FROM funds fu WHERE fu."projectName" = p."projectName") AS donateAmount, '
-  +'(SELECT COUNT(*) FROM follows f WHERE f."projectName" = p."projectName") AS followCount, a."pictureAddress" FROM projects p '
+  var project_query = 'SELECT DISTINCT ON (projStatus, projectStartDate,projectName) p.*, '
+  +'(SELECT countryName FROM countries c WHERE c.countryCode = p.countryCode) AS location, '
+  +'(SELECT COUNT(*) FROM likes l WHERE l.projectName = p.projectName) AS likeCount, '
+  +'(SELECT COUNT(*) FROM projects pro WHERE pro.projectName= p.projectName '
+  +'AND pro.projectDeadline >= cast(now() as date)) AS projStatus, '
+  +'(SELECT COALESCE(SUM(amount), 0) FROM funds fu WHERE fu.projectName = p.projectName) AS donateAmount, '
+  +'(SELECT COUNT(*) FROM follows f WHERE f.projectName = p.projectName) AS followCount, a.pictureAddress FROM projects p '
   +'NATURAL JOIN attaches a '
-  +'WHERE \"email\" = \'' + email + '\''
-  +'ORDER BY projStatus DESC, "projectStartDate", "projectName", "pictureAddress" DESC';
+  +'WHERE email = \'' + email + '\''
+  +'ORDER BY projStatus DESC, projectStartDate, projectName, pictureAddress DESC';
   
-  myLike_query =  "SELECT \"projectName\" FROM likes WHERE email = '" + email + "'";
-  myFollow_query =  "SELECT \"projectName\" FROM follows WHERE email = '" + email + "'";
+  myLike_query =  "SELECT projectName FROM likes WHERE email = '" + email + "'";
+  myFollow_query =  "SELECT projectName FROM follows WHERE email = '" + email + "'";
   
   cateTerm = req.query.cate;
   sortTerm = req.query.sortTerm;
