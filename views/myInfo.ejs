@@ -63,13 +63,13 @@
                                     var status = "";
                                     if(infoType == "donation" ) {
                                         var date = infoTemp[i].funddatetime;
-                                        dateStrInDB = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " + date.getHours() + ":" + date.getMinutes() + ":" +date.getSeconds();
+                                        dateStrInDB = date.getFullYear() + "-" + ("0" + (date.getMonth() + 1)).slice(-2) + "-" + ("0" + date.getDate()).slice(-2)+ " " + ("0" + date.getHours()).slice(-2) + ":" + ("0" + date.getMinutes()).slice(-2) + ":" +("0" + date.getSeconds()).slice(-2);
                                         dateStr = date.getDate() + "/" + (date.getMonth()+1) + "/" + date.getFullYear() + " " + date.getHours() + ":" + date.getMinutes() + ":" +date.getSeconds();
                                         amount = infoTemp[i].amount;
                                         status = infoTemp[i].projstatus;
                                     } else {
                                         var date = infoTemp[i].commentdatetime;
-                                        dateStrInDB = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " + date.getHours() + ":" + date.getMinutes() + ":" +date.getSeconds();
+                                        dateStrInDB = date.getFullYear() + "-" + ("0" + (date.getMonth() + 1)).slice(-2) + "-" + ("0" + date.getDate()).slice(-2)+ " " + ("0" + date.getHours()).slice(-2) + ":" + ("0" + date.getMinutes()).slice(-2) + ":" +("0" + date.getSeconds()).slice(-2);
                                         dateStr = date.getDate() + "/" + (date.getMonth()+1) + "/" + date.getFullYear() + " " + date.getHours() + ":" + date.getMinutes() + ":" +date.getSeconds();
                                         content =  infoTemp[i].content;
                                     }
@@ -118,12 +118,12 @@
                                                                 var dateStr = "";
                                                                 if(infoType == "like") {
                                                                     var date = infoTemp[i].datetime;
-                                                                    dateStrInDB = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " + date.getHours() + ":" + date.getMinutes() + ":" +date.getSeconds();;
+                                                                    dateStrInDB = date.getFullYear() + "-" + ("0" + (date.getMonth() + 1)).slice(-2) + "-" + ("0" + date.getDate()).slice(-2)+ " " + ("0" + date.getHours()).slice(-2) + ":" + ("0" + date.getMinutes()).slice(-2) + ":" +("0" + date.getSeconds()).slice(-2);
                                                                     dateStr = date.getDate() + "/" + (date.getMonth()+1) + "/" + date.getFullYear() + " " + date.getHours() + ":" + date.getMinutes() + ":" +date.getSeconds();
                                                                 }
                                                                 else {
                                                                     date = infoTemp[i].followdatetime;
-                                                                    dateStrInDB = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " + date.getHours() + ":" + date.getMinutes() + ":" +date.getSeconds();;
+                                                                    dateStrInDB = date.getFullYear() + "-" + ("0" + (date.getMonth() + 1)).slice(-2) + "-" + ("0" + date.getDate()).slice(-2)+ " " + ("0" + date.getHours()).slice(-2) + ":" + ("0" + date.getMinutes()).slice(-2) + ":" +("0" + date.getSeconds()).slice(-2);
                                                                     dateStr = date.getDate() + "/" + (date.getMonth()+1) + "/" + date.getFullYear() + " " + date.getHours() + ":" + date.getMinutes() + ":" +date.getSeconds();    
                                                                 }
                                                                 %>                      

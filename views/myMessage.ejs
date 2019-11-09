@@ -48,8 +48,7 @@
                                 var date = msgTemp[i].messagedatetime;
                                 var email = msgTemp[i].email;
                                 var exist = parseInt(msgTemp[i].projectexist);
-                                var dateStrInDB = date.getFullYear() + "-" + (date.getMonth() + 1) 
-                                + "-" + date.getDate() + " " + date.getHours() + ":" + date.getMinutes() + ":" +date.getSeconds();
+                                var dateStrInDB = date.getFullYear() + "-" + ("0" + (date.getMonth() + 1)).slice(-2) + "-" + ("0" + date.getDate()).slice(-2)+ " " + ("0" + date.getHours()).slice(-2) + ":" + ("0" + date.getMinutes()).slice(-2) + ":" +("0" + date.getSeconds()).slice(-2);
                                 var dateStr = date.getDate() + "/" + (date.getMonth()+1) + "/" + date.getFullYear() 
                                 + " " + date.getHours() + ":" + date.getMinutes() + ":" +date.getSeconds();
                                 %>
@@ -89,8 +88,7 @@
                                             var date = myProjMsgTemp[i].messagedatetime;
                                             var email = myProjMsgTemp[i].email;
                                             var exist = parseInt(myProjMsgTemp[i].projectexist);
-                                            var dateStrInDB = date.getFullYear() + "-" + (date.getMonth() + 1) 
-                                            + "-" + date.getDate() + " " + date.getHours() + ":" + date.getMinutes() + ":" +date.getSeconds();
+                                            var dateStrInDB = date.getFullYear() + "-" + ("0" + (date.getMonth() + 1)).slice(-2) + "-" + ("0" + date.getDate()).slice(-2)+ " " + ("0" + date.getHours()).slice(-2) + ":" + ("0" + date.getMinutes()).slice(-2) + ":" +("0" + date.getSeconds()).slice(-2);
                                             var dateStr = date.getDate() + "/" + (date.getMonth()+1) + "/" + date.getFullYear() 
                                             + " " + date.getHours() + ":" + date.getMinutes() + ":" +date.getSeconds();
                                             %>
