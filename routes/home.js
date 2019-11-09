@@ -33,6 +33,15 @@ router.get('/', function(req, res, next) {
   
 });
 
+router.post('/', function(req, res, next) {
+
+  if(req.body.logOff != null && req.body.logOff == "logOff") {
+    res.cookie("email", null);
+    console.log(req.cookies);
+    res.redirect('/');
+  }
+});
+
 
 
 module.exports = router;
